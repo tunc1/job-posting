@@ -14,6 +14,18 @@ public class AppliedJob
     @ManyToOne
     private Member member;
     private Date appliedAt;
+    public AppliedJob(){}
+    public AppliedJob(Long id,Company company,Member member,Date appliedAt)
+    {
+        this(company,member,appliedAt);
+        this.id=id;
+    }
+    public AppliedJob(Company company, Member member, Date appliedAt)
+    {
+        this.company = company;
+        this.member = member;
+        this.appliedAt = appliedAt;
+    }
     public Long getId()
     {
         return id;

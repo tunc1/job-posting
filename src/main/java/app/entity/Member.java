@@ -25,13 +25,37 @@ public class Member implements UserDetails
     @ManyToOne
     private Company company;
     private boolean accountNonExpired,accountNonLocked,credentialsNonExpired,enabled;
+    public Member(){}
+    public Member(String name,String lastName,String username,String title,String email,String password,
+            Company company,boolean accountNonExpired,boolean accountNonLocked,boolean credentialsNonExpired,
+            boolean enabled)
+    {
+        this.name=name;
+        this.lastName=lastName;
+        this.username=username;
+        this.title=title;
+        this.email=email;
+        this.password=password;
+        this.company=company;
+        this.accountNonExpired=accountNonExpired;
+        this.accountNonLocked=accountNonLocked;
+        this.credentialsNonExpired=credentialsNonExpired;
+        this.enabled=enabled;
+    }
+    public Member(Long id,String name,String lastName,String username,String title,String email,String password,
+            Company company,boolean accountNonExpired,boolean accountNonLocked,boolean credentialsNonExpired,
+            boolean enabled)
+    {
+        this(name,lastName,username,title,email,password,company,accountNonExpired,accountNonLocked,credentialsNonExpired,enabled);
+        this.id=id;
+    }
     public boolean isAccountNonExpired()
     {
         return accountNonExpired;
     }
     public void setAccountNonExpired(boolean accountNonExpired)
     {
-        this.accountNonExpired = accountNonExpired;
+        this.accountNonExpired=accountNonExpired;
     }
     public boolean isAccountNonLocked()
     {
@@ -39,7 +63,7 @@ public class Member implements UserDetails
     }
     public void setAccountNonLocked(boolean accountNonLocked)
     {
-        this.accountNonLocked = accountNonLocked;
+        this.accountNonLocked=accountNonLocked;
     }
     public boolean isCredentialsNonExpired()
     {
@@ -47,7 +71,7 @@ public class Member implements UserDetails
     }
     public void setCredentialsNonExpired(boolean credentialsNonExpired)
     {
-        this.credentialsNonExpired = credentialsNonExpired;
+        this.credentialsNonExpired=credentialsNonExpired;
     }
     public boolean isEnabled()
     {
@@ -55,7 +79,7 @@ public class Member implements UserDetails
     }
     public void setEnabled(boolean enabled)
     {
-        this.enabled = enabled;
+        this.enabled=enabled;
     }
     public void setUsername(String username)
     {

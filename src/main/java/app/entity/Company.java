@@ -12,6 +12,16 @@ public class Company
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String name;
+    public Company(){}
+    public Company(Long id, String name)
+    {
+        this(name);
+        this.id=id;
+    }
+    public Company(String name)
+    {
+        this.name=name;
+    }
     public Long getId()
     {
         return id;
