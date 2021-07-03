@@ -17,9 +17,9 @@ public class Member implements UserDetails
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    private String name,lastName,username,title;
+    private String name,lastName,title;
     @Column(unique=true,nullable=false)
-    private String email;
+    private String email,username;
     @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
     String password;
     @ManyToOne
