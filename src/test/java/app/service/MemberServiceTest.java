@@ -12,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import app.entity.Member;
 import app.repository.MemberRepository;
@@ -21,12 +22,14 @@ public class MemberServiceTest
 {
     @Mock
     MemberRepository memberRepository;
+    @Mock
+    PasswordEncoder passwordEncoder;
     MemberService memberService;
 
     @BeforeEach
     void init()
     {
-        memberService=new MemberService(memberRepository);
+        memberService=new MemberService(memberRepository,passwordEncoder);
     }
     @Test
     void testDeleteById()
@@ -66,23 +69,39 @@ public class MemberServiceTest
     @Test
     void testSave()
     {
-        Member member=new Member(null,null,null,null,null,null,null,true,true,true,true);
+        Mockito.when(passwordEncoder.encode(Mockito.anyString())).thenAnswer(i->
+        {
+            String password=i.getArgument(0,String.class);
+            return password+"1";
+        });
+        String password="password";
+        Member member=new Member(null,null,null,null,null,password,null,true,true,true,true);
         Mockito.when(memberRepository.save(Mockito.any())).thenAnswer(i->
         {
             Member input=i.getArgument(0,Member.class);
             input.setId(1L);
             return input;
         });
-        Assertions.assertEquals(member,memberService.update(member));
+        Member savedMember=memberService.save(member);
+        Assertions.assertEquals(member,savedMember);
+        Assertions.assertNotEquals(password,savedMember.getPassword());
     }
     @Test
     void testUpdate()
     {
-        Member member=new Member(1L,null,null,null,null,null,null,null,true,true,true,true);
+        Mockito.when(passwordEncoder.encode(Mockito.anyString())).thenAnswer(i->
+        {
+            String password=i.getArgument(0,String.class);
+            return password+"1";
+        });
+        String password="password";
+        Member member=new Member(1L,null,null,null,null,null,password,null,true,true,true,true);
         Mockito.when(memberRepository.save(Mockito.any())).thenAnswer(i->
         {
             return i.getArgument(0,Member.class);
         });
-        Assertions.assertEquals(member,memberService.update(member));
+        Member updatedMember=memberService.update(member);
+        Assertions.assertEquals(member,updatedMember);
+        Assertions.assertNotEquals(password,updatedMember.getPassword());
     }
 }
