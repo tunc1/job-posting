@@ -1,6 +1,9 @@
 package app.service;
 
 import java.util.List;
+
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Service;
 import app.entity.AppliedJob;
 import app.repository.AppliedJobRepository;
@@ -27,7 +30,7 @@ public class AppliedJobService
 	}
 	public AppliedJob findById(Long id)
 	{
-		return appliedJobRepository.findById(id).orElse(null);
+		return appliedJobRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 	public List<AppliedJob> findAll()
 	{

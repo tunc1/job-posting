@@ -4,6 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import app.entity.Member;
 import app.repository.MemberRepository;
+import javax.persistence.EntityNotFoundException;
 
 @Service
 public class MemberService
@@ -27,7 +28,7 @@ public class MemberService
 	}
 	public Member findById(Long id)
 	{
-		return memberRepository.findById(id).orElse(null);
+		return memberRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 	public List<Member> findAll()
 	{

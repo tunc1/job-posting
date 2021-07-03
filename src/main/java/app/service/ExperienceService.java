@@ -2,6 +2,7 @@ package app.service;
 
 import java.util.List;
 import org.springframework.stereotype.Service;
+import javax.persistence.EntityNotFoundException;
 import app.entity.Experience;
 import app.repository.ExperienceRepository;
 
@@ -27,7 +28,7 @@ public class ExperienceService
 	}
 	public Experience findById(Long id)
 	{
-		return experienceRepository.findById(id).orElse(null);
+		return experienceRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 	public List<Experience> findAll()
 	{

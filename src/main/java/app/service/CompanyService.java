@@ -1,6 +1,7 @@
 package app.service;
 
 import java.util.List;
+import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import app.entity.Company;
 import app.repository.CompanyRepository;
@@ -27,7 +28,7 @@ public class CompanyService
 	}
 	public Company findById(Long id)
 	{
-		return companyRepository.findById(id).orElse(null);
+		return companyRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 	public List<Company> findAll()
 	{
