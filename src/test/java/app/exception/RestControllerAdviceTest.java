@@ -16,13 +16,13 @@ public class RestControllerAdviceTest
     @Test
     void testEntityNotFoundExceptionHandler()
     {
-        ExceptionMessage exceptionMessage=restControllerAdvice.entityNotFoundExceptionHandler(null);
+        ExceptionMessage exceptionMessage=restControllerAdvice.entityNotFoundExceptionHandler(new RuntimeException("message"));
         Assertions.assertEquals(exceptionMessage.getMessage(),"No Entity Found by this id");
     }
     @Test
     void testExceptionHandler()
     {
-        ExceptionMessage exceptionMessage=restControllerAdvice.exceptionHandler(null);
+        ExceptionMessage exceptionMessage=restControllerAdvice.exceptionHandler(new RuntimeException("message"));
         Assertions.assertEquals(exceptionMessage.getMessage(),"Something Went Wrong");
     }
 }
