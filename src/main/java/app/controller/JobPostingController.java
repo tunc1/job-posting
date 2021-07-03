@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+
 @RestController
 @RequestMapping("/jobPosting")
 public class JobPostingController
@@ -16,6 +18,7 @@ public class JobPostingController
 		this.jobPostingService=jobPostingService;
 	}
 	@PostMapping
+	@ResponseStatus(code=HttpStatus.CREATED)
 	public JobPosting save(@RequestBody JobPosting jobPosting)
 	{
 		return jobPostingService.save(jobPosting);
@@ -37,6 +40,7 @@ public class JobPostingController
 		return jobPostingService.findAll();
 	}
 	@DeleteMapping("/{id}")
+	@ResponseStatus(code=HttpStatus.NO_CONTENT)
 	public void deleteById(@PathVariable Long id)
 	{
 		jobPostingService.deleteById(id);

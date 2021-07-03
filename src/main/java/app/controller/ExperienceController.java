@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
+
 @RestController
 @RequestMapping("/experience")
 public class ExperienceController
@@ -16,6 +18,7 @@ public class ExperienceController
 		this.experienceService=experienceService;
 	}
 	@PostMapping
+	@ResponseStatus(code=HttpStatus.CREATED)
 	public Experience save(@RequestBody Experience experience)
 	{
 		return experienceService.save(experience);
@@ -37,6 +40,7 @@ public class ExperienceController
 		return experienceService.findAll();
 	}
 	@DeleteMapping("/{id}")
+	@ResponseStatus(code=HttpStatus.NO_CONTENT)
 	public void deleteById(@PathVariable Long id)
 	{
 		experienceService.deleteById(id);
