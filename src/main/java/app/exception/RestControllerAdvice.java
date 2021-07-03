@@ -19,6 +19,7 @@ public class RestControllerAdvice
     @ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionMessage exceptionHandler(Exception e)
     {
+        e.printStackTrace();
         return new ExceptionMessage("Something Went Wrong");
     }
 }

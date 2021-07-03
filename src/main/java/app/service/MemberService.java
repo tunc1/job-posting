@@ -18,6 +18,14 @@ public class MemberService
 		this.memberRepository=memberRepository;
 		this.passwordEncoder=passwordEncoder;
 	}
+	public boolean existsByUsername(String username)
+	{
+		return memberRepository.existsByUsername(username);
+	}
+	public Member findByUsername(String username)
+	{
+		return memberRepository.findByUsername(username);
+	}
 	public Member save(Member member)
 	{
 		member.setPassword(passwordEncoder.encode(member.getPassword()));
