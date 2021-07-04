@@ -1,6 +1,9 @@
 package app.entity;
 
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.Date;
 
 @Entity
@@ -12,6 +15,7 @@ public class Experience
     @ManyToOne
     private Company company;
     @ManyToOne
+    @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
     private Member member;
     private Date startedAt,leftAt;
     public Experience(){}
