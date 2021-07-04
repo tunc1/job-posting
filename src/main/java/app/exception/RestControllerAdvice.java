@@ -15,6 +15,12 @@ public class RestControllerAdvice
     {
         return new ExceptionMessage("No Entity Found by this id");
     }
+    @ExceptionHandler(value={UnauthorizedException.class})
+    @ResponseStatus(value=HttpStatus.FORBIDDEN)
+    public ExceptionMessage unauthorizedExceptionHandler(Exception e)
+    {
+        return new ExceptionMessage("You do not Have a Permission for this Action");
+    }
     @ExceptionHandler(value={Exception.class})
     @ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionMessage exceptionHandler(Exception e)
