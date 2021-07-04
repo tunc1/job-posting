@@ -14,6 +14,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import app.entity.Experience;
+import app.entity.Member;
+import app.exception.UnauthorizedException;
 import app.repository.ExperienceRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,39 +31,70 @@ public class ExperienceServiceTest
         experienceService=new ExperienceService(experienceRepository);
     }
     @Test
+    void testBelongsTo_true()
+    {
+        Member member=new Member();
+        member.setId(1L);
+        Experience experience=new Experience();
+        experience.setMember(member);
+        Mockito.when(experienceRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(experience));
+        Assertions.assertTrue(experienceService.belongsTo(1L,member));
+    }
+    @Test
+    void testBelongsTo_throwsUnauthorizedException()
+    {
+        Member member=new Member();
+        member.setId(1L);
+        Experience experience=new Experience();
+        Member member2=new Member();
+        member2.setId(2L);
+        experience.setMember(member2);
+        Mockito.when(experienceRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(experience));
+        Assertions.assertThrows(UnauthorizedException.class,()->experienceService.belongsTo(1L,member));
+    }
+    @Test
+    void testExistsById_returnsTrue()
+    {
+        Mockito.when(experienceRepository.existsById(Mockito.anyLong())).thenReturn(true);
+        Assertions.assertTrue(experienceService.existsById(1L));
+    }
+    @Test
+    void testExistsById_throwsEntityNotFoundException()
+    {
+        Mockito.when(experienceRepository.existsById(Mockito.anyLong())).thenReturn(false);
+        Assertions.assertThrows(EntityNotFoundException.class,()->experienceService.existsById(1L));
+    }
+    @Test
     void testDeleteById()
     {
-        experienceService.deleteById(1L);
+        ExperienceService experienceService2=Mockito.spy(experienceService);
+        Mockito.doReturn(true).when(experienceService2).existsById(Mockito.anyLong());
+        Mockito.doReturn(true).when(experienceService2).belongsTo(Mockito.anyLong(),Mockito.any());
+        experienceService2.deleteById(1L,null);
         Mockito.verify(experienceRepository).deleteById(Mockito.anyLong());
     }
     @Test
-    void testFindAll()
+    void testFindByMember()
     {
-        List<Experience> companies=List.of(new Experience(1L,null,null,null,null));
-        Mockito.when(experienceRepository.findAll()).thenAnswer(invocation->
+        List<Experience> experiences=List.of(new Experience(1L,null,null,null,null));
+        Mockito.when(experienceRepository.findByMember(Mockito.any())).thenAnswer(invocation->
         {
-            return companies;
+            return experiences;
         });
-        Assertions.assertEquals(companies,experienceService.findAll());
+        Assertions.assertEquals(experiences,experienceService.findByMember(null));
     }
     @Test
     void testFindById()
     {
+        ExperienceService experienceService2=Mockito.spy(experienceService);
+        Mockito.doReturn(true).when(experienceService2).existsById(Mockito.anyLong());
+        Mockito.doReturn(true).when(experienceService2).belongsTo(Mockito.anyLong(),Mockito.any());
         Experience experience=new Experience(1L,null,null,null,null);
         Mockito.when(experienceRepository.findById(Mockito.anyLong())).thenAnswer(i->
         {
             return Optional.of(experience);
         });
-        Assertions.assertEquals(experience,experienceService.findById(1L));
-    }
-    @Test
-    void testFindById_throwsException()
-    {
-        Mockito.when(experienceRepository.findById(Mockito.anyLong())).thenAnswer(i->
-        {
-            return Optional.empty();
-        });
-        Assertions.assertThrows(EntityNotFoundException.class,()->experienceService.findById(1L));
+        Assertions.assertEquals(experience,experienceService2.findById(1L,null));
     }
     @Test
     void testSave()
@@ -78,11 +111,18 @@ public class ExperienceServiceTest
     @Test
     void testUpdate()
     {
+        Member member=new Member();
+        member.setId(1L);
         Experience experience=new Experience(1L,null,null,null,null);
+        ExperienceService experienceService2=Mockito.spy(experienceService);
+        Mockito.doReturn(true).when(experienceService2).existsById(Mockito.anyLong());
+        Mockito.doReturn(true).when(experienceService2).belongsTo(Mockito.anyLong(),Mockito.any());
         Mockito.when(experienceRepository.save(Mockito.any())).thenAnswer(i->
         {
             return i.getArgument(0,Experience.class);
         });
-        Assertions.assertEquals(experience,experienceService.update(experience));
+        Experience actual=experienceService2.update(experience,member);
+        Assertions.assertEquals(experience,actual);
+        Assertions.assertNotNull(actual.getMember());
     }
 }

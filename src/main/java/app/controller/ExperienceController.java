@@ -1,12 +1,14 @@
 package app.controller;
 
 import app.entity.Experience;
+import app.entity.Member;
 import app.service.ExperienceService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 
 @RestController
 @RequestMapping("/experience")
@@ -19,30 +21,36 @@ public class ExperienceController
 	}
 	@PostMapping
 	@ResponseStatus(code=HttpStatus.CREATED)
-	public Experience save(@RequestBody Experience experience)
+	public Experience save(@RequestBody Experience experience,Authentication authentication)
 	{
+		Member member=(Member)authentication.getPrincipal();
+		experience.setMember(member);
 		return experienceService.save(experience);
 	}
 	@PutMapping("/{id}")
-	public Experience update(@RequestBody Experience experience,@PathVariable Long id)
+	public Experience update(@RequestBody Experience experience,@PathVariable Long id,Authentication authentication)
 	{
+		Member member=(Member)authentication.getPrincipal();
 		experience.setId(id);
-		return experienceService.update(experience);
+		return experienceService.update(experience,member);
 	}
 	@GetMapping("/{id}")
-	public Experience findById(@PathVariable Long id)
+	public Experience findById(@PathVariable Long id,Authentication authentication)
 	{
-		return experienceService.findById(id);
+		Member member=(Member)authentication.getPrincipal();
+		return experienceService.findById(id,member);
 	}
 	@GetMapping
-	public List<Experience> findAll()
+	public List<Experience> findByMember(Authentication authentication)
 	{
-		return experienceService.findAll();
+		Member member=(Member)authentication.getPrincipal();
+		return experienceService.findByMember(member);
 	}
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
-	public void deleteById(@PathVariable Long id)
+	public void deleteById(@PathVariable Long id,Authentication authentication)
 	{
-		experienceService.deleteById(id);
+		Member member=(Member)authentication.getPrincipal();
+		experienceService.deleteById(id,member);
 	}
 }

@@ -4,6 +4,8 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import app.entity.Experience;
+import app.entity.Member;
+import app.exception.UnauthorizedException;
 import app.repository.ExperienceRepository;
 
 @Service
@@ -14,24 +16,54 @@ public class ExperienceService
 	{
 		this.experienceRepository=experienceRepository;
 	}
+	public List<Experience> findByMember(Member member)
+	{
+		return experienceRepository.findByMember(member);
+	}
 	public Experience save(Experience experience)
 	{
 		return experienceRepository.save(experience);
 	}
-	public Experience update(Experience experience)
+	public boolean existsById(Long id)
 	{
-		return experienceRepository.save(experience);
+		if(experienceRepository.existsById(id))
+			return true;
+		throw new EntityNotFoundException();
 	}
-	public void deleteById(Long id)
+	public boolean belongsTo(Long id,Member member)
 	{
-		experienceRepository.deleteById(id);
+		Experience experience=experienceRepository.findById(id).get();
+		if(experience.getMember().equals(member))
+			return true;
+		throw new UnauthorizedException();
 	}
-	public Experience findById(Long id)
+	public Experience update(Experience experience,Member member)
 	{
-		return experienceRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+		if(existsById(experience.getId()))
+		{
+			if(belongsTo(experience.getId(),member))
+			{
+				experience.setMember(member);
+				return experienceRepository.save(experience);
+			}
+		}
+		return null;
 	}
-	public List<Experience> findAll()
+	public void deleteById(Long id,Member member)
 	{
-		return experienceRepository.findAll();
+		if(existsById(id))
+		{
+			if(belongsTo(id,member))
+				experienceRepository.deleteById(id);
+		}
+	}
+	public Experience findById(Long id,Member member)
+	{
+		if(existsById(id))
+		{
+			if(belongsTo(id,member))
+				return experienceRepository.findById(id).get();
+		}
+		return null;
 	}
 }
