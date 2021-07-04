@@ -73,7 +73,7 @@ public class ExperienceServiceTest
             input.setId(1L);
             return input;
         });
-        Assertions.assertEquals(experience,experienceService.update(experience));
+        Assertions.assertEquals(experience,experienceService.save(experience));
     }
     @Test
     void testUpdate()
