@@ -49,6 +49,10 @@ public class Member implements UserDetails
         this(name,lastName,username,title,email,password,company,accountNonExpired,accountNonLocked,credentialsNonExpired,enabled);
         this.id=id;
     }
+    public boolean equals(Object obj)
+    {
+        return id==((Member)obj).id;
+    }
     public boolean isAccountNonExpired()
     {
         return accountNonExpired;
