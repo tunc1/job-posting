@@ -75,7 +75,7 @@ public class MemberServiceTest
             return password+"1";
         });
         String password="password";
-        Member member=new Member(null,null,null,password,null,true,true,true,true);
+        Member member=new Member(null,null,null,null,password,true,true,true,true);
         Mockito.when(memberRepository.save(Mockito.any())).thenAnswer(i->
         {
             Member input=i.getArgument(0,Member.class);
@@ -95,7 +95,7 @@ public class MemberServiceTest
             return password+"1";
         });
         String password="password";
-        Member member=new Member(1L,null,null,null,password,null,true,true,true,true);
+        Member member=new Member(1L,null,null,null,null,password,true,true,true,true);
         Mockito.when(memberRepository.save(Mockito.any())).thenAnswer(i->
         {
             return i.getArgument(0,Member.class);
