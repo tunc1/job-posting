@@ -66,6 +66,7 @@ public class ExperienceControllerTest
             return i.getArgument(0,Experience.class);
         });
         Assertions.assertEquals(experience,experienceController.save(experience,authentication));
+        Assertions.assertEquals(experience.getMember(),member);
     }
     @Test
     void testUpdate()
