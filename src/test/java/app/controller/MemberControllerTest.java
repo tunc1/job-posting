@@ -33,7 +33,7 @@ public class MemberControllerTest
     @Test
     void testFindAll()
     {
-        List<Member> members=List.of(new Member(1L,null,null,null,null,null,null,null,true,true,true,true));
+        List<Member> members=List.of(new Member(1L,null,null,null,null,null,true,true,true,true));
         Mockito.when(memberService.findAll()).thenAnswer(invocation->
         {
             return members;
@@ -43,7 +43,7 @@ public class MemberControllerTest
     @Test
     void testFindById()
     {
-        Member member=new Member(1L,null,null,null,null,null,null,null,true,true,true,true);
+        Member member=new Member(1L,null,null,null,null,null,true,true,true,true);
         Mockito.when(memberService.findById(Mockito.anyLong())).thenAnswer(i->
         {
             return member;
@@ -53,7 +53,7 @@ public class MemberControllerTest
     @Test
     void testSave()
     {
-        Member member=new Member(null,null,null,null,null,null,null,true,true,true,true);
+        Member member=new Member(null,null,null,null,null,true,true,true,true);
         Mockito.when(memberService.save(Mockito.any())).thenAnswer(i->
         {
             return i.getArgument(0,Member.class);
@@ -64,7 +64,7 @@ public class MemberControllerTest
     void testUpdate()
     {
         long id=1L;
-        Member member=new Member(null,null,null,null,null,null,null,true,true,true,true);
+        Member member=new Member(null,null,null,null,null,true,true,true,true);
         Mockito.when(memberService.update(Mockito.any())).thenAnswer(i->
         {
             return i.getArgument(0,Member.class);

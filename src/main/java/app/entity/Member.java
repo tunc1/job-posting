@@ -17,36 +17,32 @@ public class Member implements UserDetails
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    private String name,lastName,title;
+    private String name,lastName;
     @Column(unique=true,nullable=false)
     private String email,username;
     @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
     String password;
-    @ManyToOne
-    private Company company;
     private boolean accountNonExpired,accountNonLocked,credentialsNonExpired,enabled;
     public Member(){}
-    public Member(String name,String lastName,String username,String title,String email,String password,
-            Company company,boolean accountNonExpired,boolean accountNonLocked,boolean credentialsNonExpired,
+    public Member(String name,String lastName,String username,String email,String password,
+            boolean accountNonExpired,boolean accountNonLocked,boolean credentialsNonExpired,
             boolean enabled)
     {
         this.name=name;
         this.lastName=lastName;
         this.username=username;
-        this.title=title;
         this.email=email;
         this.password=password;
-        this.company=company;
         this.accountNonExpired=accountNonExpired;
         this.accountNonLocked=accountNonLocked;
         this.credentialsNonExpired=credentialsNonExpired;
         this.enabled=enabled;
     }
-    public Member(Long id,String name,String lastName,String username,String title,String email,String password,
-            Company company,boolean accountNonExpired,boolean accountNonLocked,boolean credentialsNonExpired,
+    public Member(Long id,String name,String lastName,String username,String email,String password,
+            boolean accountNonExpired,boolean accountNonLocked,boolean credentialsNonExpired,
             boolean enabled)
     {
-        this(name,lastName,username,title,email,password,company,accountNonExpired,accountNonLocked,credentialsNonExpired,enabled);
+        this(name,lastName,username,email,password,accountNonExpired,accountNonLocked,credentialsNonExpired,enabled);
         this.id=id;
     }
     public boolean equals(Object obj)
@@ -132,22 +128,6 @@ public class Member implements UserDetails
     public void setLastName(String lastName)
     {
         this.lastName=lastName;
-    }
-    public Company getCompany()
-    {
-        return company;
-    }
-    public void setCompany(Company company)
-    {
-        this.company=company;
-    }
-    public String getTitle()
-    {
-        return title;
-    }
-    public void setTitle(String title)
-    {
-        this.title=title;
     }
     public Collection<? extends GrantedAuthority> getAuthorities()
     {

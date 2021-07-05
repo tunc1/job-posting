@@ -34,7 +34,7 @@ public class AuthenticateTest
     void init()
     {
         authenticate=new Authenticate(authenticationManager, tokenService, memberService);
-        member=new Member("","","username","","","password",null,true,true,true,true);
+        member=new Member("","","username","","password",true,true,true,true);
     }
     @Test
     void testAuthenticate_successful()
