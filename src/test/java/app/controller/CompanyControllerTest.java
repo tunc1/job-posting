@@ -25,12 +25,6 @@ public class CompanyControllerTest
         companyController=new CompanyController(companyService);
     }
     @Test
-    void testDeleteById()
-    {
-        companyController.deleteById(1L);
-        Mockito.verify(companyService).deleteById(Mockito.any());
-    }
-    @Test
     void testFindAll()
     {
         List<Company> companies=List.of(new Company(1L,"name"));
@@ -49,28 +43,5 @@ public class CompanyControllerTest
             return company;
         });
         Assertions.assertEquals(company,companyController.findById(1L));
-    }
-    @Test
-    void testSave()
-    {
-        Company company=new Company("name");
-        Mockito.when(companyService.save(Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,Company.class);
-        });
-        Assertions.assertEquals(company,companyController.save(company));
-    }
-    @Test
-    void testUpdate()
-    {
-        long id=1L;
-        Company company=new Company("name");
-        Mockito.when(companyService.update(Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,Company.class);
-        });
-        Company actual=companyController.update(company,id);
-        Assertions.assertEquals(company,actual);
-        Assertions.assertEquals(id,actual.getId());
     }
 }

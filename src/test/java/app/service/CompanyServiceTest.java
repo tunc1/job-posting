@@ -29,12 +29,6 @@ public class CompanyServiceTest
         companyService=new CompanyService(companyRepository);
     }
     @Test
-    void testDeleteById()
-    {
-        companyService.deleteById(1L);
-        Mockito.verify(companyRepository).deleteById(Mockito.anyLong());
-    }
-    @Test
     void testFindAll()
     {
         List<Company> companies=List.of(new Company(1L,"name"));
@@ -62,27 +56,5 @@ public class CompanyServiceTest
             return Optional.empty();
         });
         Assertions.assertThrows(EntityNotFoundException.class,()->companyService.findById(1L));
-    }
-    @Test
-    void testSave()
-    {
-        Company company=new Company("name");
-        Mockito.when(companyRepository.save(Mockito.any())).thenAnswer(i->
-        {
-            Company input=i.getArgument(0,Company.class);
-            input.setId(1L);
-            return input;
-        });
-        Assertions.assertEquals(company,companyService.update(company));
-    }
-    @Test
-    void testUpdate()
-    {
-        Company company=new Company(1L,"name");
-        Mockito.when(companyRepository.save(Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,Company.class);
-        });
-        Assertions.assertEquals(company,companyService.update(company));
     }
 }
