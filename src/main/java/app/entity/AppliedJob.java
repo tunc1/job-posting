@@ -10,19 +10,19 @@ public class AppliedJob
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    private Company company;
+    private JobPosting jobPosting;
     @ManyToOne
     private Member member;
     private Date appliedAt;
     public AppliedJob(){}
-    public AppliedJob(Long id,Company company,Member member,Date appliedAt)
+    public AppliedJob(Long id,JobPosting jobPosting,Member member,Date appliedAt)
     {
-        this(company,member,appliedAt);
+        this(jobPosting,member,appliedAt);
         this.id=id;
     }
-    public AppliedJob(Company company, Member member, Date appliedAt)
+    public AppliedJob(JobPosting jobPosting, Member member, Date appliedAt)
     {
-        this.company = company;
+        this.jobPosting = jobPosting;
         this.member = member;
         this.appliedAt = appliedAt;
     }
@@ -34,13 +34,13 @@ public class AppliedJob
     {
         this.id=id;
     }
-    public Company getCompany()
+    public JobPosting getJobPosting()
     {
-        return company;
+        return jobPosting;
     }
-    public void setCompany(Company company)
+    public void setJobPosting(JobPosting jobPosting)
     {
-        this.company=company;
+        this.jobPosting=jobPosting;
     }
     public Member getMember()
     {
