@@ -9,8 +9,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 
 import app.entity.AppliedJob;
+import app.entity.Member;
 import app.service.AppliedJobService;
 
 @ExtendWith(MockitoExtension.class)
@@ -19,36 +22,40 @@ public class AppliedJobControllerTest
     @Mock
     AppliedJobService appliedJobService;
     AppliedJobController appliedJobController;
+    Authentication authentication;
+    Member member;
     @BeforeEach
     void init()
     {
         appliedJobController=new AppliedJobController(appliedJobService);
+        member=new Member();
+        authentication=new UsernamePasswordAuthenticationToken(member,null);
     }
     @Test
     void testDeleteById()
     {
-        appliedJobController.deleteById(1L);
-        Mockito.verify(appliedJobService).deleteById(Mockito.any());
+        appliedJobController.deleteById(1L,authentication);
+        Mockito.verify(appliedJobService).deleteById(Mockito.any(),Mockito.any());
     }
     @Test
-    void testFindAll()
+    void testFindByMember()
     {
         List<AppliedJob> appliedJobs=List.of(new AppliedJob(1L, null, null, null));
-        Mockito.when(appliedJobService.findAll()).thenAnswer(invocation->
+        Mockito.when(appliedJobService.findByMember(Mockito.any())).thenAnswer(invocation->
         {
             return appliedJobs;
         });
-        Assertions.assertEquals(appliedJobs,appliedJobController.findAll());
+        Assertions.assertEquals(appliedJobs,appliedJobController.findByMember(authentication));
     }
     @Test
     void testFindById()
     {
         AppliedJob appliedJob=new AppliedJob(1L,null,null,null);
-        Mockito.when(appliedJobService.findById(Mockito.anyLong())).thenAnswer(i->
+        Mockito.when(appliedJobService.findById(Mockito.anyLong(),Mockito.any())).thenAnswer(i->
         {
             return appliedJob;
         });
-        Assertions.assertEquals(appliedJob,appliedJobController.findById(1L));
+        Assertions.assertEquals(appliedJob,appliedJobController.findById(1L,authentication));
     }
     @Test
     void testSave()
@@ -58,19 +65,7 @@ public class AppliedJobControllerTest
         {
             return i.getArgument(0,AppliedJob.class);
         });
-        Assertions.assertEquals(appliedJob,appliedJobController.save(appliedJob));
-    }
-    @Test
-    void testUpdate()
-    {
-        long id=1L;
-        AppliedJob appliedJob=new AppliedJob(null,null,null);
-        Mockito.when(appliedJobService.update(Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,AppliedJob.class);
-        });
-        AppliedJob actual=appliedJobController.update(appliedJob,id);
-        Assertions.assertEquals(appliedJob,actual);
-        Assertions.assertEquals(id,actual.getId());
+        Assertions.assertEquals(appliedJob,appliedJobController.save(appliedJob,authentication));
+        Assertions.assertEquals(appliedJob.getMember(),member);
     }
 }
