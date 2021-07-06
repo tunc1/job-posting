@@ -31,7 +31,7 @@ public class CompanyServiceTest
     @Test
     void testFindAll()
     {
-        List<Company> companies=List.of(new Company(1L,"name"));
+        List<Company> companies=List.of(new Company(1L,"name",null));
         Mockito.when(companyRepository.findAll()).thenAnswer(invocation->
         {
             return companies;
@@ -41,7 +41,7 @@ public class CompanyServiceTest
     @Test
     void testFindById()
     {
-        Company company=new Company(1L,"name");
+        Company company=new Company(1L,"name",null);
         Mockito.when(companyRepository.findById(Mockito.anyLong())).thenAnswer(i->
         {
             return Optional.of(company);

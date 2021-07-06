@@ -27,7 +27,7 @@ public class CompanyControllerTest
     @Test
     void testFindAll()
     {
-        List<Company> companies=List.of(new Company(1L,"name"));
+        List<Company> companies=List.of(new Company(1L,"name",null));
         Mockito.when(companyService.findAll()).thenAnswer(invocation->
         {
             return companies;
@@ -37,7 +37,7 @@ public class CompanyControllerTest
     @Test
     void testFindById()
     {
-        Company company=new Company(1L,"name");
+        Company company=new Company(1L,"name",null);
         Mockito.when(companyService.findById(Mockito.anyLong())).thenAnswer(i->
         {
             return company;

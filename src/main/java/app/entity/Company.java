@@ -4,6 +4,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Company
@@ -12,15 +13,26 @@ public class Company
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String name;
+    @ManyToOne
+    private Member manager;
     public Company(){}
-    public Company(Long id, String name)
+    public Company(Long id, String name, Member manager)
     {
-        this(name);
-        this.id=id;
+        this(name, manager);
+        this.id = id;
     }
-    public Company(String name)
+    public Company(String name, Member manager)
     {
         this.name=name;
+        this.manager = manager;
+    }
+    public Member getManager()
+    {
+        return manager;
+    }
+    public void setManager(Member manager)
+    {
+        this.manager = manager;
     }
     public Long getId()
     {
