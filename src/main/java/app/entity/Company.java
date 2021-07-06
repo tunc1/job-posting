@@ -6,6 +6,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 public class Company
 {
@@ -14,6 +16,7 @@ public class Company
     private Long id;
     private String name;
     @ManyToOne
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Member manager;
     public Company(){}
     public Company(Long id, String name, Member manager)
