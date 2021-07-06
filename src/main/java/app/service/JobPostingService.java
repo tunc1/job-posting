@@ -3,6 +3,7 @@ package app.service;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import app.entity.JobPosting;
+import app.entity.Member;
 import app.repository.JobPostingRepository;
 import javax.persistence.EntityNotFoundException;
 
@@ -10,21 +11,29 @@ import javax.persistence.EntityNotFoundException;
 public class JobPostingService
 {
 	private JobPostingRepository jobPostingRepository;
-	public JobPostingService(JobPostingRepository jobPostingRepository)
+	private CompanyService companyService;
+	public JobPostingService(JobPostingRepository jobPostingRepository,CompanyService companyService)
 	{
-		this.jobPostingRepository=jobPostingRepository;
+		this.jobPostingRepository = jobPostingRepository;
+		this.companyService = companyService;
 	}
-	public JobPosting save(JobPosting jobPosting)
+	public JobPosting save(JobPosting jobPosting, Member member)
 	{
-		return jobPostingRepository.save(jobPosting);
+		if(companyService.belongsTo(jobPosting.getCompany().getId(),member))
+			return jobPostingRepository.save(jobPosting);
+		return null;
 	}
-	public JobPosting update(JobPosting jobPosting)
+	public JobPosting update(JobPosting jobPosting, Member member)
 	{
-		return jobPostingRepository.save(jobPosting);
+		if(companyService.belongsTo(jobPosting.getCompany().getId(),member))
+			return jobPostingRepository.save(jobPosting);
+		return null;
 	}
-	public void deleteById(Long id)
+	public void deleteById(Long id, Member member)
 	{
-		jobPostingRepository.deleteById(id);
+		JobPosting jobPosting=findById(id);
+		if(companyService.belongsTo(jobPosting.getCompany().getId(),member))
+			jobPostingRepository.deleteById(id);
 	}
 	public JobPosting findById(Long id)
 	{
@@ -34,4 +43,12 @@ public class JobPostingService
 	{
 		return jobPostingRepository.findAll();
 	}
+    public List<JobPosting> findByCompanyId(long companyId)
+    {
+        return jobPostingRepository.findByCompanyId(companyId);
+    }
+    public List<JobPosting> query(String query)
+    {
+        return jobPostingRepository.findByTitleContaining(query);
+    }
 }
