@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -22,6 +23,7 @@ public class Member implements UserDetails
     private String email,username;
     @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
     String password;
+    @JsonIgnore
     private boolean accountNonExpired,accountNonLocked,credentialsNonExpired,enabled;
     public Member(){}
     public Member(String name,String lastName,String username,String email,String password,
@@ -129,6 +131,7 @@ public class Member implements UserDetails
     {
         this.lastName=lastName;
     }
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities()
     {
         return List.of(new SimpleGrantedAuthority("ROLE_Member"));
