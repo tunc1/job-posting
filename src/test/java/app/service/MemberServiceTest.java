@@ -41,29 +41,20 @@ public class MemberServiceTest
     void testFindAll()
     {
         List<Member> companies=List.of(new Member(1L,null,null,null,null,null,true,true,true,true));
-        Mockito.when(memberRepository.findAll()).thenAnswer(invocation->
-        {
-            return companies;
-        });
+        Mockito.when(memberRepository.findAll()).thenReturn(companies);
         Assertions.assertEquals(companies,memberService.findAll());
     }
     @Test
     void testFindById()
     {
         Member member=new Member(1L,null,null,null,null,null,true,true,true,true);
-        Mockito.when(memberRepository.findById(Mockito.anyLong())).thenAnswer(i->
-        {
-            return Optional.of(member);
-        });
+        Mockito.when(memberRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(member));
         Assertions.assertEquals(member,memberService.findById(1L));
     }
     @Test
     void testFindById_throwsException()
     {
-        Mockito.when(memberRepository.findById(Mockito.anyLong())).thenAnswer(i->
-        {
-            return Optional.empty();
-        });
+        Mockito.when(memberRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
         Assertions.assertThrows(EntityNotFoundException.class,()->memberService.findById(1L));
     }
     @Test

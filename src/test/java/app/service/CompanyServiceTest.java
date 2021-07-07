@@ -34,29 +34,20 @@ public class CompanyServiceTest
     void testFindAll()
     {
         List<Company> companies=List.of(new Company(1L,"name",null));
-        Mockito.when(companyRepository.findAll()).thenAnswer(invocation->
-        {
-            return companies;
-        });
+        Mockito.when(companyRepository.findAll()).thenReturn(companies);
         Assertions.assertEquals(companies,companyService.findAll());
     }
     @Test
     void testFindById()
     {
         Company company=new Company(1L,"name",null);
-        Mockito.when(companyRepository.findById(Mockito.anyLong())).thenAnswer(i->
-        {
-            return Optional.of(company);
-        });
+        Mockito.when(companyRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(company));
         Assertions.assertEquals(company,companyService.findById(1L));
     }
     @Test
     void testFindById_throwsException()
     {
-        Mockito.when(companyRepository.findById(Mockito.anyLong())).thenAnswer(i->
-        {
-            return Optional.empty();
-        });
+        Mockito.when(companyRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
         Assertions.assertThrows(EntityNotFoundException.class,()->companyService.findById(1L));
     }
     @Test

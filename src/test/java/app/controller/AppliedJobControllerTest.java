@@ -41,20 +41,14 @@ public class AppliedJobControllerTest
     void testFindByMember()
     {
         List<AppliedJob> appliedJobs=List.of(new AppliedJob(1L, null, null, null));
-        Mockito.when(appliedJobService.findByMember(Mockito.any())).thenAnswer(invocation->
-        {
-            return appliedJobs;
-        });
+        Mockito.when(appliedJobService.findByMember(Mockito.any())).thenReturn(appliedJobs);
         Assertions.assertEquals(appliedJobs,appliedJobController.findByMember(authentication));
     }
     @Test
     void testFindById()
     {
         AppliedJob appliedJob=new AppliedJob(1L,null,null,null);
-        Mockito.when(appliedJobService.findById(Mockito.anyLong(),Mockito.any())).thenAnswer(i->
-        {
-            return appliedJob;
-        });
+        Mockito.when(appliedJobService.findById(Mockito.anyLong(),Mockito.any())).thenReturn(appliedJob);
         Assertions.assertEquals(appliedJob,appliedJobController.findById(1L,authentication));
     }
     @Test

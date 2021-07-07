@@ -78,49 +78,34 @@ public class JobPostingServiceTest
     void testFindAll()
     {
         List<JobPosting> companies=List.of(new JobPosting(1L,null,null,null,null,true));
-        Mockito.when(jobPostingRepository.findAll()).thenAnswer(invocation->
-        {
-            return companies;
-        });
+        Mockito.when(jobPostingRepository.findAll()).thenReturn(companies);
         Assertions.assertEquals(companies,jobPostingService.findAll());
     }
     @Test
     void testFindById()
     {
         JobPosting jobPosting=new JobPosting(1L,null,null,null,null,true);
-        Mockito.when(jobPostingRepository.findById(Mockito.anyLong())).thenAnswer(i->
-        {
-            return Optional.of(jobPosting);
-        });
+        Mockito.when(jobPostingRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(jobPosting));
         Assertions.assertEquals(jobPosting,jobPostingService.findById(1L));
     }
     @Test
     void testFindById_throwsException()
     {
-        Mockito.when(jobPostingRepository.findById(Mockito.anyLong())).thenAnswer(i->
-        {
-            return Optional.empty();
-        });
+        Mockito.when(jobPostingRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
         Assertions.assertThrows(EntityNotFoundException.class,()->jobPostingService.findById(1L));
     }
     @Test
     void testFindByCompanyId()
     {
         List<JobPosting> companies=List.of(new JobPosting(1L,null,null,null,null,true));
-        Mockito.when(jobPostingRepository.findByCompanyId(Mockito.anyLong())).thenAnswer(invocation->
-        {
-            return companies;
-        });
+        Mockito.when(jobPostingRepository.findByCompanyId(Mockito.anyLong())).thenReturn(companies);
         Assertions.assertEquals(companies,jobPostingService.findByCompanyId(1L));
     }
     @Test
     void testQuery()
     {
         List<JobPosting> companies=List.of(new JobPosting(1L,null,null,null,null,true));
-        Mockito.when(jobPostingRepository.findByTitleContaining(Mockito.anyString())).thenAnswer(invocation->
-        {
-            return companies;
-        });
+        Mockito.when(jobPostingRepository.findByTitleContaining(Mockito.anyString())).thenReturn(companies);
         Assertions.assertEquals(companies,jobPostingService.query("query"));
     }
 }

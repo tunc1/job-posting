@@ -28,20 +28,14 @@ public class CompanyControllerTest
     void testFindAll()
     {
         List<Company> companies=List.of(new Company(1L,"name",null));
-        Mockito.when(companyService.findAll()).thenAnswer(invocation->
-        {
-            return companies;
-        });
+        Mockito.when(companyService.findAll()).thenReturn(companies);
         Assertions.assertEquals(companies,companyController.findAll());
     }
     @Test
     void testFindById()
     {
         Company company=new Company(1L,"name",null);
-        Mockito.when(companyService.findById(Mockito.anyLong())).thenAnswer(i->
-        {
-            return company;
-        });
+        Mockito.when(companyService.findById(Mockito.anyLong())).thenReturn(company);
         Assertions.assertEquals(company,companyController.findById(1L));
     }
 }

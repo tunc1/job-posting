@@ -41,10 +41,7 @@ public class JobPostingControllerTest
     void testFindAll()
     {
         List<JobPosting> jobPostings=List.of(new JobPosting(1L,null,null,null, null, true));
-        Mockito.when(jobPostingService.findAll()).thenAnswer(invocation->
-        {
-            return jobPostings;
-        });
+        Mockito.when(jobPostingService.findAll()).thenReturn(jobPostings);
         Assertions.assertEquals(jobPostings,jobPostingController.findAll());
     }
     @Test

@@ -34,20 +34,14 @@ public class MemberControllerTest
     void testFindAll()
     {
         List<Member> members=List.of(new Member(1L,null,null,null,null,null,true,true,true,true));
-        Mockito.when(memberService.findAll()).thenAnswer(invocation->
-        {
-            return members;
-        });
+        Mockito.when(memberService.findAll()).thenReturn(members);
         Assertions.assertEquals(members,memberController.findAll());
     }
     @Test
     void testFindById()
     {
         Member member=new Member(1L,null,null,null,null,null,true,true,true,true);
-        Mockito.when(memberService.findById(Mockito.anyLong())).thenAnswer(i->
-        {
-            return member;
-        });
+        Mockito.when(memberService.findById(Mockito.anyLong())).thenReturn(member);
         Assertions.assertEquals(member,memberController.findById(1L));
     }
     @Test

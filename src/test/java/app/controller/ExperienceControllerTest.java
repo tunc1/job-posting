@@ -41,20 +41,14 @@ public class ExperienceControllerTest
     void testFindByMember()
     {
         List<Experience> experiences=List.of(new Experience(1L,null,null, null, null));
-        Mockito.when(experienceService.findByMember(Mockito.any())).thenAnswer(invocation->
-        {
-            return experiences;
-        });
+        Mockito.when(experienceService.findByMember(Mockito.any())).thenReturn(experiences);
         Assertions.assertEquals(experiences,experienceController.findByMember(authentication));
     }
     @Test
     void testFindById()
     {
         Experience experience=new Experience(1L,null,null,null,null);
-        Mockito.when(experienceService.findById(Mockito.anyLong(),Mockito.any())).thenAnswer(i->
-        {
-            return experience;
-        });
+        Mockito.when(experienceService.findById(Mockito.anyLong(),Mockito.any())).thenReturn(experience);
         Assertions.assertEquals(experience,experienceController.findById(1L,authentication));
     }
     @Test
