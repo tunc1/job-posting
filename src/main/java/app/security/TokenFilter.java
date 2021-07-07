@@ -36,9 +36,12 @@ public class TokenFilter extends OncePerRequestFilter
                 if(tokenService.validate(token))
                 {
                     String username=tokenService.get(token,"username");
-                    UserDetails userDetails=memberService.findByUsername(username);
-                    UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
-                    SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                    if(memberService.existsByUsername(username))
+                    {
+                        UserDetails userDetails=memberService.findByUsername(username);
+                        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+                        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                    }
                 }
             }
         }
