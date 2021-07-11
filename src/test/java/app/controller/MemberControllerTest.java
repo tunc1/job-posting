@@ -9,8 +9,14 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 
 import app.entity.Member;
+import app.exception.ConflictException;
+import app.exception.ExceptionMessage;
 import app.service.MemberService;
 
 @ExtendWith(MockitoExtension.class)
@@ -27,8 +33,10 @@ public class MemberControllerTest
     @Test
     void testDeleteById()
     {
-        memberController.deleteById(1L);
-        Mockito.verify(memberService).deleteById(Mockito.any());
+        Member member=new Member(null,null,null,null,null,true,true,true,true);
+        Authentication authentication=new UsernamePasswordAuthenticationToken(member,null);
+        memberController.deleteById(1L,authentication);
+        Mockito.verify(memberService).deleteById(Mockito.anyLong(),Mockito.any());
     }
     @Test
     void testFindAll()
@@ -45,26 +53,48 @@ public class MemberControllerTest
         Assertions.assertEquals(member,memberController.findById(1L));
     }
     @Test
-    void testSave()
+    void testSave_returnsMember()
     {
         Member member=new Member(null,null,null,null,null,true,true,true,true);
         Mockito.when(memberService.save(Mockito.any())).thenAnswer(i->
         {
             return i.getArgument(0,Member.class);
         });
-        Assertions.assertEquals(member,memberController.save(member));
+        ResponseEntity<Object> responseEntity=memberController.save(member);
+        Assertions.assertEquals(responseEntity.getBody(),member);
+        Assertions.assertEquals(responseEntity.getStatusCode(),HttpStatus.CREATED);
     }
     @Test
-    void testUpdate()
+    void testSave_returnsExceptionMessage()
     {
-        long id=1L;
+        String message="message";
         Member member=new Member(null,null,null,null,null,true,true,true,true);
+        Mockito.when(memberService.save(Mockito.any())).thenThrow(new ConflictException(message));
+        ResponseEntity<Object> responseEntity=memberController.save(member);
+        Assertions.assertEquals(responseEntity.getStatusCode(),HttpStatus.CONFLICT);
+        Assertions.assertTrue(((ExceptionMessage)responseEntity.getBody()).getMessage().equals(message));
+    }
+    @Test
+    void testUpdate_returnsMember()
+    {
+        Member member=new Member(null,null,null,null,null,true,true,true,true);
+        Authentication authentication=new UsernamePasswordAuthenticationToken(member,null);
         Mockito.when(memberService.update(Mockito.any())).thenAnswer(i->
         {
             return i.getArgument(0,Member.class);
         });
-        Member actual=memberController.update(member,id);
-        Assertions.assertEquals(member,actual);
-        Assertions.assertEquals(id,actual.getId());
+        ResponseEntity<Object> actual=memberController.update(member,authentication);
+        Assertions.assertEquals(member,actual.getBody());
+    }
+    @Test
+    void testUpdate_returnsExceptionMessage()
+    {
+        Member member=new Member(null,null,null,null,null,true,true,true,true);
+        Authentication authentication=new UsernamePasswordAuthenticationToken(member,null);
+        String message="exception message";
+        Mockito.when(memberService.update(Mockito.any())).thenThrow(new ConflictException(message));
+        ResponseEntity<Object> responseEntity=memberController.update(member,authentication);
+        Assertions.assertEquals(responseEntity.getStatusCode(),HttpStatus.CONFLICT);
+        Assertions.assertTrue(((ExceptionMessage)responseEntity.getBody()).getMessage().equals(message));
     }
 }

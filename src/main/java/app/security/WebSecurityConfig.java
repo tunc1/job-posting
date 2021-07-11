@@ -23,7 +23,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
     {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("POST","/authenticate").permitAll()
+                .antMatchers("POST","/authenticate","/member").permitAll()
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(tokenFilter,UsernamePasswordAuthenticationFilter.class);

@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import app.entity.Member;
+import app.exception.ConflictException;
+import app.exception.UnauthorizedException;
 import app.repository.MemberRepository;
 import javax.persistence.EntityNotFoundException;
 
@@ -22,23 +24,37 @@ public class MemberService
 	{
 		return memberRepository.existsByUsername(username);
 	}
+	public boolean existsByEmail(String email)
+	{
+		return memberRepository.existsByEmail(email);
+	}
 	public Member findByUsername(String username)
 	{
 		return memberRepository.findByUsername(username);
 	}
 	public Member save(Member member)
 	{
-		member.setPassword(passwordEncoder.encode(member.getPassword()));
-		return memberRepository.save(member);
+		if(existsByUsername(member.getUsername()))
+			throw new ConflictException("Another user uses this username");
+		else if(existsByEmail(member.getEmail()))
+			throw new ConflictException("Another user uses this email");
+		else
+		{
+			member.setPassword(passwordEncoder.encode(member.getPassword()));
+			return memberRepository.save(member);
+		}
 	}
 	public Member update(Member member)
 	{
 		member.setPassword(passwordEncoder.encode(member.getPassword()));
 		return memberRepository.save(member);
 	}
-	public void deleteById(Long id)
+	public void deleteById(Long id,Member member)
 	{
-		memberRepository.deleteById(id);
+		if(member.getId()==id)
+			memberRepository.deleteById(id);
+		else
+			throw new UnauthorizedException();
 	}
 	public Member findById(Long id)
 	{

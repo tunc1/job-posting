@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import app.entity.Member;
+import app.exception.UnauthorizedException;
 import app.repository.MemberRepository;
 
 @ExtendWith(MockitoExtension.class)
@@ -34,8 +35,17 @@ public class MemberServiceTest
     @Test
     void testDeleteById()
     {
-        memberService.deleteById(1L);
+        Member member=new Member();
+        member.setId(1L);
+        memberService.deleteById(1L,member);
         Mockito.verify(memberRepository).deleteById(Mockito.anyLong());
+    }
+    @Test
+    void testDeleteById_throwsUnauthorizedExcpetion()
+    {
+        Member member=new Member();
+        member.setId(2L);
+        Assertions.assertThrows(UnauthorizedException.class,()->memberService.deleteById(1L,member));
     }
     @Test
     void testFindAll()
