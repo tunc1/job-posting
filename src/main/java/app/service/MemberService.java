@@ -40,6 +40,10 @@ public class MemberService
 			throw new ConflictException("Another user uses this email");
 		else
 		{
+			member.setCredentialsNonExpired(true);
+			member.setAccountNonLocked(true);
+			member.setAccountNonExpired(true);
+			member.setEnabled(true);
 			member.setPassword(passwordEncoder.encode(member.getPassword()));
 			return memberRepository.save(member);
 		}
