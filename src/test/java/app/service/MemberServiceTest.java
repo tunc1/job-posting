@@ -90,6 +90,10 @@ public class MemberServiceTest
         Member savedMember=memberService.save(member);
         Assertions.assertEquals(member,savedMember);
         Assertions.assertNotEquals(password,savedMember.getPassword());
+        Assertions.assertTrue(savedMember.isAccountNonExpired());
+        Assertions.assertTrue(savedMember.isAccountNonLocked());
+        Assertions.assertTrue(savedMember.isCredentialsNonExpired());
+        Assertions.assertTrue(savedMember.isEnabled());
     }
     @Test
     void testUpdate()
