@@ -76,7 +76,9 @@ public class ExperienceServiceTest
     @Test
     void testFindByMember()
     {
-        List<Experience> experiences=List.of(new Experience(1L,null,null,null,null));
+        Experience experience=new Experience();
+        experience.setId(1L);
+        List<Experience> experiences=List.of(experience);
         Mockito.when(experienceRepository.findByMember(Mockito.any())).thenReturn(experiences);
         Assertions.assertEquals(experiences,experienceService.findByMember(null));
     }
@@ -86,14 +88,15 @@ public class ExperienceServiceTest
         ExperienceService experienceService2=Mockito.spy(experienceService);
         Mockito.doReturn(true).when(experienceService2).existsById(Mockito.anyLong());
         Mockito.doReturn(true).when(experienceService2).belongsTo(Mockito.anyLong(),Mockito.any());
-        Experience experience=new Experience(1L,null,null,null,null);
+        Experience experience=new Experience();
+        experience.setId(1L);
         Mockito.when(experienceRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(experience));
         Assertions.assertEquals(experience,experienceService2.findById(1L,null));
     }
     @Test
     void testSave()
     {
-        Experience experience=new Experience(null,null,null,null);
+        Experience experience=new Experience();
         Mockito.when(experienceRepository.save(Mockito.any())).thenAnswer(i->
         {
             Experience input=i.getArgument(0,Experience.class);
@@ -107,7 +110,8 @@ public class ExperienceServiceTest
     {
         Member member=new Member();
         member.setId(1L);
-        Experience experience=new Experience(1L,null,null,null,null);
+        Experience experience=new Experience();
+        experience.setId(1L);
         ExperienceService experienceService2=Mockito.spy(experienceService);
         Mockito.doReturn(true).when(experienceService2).existsById(Mockito.anyLong());
         Mockito.doReturn(true).when(experienceService2).belongsTo(Mockito.anyLong(),Mockito.any());

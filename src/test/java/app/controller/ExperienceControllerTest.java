@@ -40,21 +40,24 @@ public class ExperienceControllerTest
     @Test
     void testFindByMember()
     {
-        List<Experience> experiences=List.of(new Experience(1L,null,null, null, null));
+        Experience experience=new Experience();
+        experience.setId(1L);
+        List<Experience> experiences=List.of(experience);
         Mockito.when(experienceService.findByMember(Mockito.any())).thenReturn(experiences);
         Assertions.assertEquals(experiences,experienceController.findByMember(authentication));
     }
     @Test
     void testFindById()
     {
-        Experience experience=new Experience(1L,null,null,null,null);
+        Experience experience=new Experience();
+        experience.setId(1L);
         Mockito.when(experienceService.findById(Mockito.anyLong(),Mockito.any())).thenReturn(experience);
         Assertions.assertEquals(experience,experienceController.findById(1L,authentication));
     }
     @Test
     void testSave()
     {
-        Experience experience=new Experience(null,null,null,null);
+        Experience experience=new Experience();
         Mockito.when(experienceService.save(Mockito.any())).thenAnswer(i->
         {
             return i.getArgument(0,Experience.class);
@@ -66,7 +69,7 @@ public class ExperienceControllerTest
     void testUpdate()
     {
         long id=1L;
-        Experience experience=new Experience(null,null,null,null);
+        Experience experience=new Experience();
         Mockito.when(experienceService.update(Mockito.any(),Mockito.any())).thenAnswer(i->
         {
             return i.getArgument(0,Experience.class);

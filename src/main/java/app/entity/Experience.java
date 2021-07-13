@@ -18,19 +18,6 @@ public class Experience
     @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
     private Member member;
     private Date startedAt,leftAt;
-    public Experience(){}
-    public Experience(Company company,Member member,Date startedAt,Date leftAt)
-    {
-        this.company=company;
-        this.member=member;
-        this.startedAt=startedAt;
-        this.leftAt=leftAt;
-    }
-    public Experience(Long id,Company company,Member member,Date startedAt,Date leftAt)
-    {
-        this(company,member,startedAt,leftAt);
-        this.id=id;
-    }
     public Long getId()
     {
         return id;
