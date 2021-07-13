@@ -18,13 +18,29 @@ public class Member implements UserDetails
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
-    private String name,lastName;
+    private String name,lastName,title,summary;
     @Column(unique=true,nullable=false)
     private String email,username;
     @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
     String password;
     @JsonIgnore
     private boolean accountNonExpired,accountNonLocked,credentialsNonExpired,enabled;
+    public String getTitle()
+    {
+        return title;
+    }
+    public void setTitle(String title)
+    {
+        this.title=title;
+    }
+    public String getSummary()
+    {
+        return summary;
+    }
+    public void setSummary(String summary)
+    {
+        this.summary=summary;
+    }
     public boolean equals(Object obj)
     {
         return id==((Member)obj).id;
