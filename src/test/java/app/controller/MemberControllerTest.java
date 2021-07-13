@@ -33,7 +33,7 @@ public class MemberControllerTest
     @Test
     void testDeleteById()
     {
-        Member member=new Member(null,null,null,null,null,true,true,true,true);
+        Member member=new Member();
         Authentication authentication=new UsernamePasswordAuthenticationToken(member,null);
         memberController.deleteById(1L,authentication);
         Mockito.verify(memberService).deleteById(Mockito.anyLong(),Mockito.any());
@@ -41,21 +41,24 @@ public class MemberControllerTest
     @Test
     void testFindAll()
     {
-        List<Member> members=List.of(new Member(1L,null,null,null,null,null,true,true,true,true));
+        Member member=new Member();
+        member.setId(1L);
+        List<Member> members=List.of(member);
         Mockito.when(memberService.findAll()).thenReturn(members);
         Assertions.assertEquals(members,memberController.findAll());
     }
     @Test
     void testFindById()
     {
-        Member member=new Member(1L,null,null,null,null,null,true,true,true,true);
+        Member member=new Member();
+        member.setId(1L);
         Mockito.when(memberService.findById(Mockito.anyLong())).thenReturn(member);
         Assertions.assertEquals(member,memberController.findById(1L));
     }
     @Test
     void testSave_returnsMember()
     {
-        Member member=new Member(null,null,null,null,null,true,true,true,true);
+        Member member=new Member();
         Mockito.when(memberService.save(Mockito.any())).thenAnswer(i->
         {
             return i.getArgument(0,Member.class);
@@ -68,7 +71,7 @@ public class MemberControllerTest
     void testSave_returnsExceptionMessage()
     {
         String message="message";
-        Member member=new Member(null,null,null,null,null,true,true,true,true);
+        Member member=new Member();
         Mockito.when(memberService.save(Mockito.any())).thenThrow(new ConflictException(message));
         ResponseEntity<Object> responseEntity=memberController.save(member);
         Assertions.assertEquals(responseEntity.getStatusCode(),HttpStatus.CONFLICT);
@@ -77,7 +80,7 @@ public class MemberControllerTest
     @Test
     void testUpdate_returnsMember()
     {
-        Member member=new Member(null,null,null,null,null,true,true,true,true);
+        Member member=new Member();
         Authentication authentication=new UsernamePasswordAuthenticationToken(member,null);
         Mockito.when(memberService.update(Mockito.any())).thenAnswer(i->
         {
@@ -89,7 +92,7 @@ public class MemberControllerTest
     @Test
     void testUpdate_returnsExceptionMessage()
     {
-        Member member=new Member(null,null,null,null,null,true,true,true,true);
+        Member member=new Member();
         Authentication authentication=new UsernamePasswordAuthenticationToken(member,null);
         String message="exception message";
         Mockito.when(memberService.update(Mockito.any())).thenThrow(new ConflictException(message));

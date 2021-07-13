@@ -50,14 +50,17 @@ public class MemberServiceTest
     @Test
     void testFindAll()
     {
-        List<Member> companies=List.of(new Member(1L,null,null,null,null,null,true,true,true,true));
+        Member member=new Member();
+        member.setId(1L);
+        List<Member> companies=List.of(member);
         Mockito.when(memberRepository.findAll()).thenReturn(companies);
         Assertions.assertEquals(companies,memberService.findAll());
     }
     @Test
     void testFindById()
     {
-        Member member=new Member(1L,null,null,null,null,null,true,true,true,true);
+        Member member=new Member();
+        member.setId(1L);
         Mockito.when(memberRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(member));
         Assertions.assertEquals(member,memberService.findById(1L));
     }
@@ -76,7 +79,8 @@ public class MemberServiceTest
             return password+"1";
         });
         String password="password";
-        Member member=new Member(null,null,null,null,password,true,true,true,true);
+        Member member=new Member();
+        member.setPassword(password);
         Mockito.when(memberRepository.save(Mockito.any())).thenAnswer(i->
         {
             Member input=i.getArgument(0,Member.class);
@@ -96,7 +100,9 @@ public class MemberServiceTest
             return password+"1";
         });
         String password="password";
-        Member member=new Member(1L,null,null,null,null,password,true,true,true,true);
+        Member member=new Member();
+        member.setPassword(password);
+        member.setId(1L);
         Mockito.when(memberRepository.save(Mockito.any())).thenAnswer(i->
         {
             return i.getArgument(0,Member.class);

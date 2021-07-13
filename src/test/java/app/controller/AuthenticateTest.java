@@ -33,8 +33,10 @@ public class AuthenticateTest
     @BeforeEach
     void init()
     {
-        authenticate=new Authenticate(authenticationManager, tokenService, memberService);
-        member=new Member("","","username","","password",true,true,true,true);
+        authenticate=new Authenticate(authenticationManager,tokenService,memberService);
+        member=new Member();
+        member.setUsername("username");
+        member.setPassword("password");
     }
     @Test
     void testAuthenticate_successful()

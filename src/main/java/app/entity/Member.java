@@ -25,28 +25,6 @@ public class Member implements UserDetails
     String password;
     @JsonIgnore
     private boolean accountNonExpired,accountNonLocked,credentialsNonExpired,enabled;
-    public Member(){}
-    public Member(String name,String lastName,String username,String email,String password,
-            boolean accountNonExpired,boolean accountNonLocked,boolean credentialsNonExpired,
-            boolean enabled)
-    {
-        this.name=name;
-        this.lastName=lastName;
-        this.username=username;
-        this.email=email;
-        this.password=password;
-        this.accountNonExpired=accountNonExpired;
-        this.accountNonLocked=accountNonLocked;
-        this.credentialsNonExpired=credentialsNonExpired;
-        this.enabled=enabled;
-    }
-    public Member(Long id,String name,String lastName,String username,String email,String password,
-            boolean accountNonExpired,boolean accountNonLocked,boolean credentialsNonExpired,
-            boolean enabled)
-    {
-        this(name,lastName,username,email,password,accountNonExpired,accountNonLocked,credentialsNonExpired,enabled);
-        this.id=id;
-    }
     public boolean equals(Object obj)
     {
         return id==((Member)obj).id;
