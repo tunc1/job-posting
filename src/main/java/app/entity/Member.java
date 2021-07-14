@@ -23,8 +23,18 @@ public class Member implements UserDetails
     private String email,username;
     @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
     String password;
+    @ManyToOne
+    private City city;
     @JsonIgnore
     private boolean accountNonExpired,accountNonLocked,credentialsNonExpired,enabled;
+    public City getCity()
+    {
+        return city;
+    }
+    public void setCity(City city)
+    {
+        this.city=city;
+    }
     public String getTitle()
     {
         return title;
