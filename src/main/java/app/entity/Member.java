@@ -2,6 +2,7 @@ package app.entity;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -27,6 +28,16 @@ public class Member implements UserDetails
     private City city;
     @JsonIgnore
     private boolean accountNonExpired,accountNonLocked,credentialsNonExpired,enabled;
+    @OneToMany(mappedBy="member",cascade=CascadeType.ALL)
+    private Set<Education> educationHistory;
+    public Set<Education> getEducationHistory()
+    {
+        return educationHistory;
+    }
+    public void setEducationHistory(Set<Education> educationHistory)
+    {
+        this.educationHistory=educationHistory;
+    }
     public City getCity()
     {
         return city;
