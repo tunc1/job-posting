@@ -98,14 +98,7 @@ public class MemberServiceTest
     @Test
     void testUpdate()
     {
-        Mockito.when(passwordEncoder.encode(Mockito.anyString())).thenAnswer(i->
-        {
-            String password=i.getArgument(0,String.class);
-            return password+"1";
-        });
-        String password="password";
         Member member=new Member();
-        member.setPassword(password);
         member.setId(1L);
         Mockito.when(memberRepository.save(Mockito.any())).thenAnswer(i->
         {
@@ -113,6 +106,5 @@ public class MemberServiceTest
         });
         Member updatedMember=memberService.update(member);
         Assertions.assertEquals(member,updatedMember);
-        Assertions.assertNotEquals(password,updatedMember.getPassword());
     }
 }

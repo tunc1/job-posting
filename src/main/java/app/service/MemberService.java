@@ -50,7 +50,6 @@ public class MemberService
 	}
 	public Member update(Member member)
 	{
-		member.setPassword(passwordEncoder.encode(member.getPassword()));
 		return memberRepository.save(member);
 	}
 	public void deleteById(Long id,Member member)
