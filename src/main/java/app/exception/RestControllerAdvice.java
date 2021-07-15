@@ -21,6 +21,12 @@ public class RestControllerAdvice
     {
         return new ExceptionMessage("You do not Have a Permission for this Action");
     }
+    @ExceptionHandler(value={IllegalArgumentException.class})
+    @ResponseStatus(value=HttpStatus.BAD_REQUEST)
+    public ExceptionMessage illegalArgumentExceptionHandler(Exception e)
+    {
+        return new ExceptionMessage(e.getMessage());
+    }
     @ExceptionHandler(value={Exception.class})
     @ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
     public ExceptionMessage exceptionHandler(Exception e)
