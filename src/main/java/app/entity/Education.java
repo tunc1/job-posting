@@ -2,6 +2,7 @@ package app.entity;
 
 import java.util.Date;
 
+import javax.persistence.JoinColumn;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -21,6 +22,7 @@ public class Education
     private Long id;
     @ManyToOne
     @JsonProperty(access=Access.WRITE_ONLY)
+    @JoinColumn(updatable=false)
     private Member member;
     @ManyToOne
     private University university;
