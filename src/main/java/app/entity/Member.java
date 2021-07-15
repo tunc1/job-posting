@@ -2,6 +2,7 @@ package app.entity;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -27,6 +28,17 @@ public class Member implements UserDetails
     private City city;
     @JsonIgnore
     private boolean accountNonExpired,accountNonLocked,credentialsNonExpired,enabled;
+    @ManyToMany
+    @JoinTable(name="member_skill",joinColumns=@JoinColumn(name="member_id"),inverseJoinColumns=@JoinColumn(name="skill_id"))
+    private Set<Skill> skills;
+    public Set<Skill> getSkills()
+    {
+        return skills;
+    }
+    public void setSkills(Set<Skill> skills)
+    {
+        this.skills=skills;
+    }
     public City getCity()
     {
         return city;
