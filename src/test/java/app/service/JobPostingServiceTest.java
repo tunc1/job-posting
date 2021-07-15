@@ -77,14 +77,14 @@ public class JobPostingServiceTest
     @Test
     void testFindAll()
     {
-        List<JobPosting> companies=List.of(new JobPosting(1L,null,null,null,null,true));
+        List<JobPosting> companies=List.of(new JobPosting());
         Mockito.when(jobPostingRepository.findAll()).thenReturn(companies);
         Assertions.assertEquals(companies,jobPostingService.findAll());
     }
     @Test
     void testFindById()
     {
-        JobPosting jobPosting=new JobPosting(1L,null,null,null,null,true);
+        JobPosting jobPosting=new JobPosting();
         Mockito.when(jobPostingRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(jobPosting));
         Assertions.assertEquals(jobPosting,jobPostingService.findById(1L));
     }
@@ -97,14 +97,14 @@ public class JobPostingServiceTest
     @Test
     void testFindByCompanyId()
     {
-        List<JobPosting> companies=List.of(new JobPosting(1L,null,null,null,null,true));
+        List<JobPosting> companies=List.of(new JobPosting());
         Mockito.when(jobPostingRepository.findByCompanyId(Mockito.anyLong())).thenReturn(companies);
         Assertions.assertEquals(companies,jobPostingService.findByCompanyId(1L));
     }
     @Test
     void testQuery()
     {
-        List<JobPosting> companies=List.of(new JobPosting(1L,null,null,null,null,true));
+        List<JobPosting> companies=List.of(new JobPosting());
         Mockito.when(jobPostingRepository.findByTitleContaining(Mockito.anyString())).thenReturn(companies);
         Assertions.assertEquals(companies,jobPostingService.query("query"));
     }

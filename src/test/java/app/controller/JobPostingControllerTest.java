@@ -40,21 +40,21 @@ public class JobPostingControllerTest
     @Test
     void testFindAll()
     {
-        List<JobPosting> jobPostings=List.of(new JobPosting(1L,null,null,null, null, true));
+        List<JobPosting> jobPostings=List.of(new JobPosting());
         Mockito.when(jobPostingService.findAll()).thenReturn(jobPostings);
         Assertions.assertEquals(jobPostings,jobPostingController.findAll());
     }
     @Test
     void testFindById()
     {
-        JobPosting jobPosting=new JobPosting(1L,null,null,null,null,true);
+        JobPosting jobPosting=new JobPosting();
         Mockito.when(jobPostingService.findById(Mockito.anyLong())).thenReturn(jobPosting);
         Assertions.assertEquals(jobPosting,jobPostingController.findById(1L));
     }
     @Test
     void testSave()
     {
-        JobPosting jobPosting=new JobPosting(null,null,null,null,true);
+        JobPosting jobPosting=new JobPosting();
         Mockito.when(jobPostingService.save(Mockito.any(),Mockito.any())).thenAnswer(i->
         {
             return i.getArgument(0,JobPosting.class);
@@ -65,7 +65,7 @@ public class JobPostingControllerTest
     void testUpdate()
     {
         long id=1L;
-        JobPosting jobPosting=new JobPosting(null,null,null,null,true);
+        JobPosting jobPosting=new JobPosting();
         Mockito.when(jobPostingService.update(Mockito.any(),Mockito.any())).thenAnswer(i->
         {
             return i.getArgument(0,JobPosting.class);
@@ -77,14 +77,14 @@ public class JobPostingControllerTest
     @Test
     void testFindByCompanyId()
     {
-        List<JobPosting> jobPostings=List.of(new JobPosting(1L,null,null,null, null, true));
+        List<JobPosting> jobPostings=List.of(new JobPosting());
         Mockito.when(jobPostingService.findByCompanyId(Mockito.anyLong())).thenReturn(jobPostings);
         Assertions.assertEquals(jobPostings,jobPostingController.findByCompanyId(1L));
     }
     @Test
     void testQuery()
     {
-        List<JobPosting> jobPostings=List.of(new JobPosting(1L,null,null,null, null, true));
+        List<JobPosting> jobPostings=List.of(new JobPosting());
         Mockito.when(jobPostingService.query(Mockito.anyString())).thenReturn(jobPostings);
         Assertions.assertEquals(jobPostings,jobPostingController.query("query"));
     }

@@ -33,14 +33,14 @@ public class CompanyServiceTest
     @Test
     void testFindAll()
     {
-        List<Company> companies=List.of(new Company(1L,"name",null));
+        List<Company> companies=List.of(new Company());
         Mockito.when(companyRepository.findAll()).thenReturn(companies);
         Assertions.assertEquals(companies,companyService.findAll());
     }
     @Test
     void testFindById()
     {
-        Company company=new Company(1L,"name",null);
+        Company company=new Company();
         Mockito.when(companyRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(company));
         Assertions.assertEquals(company,companyService.findById(1L));
     }

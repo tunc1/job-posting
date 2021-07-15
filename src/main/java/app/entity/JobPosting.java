@@ -14,19 +14,6 @@ public class JobPosting
     private Date publishedAt;
     private String title,description;
     private boolean isActive;
-    public JobPosting(){}
-    public JobPosting(Long id,Company company,Date publishedAt,String title,String description,boolean isActive)
-    {
-        this(company,publishedAt,title,description,isActive);
-        this.id=id;
-    }
-    public JobPosting(Company company,Date publishedAt,String title,String description,boolean isActive) {
-        this.company=company;
-        this.publishedAt=publishedAt;
-        this.title=title;
-        this.description=description;
-        this.isActive=isActive;
-    }
     public Long getId()
     {
         return id;

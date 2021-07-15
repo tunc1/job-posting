@@ -18,17 +18,6 @@ public class Company
     @ManyToOne
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Member manager;
-    public Company(){}
-    public Company(Long id, String name, Member manager)
-    {
-        this(name, manager);
-        this.id = id;
-    }
-    public Company(String name, Member manager)
-    {
-        this.name=name;
-        this.manager = manager;
-    }
     public Member getManager()
     {
         return manager;

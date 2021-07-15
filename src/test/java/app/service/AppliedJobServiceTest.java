@@ -76,7 +76,7 @@ public class AppliedJobServiceTest
     @Test
     void testFindByMember()
     {
-        List<AppliedJob> appliedJobs=List.of(new AppliedJob(1L, null, null, null));
+        List<AppliedJob> appliedJobs=List.of(new AppliedJob());
         Mockito.when(appliedJobRepository.findByMember(Mockito.any())).thenReturn(appliedJobs);
         Assertions.assertEquals(appliedJobs,appliedJobService.findByMember(null));
     }
@@ -86,14 +86,14 @@ public class AppliedJobServiceTest
         AppliedJobService appliedJobService2=Mockito.spy(appliedJobService);
         Mockito.doReturn(true).when(appliedJobService2).existsById(Mockito.anyLong());
         Mockito.doReturn(true).when(appliedJobService2).belongsTo(Mockito.anyLong(),Mockito.any());
-        AppliedJob appliedJob=new AppliedJob(1L,null,null,null);
+        AppliedJob appliedJob=new AppliedJob();
         Mockito.when(appliedJobRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(appliedJob));
         Assertions.assertEquals(appliedJob,appliedJobService2.findById(1L,null));
     }
     @Test
     void testSave()
     {
-        AppliedJob appliedJob=new AppliedJob(null,null,null);
+        AppliedJob appliedJob=new AppliedJob();
         Mockito.when(appliedJobRepository.save(Mockito.any())).thenAnswer(i->
         {
             AppliedJob input=i.getArgument(0,AppliedJob.class);
