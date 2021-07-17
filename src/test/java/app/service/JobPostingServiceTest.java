@@ -102,7 +102,7 @@ public class JobPostingServiceTest
         Assertions.assertEquals(companies,jobPostingService.findByCompanyId(1L));
     }
     @Test
-    void testQuery()
+    void testFindByTitleContaining()
     {
         List<JobPosting> companies=List.of(new JobPosting());
         Mockito.when(jobPostingRepository.findByTitleContaining(Mockito.anyString())).thenReturn(companies);
