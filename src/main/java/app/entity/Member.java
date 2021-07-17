@@ -31,6 +31,16 @@ public class Member implements UserDetails
     @ManyToMany
     @JoinTable(name="member_skill",joinColumns=@JoinColumn(name="member_id"),inverseJoinColumns=@JoinColumn(name="skill_id"))
     private Set<Skill> skills;
+    @OneToMany(mappedBy="member",cascade=CascadeType.ALL,orphanRemoval=true)
+    private Set<MemberLanguage> languages;
+    public Set<MemberLanguage> getLanguages()
+    {
+        return languages;
+    }
+    public void setLanguages(Set<MemberLanguage> languages)
+    {
+        this.languages = languages;
+    }
     public Set<Skill> getSkills()
     {
         return skills;
