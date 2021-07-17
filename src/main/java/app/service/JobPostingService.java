@@ -47,8 +47,8 @@ public class JobPostingService
     {
         return jobPostingRepository.findByCompanyId(companyId);
     }
-    public List<JobPosting> query(String query)
+    public List<JobPosting> searchByTitle(String title)
     {
-        return jobPostingRepository.findByTitleContaining(query);
+        return jobPostingRepository.findByTitleContaining(title);
     }
 }

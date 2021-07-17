@@ -48,10 +48,10 @@ public class JobPostingController
 	{
 		return jobPostingService.findByCompanyId(companyId);
 	}
-	@GetMapping(params="query")
-	public List<JobPosting> query(@RequestParam String query)
+	@GetMapping(params="title")
+	public List<JobPosting> searchByTitle(@RequestParam String title)
 	{
-		return jobPostingService.query(query);
+		return jobPostingService.searchByTitle(title);
 	}
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)

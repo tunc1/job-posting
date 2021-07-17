@@ -85,7 +85,7 @@ public class JobPostingControllerTest
     void testQuery()
     {
         List<JobPosting> jobPostings=List.of(new JobPosting());
-        Mockito.when(jobPostingService.query(Mockito.anyString())).thenReturn(jobPostings);
-        Assertions.assertEquals(jobPostings,jobPostingController.query("query"));
+        Mockito.when(jobPostingService.searchByTitle(Mockito.anyString())).thenReturn(jobPostings);
+        Assertions.assertEquals(jobPostings,jobPostingController.searchByTitle("title"));
     }
 }

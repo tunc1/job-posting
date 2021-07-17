@@ -106,6 +106,6 @@ public class JobPostingServiceTest
     {
         List<JobPosting> companies=List.of(new JobPosting());
         Mockito.when(jobPostingRepository.findByTitleContaining(Mockito.anyString())).thenReturn(companies);
-        Assertions.assertEquals(companies,jobPostingService.query("query"));
+        Assertions.assertEquals(companies,jobPostingService.searchByTitle("title"));
     }
 }

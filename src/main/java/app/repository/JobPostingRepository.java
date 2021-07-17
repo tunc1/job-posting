@@ -8,5 +8,5 @@ import app.entity.JobPosting;
 public interface JobPostingRepository extends JpaRepository<JobPosting,Long>
 {
     List<JobPosting> findByCompanyId(long companyId);
-    List<JobPosting> findByTitleContaining(String query);
+    List<JobPosting> findByTitleContaining(String title);
 }
