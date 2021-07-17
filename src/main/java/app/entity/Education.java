@@ -14,7 +14,10 @@ import javax.persistence.ManyToOne;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
 
+import org.hibernate.annotations.Check;
+
 @Entity
+@Check(constraints="started_at<finished_at")
 public class Education
 {
     @Id
