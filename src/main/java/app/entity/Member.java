@@ -33,12 +33,35 @@ public class Member implements UserDetails
     private Set<Skill> skills;
     @OneToMany(mappedBy="member",cascade=CascadeType.ALL,orphanRemoval=true)
     private Set<MemberLanguage> languages;
+    @OneToMany(mappedBy="member",cascade=CascadeType.ALL,orphanRemoval=true)
+    private Set<Experience> experiences;
+    @OneToMany(mappedBy="member",cascade=CascadeType.ALL,orphanRemoval=true)
+    private Set<Education> educations;
+    public Set<Education> getEducations()
+    {
+        return educations;
+    }
+    public void setEducations(Set<Education> educations)
+    {
+        educations.forEach(education->education.setMember(this));
+        this.educations = educations;
+    }
+    public Set<Experience> getExperiences()
+    {
+        return experiences;
+    }
+    public void setExperiences(Set<Experience> experiences)
+    {
+        experiences.forEach(experience->experience.setMember(this));
+        this.experiences = experiences;
+    }
     public Set<MemberLanguage> getLanguages()
     {
         return languages;
     }
     public void setLanguages(Set<MemberLanguage> languages)
     {
+        languages.forEach(language->language.setMember(this));
         this.languages = languages;
     }
     public Set<Skill> getSkills()
