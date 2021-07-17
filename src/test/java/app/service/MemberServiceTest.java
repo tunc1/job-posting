@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import app.entity.Member;
+import app.exception.ConflictException;
 import app.exception.UnauthorizedException;
 import app.repository.MemberRepository;
 
@@ -71,8 +72,11 @@ public class MemberServiceTest
         Assertions.assertThrows(EntityNotFoundException.class,()->memberService.findById(1L));
     }
     @Test
-    void testSave()
+    void testSave_successful()
     {
+        MemberService memberService2=Mockito.spy(memberService);
+        Mockito.doReturn(false).when(memberService2).existsByUsername(Mockito.anyString());
+        Mockito.doReturn(false).when(memberService2).existsByEmail(Mockito.anyString());
         Mockito.when(passwordEncoder.encode(Mockito.anyString())).thenAnswer(i->
         {
             String password=i.getArgument(0,String.class);
@@ -81,19 +85,43 @@ public class MemberServiceTest
         String password="password";
         Member member=new Member();
         member.setPassword(password);
+        member.setUsername("username");
+        member.setEmail("email");
         Mockito.when(memberRepository.save(Mockito.any())).thenAnswer(i->
         {
             Member input=i.getArgument(0,Member.class);
             input.setId(1L);
             return input;
         });
-        Member savedMember=memberService.save(member);
+        Member savedMember=memberService2.save(member);
         Assertions.assertEquals(member,savedMember);
         Assertions.assertNotEquals(password,savedMember.getPassword());
         Assertions.assertTrue(savedMember.isAccountNonExpired());
         Assertions.assertTrue(savedMember.isAccountNonLocked());
         Assertions.assertTrue(savedMember.isCredentialsNonExpired());
         Assertions.assertTrue(savedMember.isEnabled());
+    }
+    @Test
+    void testSave_anotherUserUsesSameUsername_throwsConflictException()
+    {
+        Member member=new Member();
+        member.setUsername("username");
+        MemberService memberService2=Mockito.spy(memberService);
+        Mockito.doReturn(true).when(memberService2).existsByUsername(Mockito.anyString());
+        ConflictException exception=Assertions.assertThrows(ConflictException.class,()->memberService2.save(member));
+        Assertions.assertTrue(exception.getMessage().equals("Another user uses this username"));
+    }
+    @Test
+    void testSave_anotherUserUsesSameEmail_throwsConflictException()
+    {
+        Member member=new Member();
+        member.setUsername("username");
+        member.setEmail("email");
+        MemberService memberService2=Mockito.spy(memberService);
+        Mockito.doReturn(false).when(memberService2).existsByUsername(Mockito.anyString());
+        Mockito.doReturn(true).when(memberService2).existsByEmail(Mockito.anyString());
+        ConflictException exception=Assertions.assertThrows(ConflictException.class,()->memberService2.save(member));
+        Assertions.assertTrue(exception.getMessage().equals("Another user uses this email"));
     }
     @Test
     void testUpdate()
@@ -106,5 +134,26 @@ public class MemberServiceTest
         });
         Member updatedMember=memberService.update(member);
         Assertions.assertEquals(member,updatedMember);
+    }
+    @Test
+    void testExistsByEmail()
+    {
+        boolean exists=true;
+        Mockito.when(memberRepository.existsByEmail(Mockito.anyString())).thenReturn(exists);
+        Assertions.assertEquals(exists,memberService.existsByEmail("email"));
+    }
+    @Test
+    void testExistsByUsername()
+    {
+        boolean exists=true;
+        Mockito.when(memberRepository.existsByUsername(Mockito.anyString())).thenReturn(exists);
+        Assertions.assertEquals(exists,memberService.existsByUsername("email"));
+    }
+    @Test
+    void testFindByUsername()
+    {
+        Member member=new Member();
+        Mockito.when(memberRepository.findByUsername(Mockito.anyString())).thenReturn(member);
+        Assertions.assertEquals(member,memberService.findByUsername("username"));
     }
 }
