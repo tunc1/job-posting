@@ -27,10 +27,4 @@ public class RestControllerAdvice
     {
         return new ExceptionMessage(e.getMessage());
     }
-    @ExceptionHandler(value={Exception.class})
-    @ResponseStatus(value=HttpStatus.INTERNAL_SERVER_ERROR)
-    public ExceptionMessage exceptionHandler(Exception e)
-    {
-        return new ExceptionMessage("Something Went Wrong");
-    }
 }
