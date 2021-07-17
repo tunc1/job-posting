@@ -11,19 +11,19 @@ public class RestControllerAdvice
 {
     @ExceptionHandler(value={EntityNotFoundException.class})
     @ResponseStatus(value=HttpStatus.NOT_FOUND)
-    public ExceptionMessage entityNotFoundExceptionHandler(Exception e)
+    public ExceptionMessage entityNotFoundExceptionHandler(EntityNotFoundException e)
     {
         return new ExceptionMessage("No Entity Found by this id");
     }
     @ExceptionHandler(value={UnauthorizedException.class})
     @ResponseStatus(value=HttpStatus.FORBIDDEN)
-    public ExceptionMessage unauthorizedExceptionHandler(Exception e)
+    public ExceptionMessage unauthorizedExceptionHandler(UnauthorizedException e)
     {
         return new ExceptionMessage("You do not Have a Permission for this Action");
     }
     @ExceptionHandler(value={IllegalArgumentException.class})
     @ResponseStatus(value=HttpStatus.BAD_REQUEST)
-    public ExceptionMessage illegalArgumentExceptionHandler(Exception e)
+    public ExceptionMessage illegalArgumentExceptionHandler(IllegalArgumentException e)
     {
         return new ExceptionMessage(e.getMessage());
     }
