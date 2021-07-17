@@ -4,9 +4,12 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import org.hibernate.annotations.Check;
+
 import java.util.Date;
 
 @Entity
+@Check(constraints="started_at<left_at")
 public class Experience
 {
     @Id
