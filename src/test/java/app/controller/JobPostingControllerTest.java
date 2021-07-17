@@ -88,4 +88,11 @@ public class JobPostingControllerTest
         Mockito.when(jobPostingService.searchByTitle(Mockito.anyString())).thenReturn(jobPostings);
         Assertions.assertEquals(jobPostings,jobPostingController.searchByTitle("title"));
     }
+    @Test
+    void testFindBySkillsId()
+    {
+        List<JobPosting> jobPostings=List.of(new JobPosting());
+        Mockito.when(jobPostingService.findBySkillsId(Mockito.anyLong())).thenReturn(jobPostings);
+        Assertions.assertEquals(jobPostings,jobPostingController.findBySkillsId(1L));
+    }
 }
