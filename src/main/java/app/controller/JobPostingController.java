@@ -53,6 +53,11 @@ public class JobPostingController
 	{
 		return jobPostingService.searchByTitle(title);
 	}
+	@GetMapping(params="skill")
+	public List<JobPosting> findBySkillsId(@RequestParam Long skill)
+	{
+		return jobPostingService.findBySkillsId(skill);
+	}
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
 	public void deleteById(@PathVariable Long id,Authentication authentication)

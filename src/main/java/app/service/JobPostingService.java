@@ -51,4 +51,8 @@ public class JobPostingService
     {
         return jobPostingRepository.findByTitleContaining(title);
     }
+    public List<JobPosting> findBySkillsId(Long id)
+    {
+        return jobPostingRepository.findBySkillsId(id);
+    }
 }
