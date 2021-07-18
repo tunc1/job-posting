@@ -115,4 +115,11 @@ public class JobPostingServiceTest
         Mockito.when(jobPostingRepository.findBySkillsId(Mockito.anyLong())).thenReturn(companies);
         Assertions.assertEquals(companies,jobPostingService.findBySkillsId(1L));
     }
+    @Test
+    void testFindByCityId()
+    {
+        List<JobPosting> companies=List.of(new JobPosting());
+        Mockito.when(jobPostingRepository.findByCityId(Mockito.anyLong())).thenReturn(companies);
+        Assertions.assertEquals(companies,jobPostingService.findByCityId(1L));
+    }
 }

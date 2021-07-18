@@ -53,4 +53,8 @@ public class JobPostingService
     {
         return jobPostingRepository.findBySkillsId(id);
     }
+    public List<JobPosting> findByCityId(Long id)
+    {
+        return jobPostingRepository.findByCityId(id);
+    }
 }
