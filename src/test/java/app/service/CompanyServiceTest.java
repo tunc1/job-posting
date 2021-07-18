@@ -51,7 +51,7 @@ public class CompanyServiceTest
         Assertions.assertThrows(EntityNotFoundException.class,()->companyService.findById(1L));
     }
     @Test
-    void testBelongsTo_returnsTrue()
+    void testThrowExceptionIfNotSameMember_sameMember_notThrows()
     {
         Member member=new Member();
         member.setId(1L);
@@ -59,10 +59,10 @@ public class CompanyServiceTest
         CompanyService companyService2=Mockito.spy(companyService);
         Mockito.doReturn(company).when(companyService2).findById(Mockito.anyLong());
         company.setManager(member);
-        Assertions.assertTrue(companyService2.belongsTo(1L,member));
+        Assertions.assertDoesNotThrow(()->companyService2.throwExceptionIfNotSameMember(1L,member));
     }
     @Test
-    void testBelongsTo_throwsUnauthorizedException()
+    void testThrowExceptionIfNotSameMember_differentMember_throws()
     {
         Member member=new Member();
         member.setId(1L);
@@ -72,6 +72,6 @@ public class CompanyServiceTest
         CompanyService companyService2=Mockito.spy(companyService);
         Mockito.doReturn(company).when(companyService2).findById(Mockito.anyLong());
         company.setManager(member2);
-        Assertions.assertThrows(UnauthorizedException.class,()->companyService2.belongsTo(1L,member));
+        Assertions.assertThrows(UnauthorizedException.class,()->companyService2.throwExceptionIfNotSameMember(1L,member));
     }
 }

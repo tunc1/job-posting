@@ -24,11 +24,10 @@ public class CompanyService
 	{
 		return companyRepository.findAll();
 	}
-	public boolean belongsTo(Long id,Member member)
+	public void throwExceptionIfNotSameMember(Long id,Member member)
 	{
 		Company company=findById(id);
-		if(company.getManager().equals(member))
-			return true;
-		throw new UnauthorizedException();
+		if(!company.getManager().equals(member))
+			throw new UnauthorizedException();
 	}
 }
