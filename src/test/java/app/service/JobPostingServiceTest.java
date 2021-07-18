@@ -38,7 +38,7 @@ public class JobPostingServiceTest
         Company company=new Company();
         jobPosting.setCompany(company);
         company.setId(1L);
-        Mockito.when(companyService.belongsTo(Mockito.anyLong(),Mockito.any())).thenReturn(true);
+        Mockito.doNothing().when(companyService).throwExceptionIfNotSameMember(Mockito.anyLong(),Mockito.any());
         Mockito.when(jobPostingRepository.save(Mockito.any(JobPosting.class))).thenAnswer(i->
         {
             return i.getArgument(0,JobPosting.class);
@@ -53,7 +53,7 @@ public class JobPostingServiceTest
         Company company=new Company();
         jobPosting.setCompany(company);
         company.setId(1L);
-        Mockito.when(companyService.belongsTo(Mockito.anyLong(),Mockito.any())).thenReturn(true);
+        Mockito.doNothing().when(companyService).throwExceptionIfNotSameMember(Mockito.anyLong(),Mockito.any());
         Mockito.when(jobPostingRepository.save(Mockito.any(JobPosting.class))).thenAnswer(i->
         {
             return i.getArgument(0,JobPosting.class);
@@ -69,7 +69,7 @@ public class JobPostingServiceTest
         jobPosting.setCompany(company);
         company.setId(1L);
         JobPostingService jobPostingService2=Mockito.spy(jobPostingService);
-        Mockito.when(companyService.belongsTo(Mockito.anyLong(),Mockito.any())).thenReturn(true);
+        Mockito.doNothing().when(companyService).throwExceptionIfNotSameMember(Mockito.anyLong(),Mockito.any());
         Mockito.doReturn(jobPosting).when(jobPostingService2).findById(1L);
         jobPostingService2.deleteById(1L,null);
         Mockito.verify(jobPostingRepository).deleteById(Mockito.anyLong());

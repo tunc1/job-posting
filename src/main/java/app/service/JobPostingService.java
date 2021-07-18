@@ -19,21 +19,19 @@ public class JobPostingService
 	}
 	public JobPosting save(JobPosting jobPosting, Member member)
 	{
-		if(companyService.belongsTo(jobPosting.getCompany().getId(),member))
-			return jobPostingRepository.save(jobPosting);
-		return null;
+		companyService.throwExceptionIfNotSameMember(jobPosting.getCompany().getId(),member);
+		return jobPostingRepository.save(jobPosting);
 	}
 	public JobPosting update(JobPosting jobPosting, Member member)
 	{
-		if(companyService.belongsTo(jobPosting.getCompany().getId(),member))
-			return jobPostingRepository.save(jobPosting);
-		return null;
+		companyService.throwExceptionIfNotSameMember(jobPosting.getCompany().getId(),member);
+		return jobPostingRepository.save(jobPosting);
 	}
 	public void deleteById(Long id, Member member)
 	{
 		JobPosting jobPosting=findById(id);
-		if(companyService.belongsTo(jobPosting.getCompany().getId(),member))
-			jobPostingRepository.deleteById(id);
+		companyService.throwExceptionIfNotSameMember(jobPosting.getCompany().getId(),member);
+		jobPostingRepository.deleteById(id);
 	}
 	public JobPosting findById(Long id)
 	{
