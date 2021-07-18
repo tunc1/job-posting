@@ -15,9 +15,19 @@ public class JobPosting
     private Date publishedAt;
     private String title,description;
     private boolean isActive;
+    @ManyToOne
+    private City city;
     @ManyToMany
     @JoinTable(name="job_posting_skill",joinColumns=@JoinColumn(name="job_posting_id"),inverseJoinColumns=@JoinColumn(name="skill_id"))
     private Set<Skill> skills;
+    public City getCity()
+    {
+        return city;
+    }
+    public void setCity(City city)
+    {
+        this.city = city;
+    }
     public Set<Skill> getSkills()
     {
         return skills;
