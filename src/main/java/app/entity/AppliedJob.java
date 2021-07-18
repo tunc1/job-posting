@@ -4,6 +4,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"member_id","job_posting_id"})})
 public class AppliedJob
 {
     @Id
