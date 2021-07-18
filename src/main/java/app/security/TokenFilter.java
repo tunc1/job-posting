@@ -45,6 +45,7 @@ public class TokenFilter extends OncePerRequestFilter
                 }
             }
         }
-        filterChain.doFilter(request,response);
+        if(filterChain!=null)
+            filterChain.doFilter(request,response);
     }
 }
