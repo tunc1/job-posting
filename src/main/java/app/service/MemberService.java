@@ -24,32 +24,35 @@ public class MemberService
 	{
 		return memberRepository.existsByUsername(username);
 	}
-	public boolean existsByEmail(String email)
-	{
-		return memberRepository.existsByEmail(email);
-	}
 	public Member findByUsername(String username)
 	{
 		return memberRepository.findByUsername(username);
 	}
+	public void throwExceptionIfUsernameConflicts(String username)
+	{
+		if(existsByUsername(username))
+			throw new ConflictException("Another user uses this username");
+	}
+	public void throwExceptionIfEmailConflicts(String email)
+	{
+		if(memberRepository.existsByEmail(email))
+			throw new ConflictException("Another user uses this email");
+	}
 	public Member save(Member member)
 	{
-		if(existsByUsername(member.getUsername()))
-			throw new ConflictException("Another user uses this username");
-		else if(existsByEmail(member.getEmail()))
-			throw new ConflictException("Another user uses this email");
-		else
-		{
-			member.setCredentialsNonExpired(true);
-			member.setAccountNonLocked(true);
-			member.setAccountNonExpired(true);
-			member.setEnabled(true);
-			member.setPassword(passwordEncoder.encode(member.getPassword()));
-			return memberRepository.save(member);
-		}
+		throwExceptionIfUsernameConflicts(member.getUsername());
+		throwExceptionIfEmailConflicts(member.getEmail());
+		member.setCredentialsNonExpired(true);
+		member.setAccountNonLocked(true);
+		member.setAccountNonExpired(true);
+		member.setEnabled(true);
+		member.setPassword(passwordEncoder.encode(member.getPassword()));
+		return memberRepository.save(member);
 	}
 	public Member update(Member member)
 	{
+		throwExceptionIfUsernameConflicts(member.getUsername());
+		throwExceptionIfEmailConflicts(member.getEmail());
 		return memberRepository.save(member);
 	}
 	public void deleteById(Long id,Member member)
