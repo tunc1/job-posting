@@ -31,17 +31,65 @@ public class AppliedJobServiceTest
         appliedJobService=new AppliedJobService(appliedJobRepository);
     }
     @Test
-    void testBelongsTo_true()
+    void testDeleteById()
+    {
+        AppliedJobService appliedJobService2=Mockito.spy(appliedJobService);
+        Mockito.doNothing().when(appliedJobService2).throwExceptionIfNotExists(Mockito.anyLong());
+        Mockito.doNothing().when(appliedJobService2).throwExceptionIfNotSameMember(Mockito.anyLong(),Mockito.any());
+        appliedJobService2.deleteById(1L,null);
+        Mockito.verify(appliedJobRepository).deleteById(Mockito.anyLong());
+    }
+    @Test
+    void testFindById()
+    {
+        AppliedJobService appliedJobService2=Mockito.spy(appliedJobService);
+        Mockito.doNothing().when(appliedJobService2).throwExceptionIfNotExists(Mockito.anyLong());
+        Mockito.doNothing().when(appliedJobService2).throwExceptionIfNotSameMember(Mockito.anyLong(),Mockito.any());
+        AppliedJob appliedJob=new AppliedJob();
+        Mockito.when(appliedJobRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(appliedJob));
+        Assertions.assertEquals(appliedJob,appliedJobService2.findById(1L,new Member()));
+    }
+    @Test
+    void testFindByMember()
+    {
+        List<AppliedJob> appliedJobs=List.of(new AppliedJob());
+        Mockito.when(appliedJobRepository.findByMember(Mockito.any())).thenReturn(appliedJobs);
+        Assertions.assertEquals(appliedJobs,appliedJobService.findByMember(new Member()));
+    }
+    @Test
+    void testSave()
+    {
+        AppliedJob appliedJob=new AppliedJob();
+        Mockito.when(appliedJobRepository.save(Mockito.any())).thenAnswer(i->
+        {
+            return i.getArgument(0,AppliedJob.class);
+        });
+        Assertions.assertEquals(appliedJob,appliedJobService.save(appliedJob));
+    }
+    @Test
+    void testThrowExceptionIfNotExists_exists_notThrows()
+    {
+        Mockito.when(appliedJobRepository.existsById(Mockito.anyLong())).thenReturn(true);
+        Assertions.assertDoesNotThrow(()->appliedJobService.throwExceptionIfNotExists(1L));
+    }
+    @Test
+    void testThrowExceptionIfNotExists_notExists_throws()
+    {
+        Mockito.when(appliedJobRepository.existsById(Mockito.anyLong())).thenReturn(false);
+        Assertions.assertThrows(EntityNotFoundException.class,()->appliedJobService.throwExceptionIfNotExists(1L));
+    }
+    @Test
+    void testThrowExceptionIfNotSameMember_sameMember_notThrows()
     {
         Member member=new Member();
         member.setId(1L);
         AppliedJob appliedJob=new AppliedJob();
         appliedJob.setMember(member);
         Mockito.when(appliedJobRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(appliedJob));
-        Assertions.assertTrue(appliedJobService.belongsTo(1L,member));
+        Assertions.assertDoesNotThrow(()->appliedJobService.throwExceptionIfNotSameMember(1L,member));
     }
     @Test
-    void testBelongsTo_throwsUnauthorizedException()
+    void testThrowExceptionIfNotSameMember_differentMember_throws()
     {
         Member member=new Member();
         member.setId(1L);
@@ -50,56 +98,6 @@ public class AppliedJobServiceTest
         member2.setId(2L);
         appliedJob.setMember(member2);
         Mockito.when(appliedJobRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(appliedJob));
-        Assertions.assertThrows(UnauthorizedException.class,()->appliedJobService.belongsTo(1L,member));
-    }
-    @Test
-    void testExistsById_returnsTrue()
-    {
-        Mockito.when(appliedJobRepository.existsById(Mockito.anyLong())).thenReturn(true);
-        Assertions.assertTrue(appliedJobService.existsById(1L));
-    }
-    @Test
-    void testExistsById_throwsEntityNotFoundException()
-    {
-        Mockito.when(appliedJobRepository.existsById(Mockito.anyLong())).thenReturn(false);
-        Assertions.assertThrows(EntityNotFoundException.class,()->appliedJobService.existsById(1L));
-    }
-    @Test
-    void testDeleteById()
-    {
-        AppliedJobService appliedJobService2=Mockito.spy(appliedJobService);
-        Mockito.doReturn(true).when(appliedJobService2).existsById(Mockito.anyLong());
-        Mockito.doReturn(true).when(appliedJobService2).belongsTo(Mockito.anyLong(),Mockito.any());
-        appliedJobService2.deleteById(1L,null);
-        Mockito.verify(appliedJobRepository).deleteById(Mockito.anyLong());
-    }
-    @Test
-    void testFindByMember()
-    {
-        List<AppliedJob> appliedJobs=List.of(new AppliedJob());
-        Mockito.when(appliedJobRepository.findByMember(Mockito.any())).thenReturn(appliedJobs);
-        Assertions.assertEquals(appliedJobs,appliedJobService.findByMember(null));
-    }
-    @Test
-    void testFindById()
-    {
-        AppliedJobService appliedJobService2=Mockito.spy(appliedJobService);
-        Mockito.doReturn(true).when(appliedJobService2).existsById(Mockito.anyLong());
-        Mockito.doReturn(true).when(appliedJobService2).belongsTo(Mockito.anyLong(),Mockito.any());
-        AppliedJob appliedJob=new AppliedJob();
-        Mockito.when(appliedJobRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(appliedJob));
-        Assertions.assertEquals(appliedJob,appliedJobService2.findById(1L,null));
-    }
-    @Test
-    void testSave()
-    {
-        AppliedJob appliedJob=new AppliedJob();
-        Mockito.when(appliedJobRepository.save(Mockito.any())).thenAnswer(i->
-        {
-            AppliedJob input=i.getArgument(0,AppliedJob.class);
-            input.setId(1L);
-            return input;
-        });
-        Assertions.assertEquals(appliedJob,appliedJobService.save(appliedJob));
+        Assertions.assertThrows(UnauthorizedException.class,()->appliedJobService.throwExceptionIfNotSameMember(1L,member));
     }
 }

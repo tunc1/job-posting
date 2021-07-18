@@ -18,18 +18,16 @@ public class AppliedJobService
 	{
 		this.appliedJobRepository=appliedJobRepository;
 	}
-	public boolean existsById(Long id)
+	public void throwExceptionIfNotExists(Long id)
 	{
-		if(appliedJobRepository.existsById(id))
-			return true;
-		throw new EntityNotFoundException();
+		if(!appliedJobRepository.existsById(id))
+			throw new EntityNotFoundException();
 	}
-	public boolean belongsTo(Long id,Member member)
+	public void throwExceptionIfNotSameMember(Long id,Member member)
 	{
 		AppliedJob appliedJob=appliedJobRepository.findById(id).get();
-		if(appliedJob.getMember().equals(member))
-			return true;
-		throw new UnauthorizedException();
+		if(!appliedJob.getMember().equals(member))
+			throw new UnauthorizedException();
 	}
 	public AppliedJob save(AppliedJob appliedJob)
 	{
@@ -37,20 +35,15 @@ public class AppliedJobService
 	}
 	public void deleteById(Long id,Member member)
 	{
-		if(existsById(id))
-		{
-			if(belongsTo(id,member))
-				appliedJobRepository.deleteById(id);
-		}
+		throwExceptionIfNotExists(id);
+		throwExceptionIfNotSameMember(id, member);
+		appliedJobRepository.deleteById(id);
 	}
 	public AppliedJob findById(Long id,Member member)
 	{
-		if(existsById(id))
-		{
-			if(belongsTo(id,member))
-				return appliedJobRepository.findById(id).get();
-		}
-		return null;
+		throwExceptionIfNotExists(id);
+		throwExceptionIfNotSameMember(id, member);
+		return appliedJobRepository.findById(id).get();
 	}
 	public List<AppliedJob> findByMember(Member member)
 	{
