@@ -5,8 +5,12 @@ import app.entity.Member;
 import app.service.JobPostingService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import org.springframework.data.domain.Sort;
 
+import java.util.Optional;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 
@@ -14,6 +18,7 @@ import org.springframework.security.core.Authentication;
 @RequestMapping("/jobPosting")
 public class JobPostingController
 {
+	private final int pageSize=5;
 	private JobPostingService jobPostingService;
 	public JobPostingController(JobPostingService jobPostingService)
 	{
@@ -39,29 +44,14 @@ public class JobPostingController
 		return jobPostingService.findById(id);
 	}
 	@GetMapping
-	public List<JobPosting> findAll()
+	public Page<JobPosting> findAll(@RequestParam(name="city") Optional<Long> city
+		,@RequestParam(name="company") Optional<Long> company
+		,@RequestParam(name="skill") Optional<Long> skill
+		,@RequestParam(name="title") Optional<String> title
+		,@RequestParam(name="page",defaultValue="0") int page
+		,@RequestParam(name="order",defaultValue="id") String order)
 	{
-		return jobPostingService.findAll();
-	}
-	@GetMapping(params="companyId")
-	public List<JobPosting> findByCompanyId(@RequestParam long companyId)
-	{
-		return jobPostingService.findByCompanyId(companyId);
-	}
-	@GetMapping(params="title")
-	public List<JobPosting> searchByTitle(@RequestParam String title)
-	{
-		return jobPostingService.searchByTitle(title);
-	}
-	@GetMapping(params="skill")
-	public List<JobPosting> findBySkillsId(@RequestParam Long skill)
-	{
-		return jobPostingService.findBySkillsId(skill);
-	}
-	@GetMapping(params="city")
-	public List<JobPosting> findByCityId(@RequestParam Long city)
-	{
-		return jobPostingService.findByCityId(city);
+		return jobPostingService.findAll(city,company,skill,title,PageRequest.of(page,pageSize,Sort.by(order)));
 	}
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)

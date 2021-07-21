@@ -1,14 +1,13 @@
 package app.repository;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import app.entity.JobPosting;
 
 public interface JobPostingRepository extends JpaRepository<JobPosting,Long>
 {
-    List<JobPosting> findByCompanyId(long companyId);
-    List<JobPosting> findByTitleContaining(String title);
-    List<JobPosting> findBySkillsId(Long id);
-    List<JobPosting> findByCityId(Long id);
+    Page<JobPosting> findAll(Specification<JobPosting> specification,Pageable pageable);
 }

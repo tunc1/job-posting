@@ -1,6 +1,7 @@
 package app.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
@@ -36,13 +39,6 @@ public class JobPostingControllerTest
     {
         jobPostingController.deleteById(1L,authentication);
         Mockito.verify(jobPostingService).deleteById(Mockito.anyLong(),Mockito.any());
-    }
-    @Test
-    void testFindAll()
-    {
-        List<JobPosting> jobPostings=List.of(new JobPosting());
-        Mockito.when(jobPostingService.findAll()).thenReturn(jobPostings);
-        Assertions.assertEquals(jobPostings,jobPostingController.findAll());
     }
     @Test
     void testFindById()
@@ -75,31 +71,11 @@ public class JobPostingControllerTest
         Assertions.assertEquals(id,actual.getId());
     }
     @Test
-    void testFindByCompanyId()
+    void testFindAll()
     {
-        List<JobPosting> jobPostings=List.of(new JobPosting());
-        Mockito.when(jobPostingService.findByCompanyId(Mockito.anyLong())).thenReturn(jobPostings);
-        Assertions.assertEquals(jobPostings,jobPostingController.findByCompanyId(1L));
-    }
-    @Test
-    void testSearchByTitle()
-    {
-        List<JobPosting> jobPostings=List.of(new JobPosting());
-        Mockito.when(jobPostingService.searchByTitle(Mockito.anyString())).thenReturn(jobPostings);
-        Assertions.assertEquals(jobPostings,jobPostingController.searchByTitle("title"));
-    }
-    @Test
-    void testFindBySkillsId()
-    {
-        List<JobPosting> jobPostings=List.of(new JobPosting());
-        Mockito.when(jobPostingService.findBySkillsId(Mockito.anyLong())).thenReturn(jobPostings);
-        Assertions.assertEquals(jobPostings,jobPostingController.findBySkillsId(1L));
-    }
-    @Test
-    void testFindByCityId()
-    {
-        List<JobPosting> jobPostings=List.of(new JobPosting());
-        Mockito.when(jobPostingService.findByCityId(Mockito.anyLong())).thenReturn(jobPostings);
-        Assertions.assertEquals(jobPostings,jobPostingController.findByCityId(1L));
+        Page<JobPosting> page=new PageImpl<>(List.of(new JobPosting()));
+        Mockito.when(jobPostingService.findAll(Mockito.any(),Mockito.any(),Mockito.any(),Mockito.any(),Mockito.any())).thenReturn(page);
+        Page<JobPosting> actual=jobPostingController.findAll(Optional.of(1L),Optional.of(1L),Optional.of(1L),Optional.of("title"),0,"id");
+        Assertions.assertEquals(page,actual);
     }
 }
