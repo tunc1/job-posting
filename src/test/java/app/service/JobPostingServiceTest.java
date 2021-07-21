@@ -142,7 +142,7 @@ public class JobPostingServiceTest
     void testCreateSpecification_nothingPresent()
     {
         Root<JobPosting> root=Mockito.mock(Root.class);
-        CriteriaQuery query=Mockito.mock(CriteriaQuery.class);
+        CriteriaQuery<Object> query=Mockito.mock(CriteriaQuery.class);
         CriteriaBuilder criteriaBuilder=Mockito.mock(CriteriaBuilder.class);
         Specification<JobPosting> specification=jobPostingService.createSpecification(Optional.empty(),Optional.empty(),Optional.empty(),Optional.empty());
         specification.toPredicate(root, query, criteriaBuilder);
