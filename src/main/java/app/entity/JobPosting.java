@@ -20,6 +20,16 @@ public class JobPosting
     @ManyToMany
     @JoinTable(name="job_posting_skill",joinColumns=@JoinColumn(name="job_posting_id"),inverseJoinColumns=@JoinColumn(name="skill_id"))
     private Set<Skill> skills;
+    @Enumerated(EnumType.STRING)
+    private Degree requiredDegree;
+    public Degree getRequiredDegree()
+    {
+        return requiredDegree;
+    }
+    public void setRequiredDegree(Degree requiredDegree)
+    {
+        this.requiredDegree = requiredDegree;
+    }
     public City getCity()
     {
         return city;
