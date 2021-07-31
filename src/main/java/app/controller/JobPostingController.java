@@ -1,7 +1,7 @@
 package app.controller;
 
 import app.entity.JobPosting;
-import app.entity.Member;
+import app.entity.Manager;
 import app.service.JobPostingService;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,15 +28,15 @@ public class JobPostingController
 	@ResponseStatus(code=HttpStatus.CREATED)
 	public JobPosting save(@RequestBody JobPosting jobPosting,Authentication authentication)
 	{
-		Member member=(Member)authentication.getPrincipal();
-		return jobPostingService.save(jobPosting,member);
+		Manager manager=(Manager)authentication.getPrincipal();
+		return jobPostingService.save(jobPosting,manager);
 	}
 	@PutMapping("/{id}")
 	public JobPosting update(@RequestBody JobPosting jobPosting,@PathVariable Long id,Authentication authentication)
 	{
-		Member member=(Member)authentication.getPrincipal();
+		Manager manager=(Manager)authentication.getPrincipal();
 		jobPosting.setId(id);
-		return jobPostingService.update(jobPosting,member);
+		return jobPostingService.update(jobPosting,manager);
 	}
 	@GetMapping("/{id}")
 	public JobPosting findById(@PathVariable Long id)
@@ -57,7 +57,7 @@ public class JobPostingController
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
 	public void deleteById(@PathVariable Long id,Authentication authentication)
 	{
-		Member member=(Member)authentication.getPrincipal();
-		jobPostingService.deleteById(id,member);
+		Manager manager=(Manager)authentication.getPrincipal();
+		jobPostingService.deleteById(id,manager);
 	}
 }

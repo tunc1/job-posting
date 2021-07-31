@@ -16,7 +16,8 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 
 import app.entity.JobPosting;
-import app.entity.Member;
+import app.entity.Manager;
+import app.entity.User;
 import app.service.JobPostingService;
 
 @ExtendWith(MockitoExtension.class)
@@ -25,18 +26,18 @@ public class JobPostingControllerTest
     @Mock
     JobPostingService jobPostingService;
     JobPostingController jobPostingController;
-    Member member;
-    Authentication authentication;
+
     @BeforeEach
     void init()
     {
         jobPostingController=new JobPostingController(jobPostingService);
-        member=new Member();
-        authentication=new UsernamePasswordAuthenticationToken(member,null);
     }
     @Test
     void testDeleteById()
     {
+        Manager manager=new Manager();
+        manager.setUser(new User());
+        Authentication authentication=new UsernamePasswordAuthenticationToken(manager,null);
         jobPostingController.deleteById(1L,authentication);
         Mockito.verify(jobPostingService).deleteById(Mockito.anyLong(),Mockito.any());
     }
@@ -50,6 +51,9 @@ public class JobPostingControllerTest
     @Test
     void testSave()
     {
+        Manager manager=new Manager();
+        manager.setUser(new User());
+        Authentication authentication=new UsernamePasswordAuthenticationToken(manager,null);
         JobPosting jobPosting=new JobPosting();
         Mockito.when(jobPostingService.save(Mockito.any(),Mockito.any())).thenAnswer(i->
         {
@@ -60,6 +64,9 @@ public class JobPostingControllerTest
     @Test
     void testUpdate()
     {
+        Manager manager=new Manager();
+        manager.setUser(new User());
+        Authentication authentication=new UsernamePasswordAuthenticationToken(manager,null);
         long id=1L;
         JobPosting jobPosting=new JobPosting();
         Mockito.when(jobPostingService.update(Mockito.any(),Mockito.any())).thenAnswer(i->

@@ -5,7 +5,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import app.entity.JobPosting;
-import app.entity.Member;
+import app.entity.Manager;
 import app.repository.JobPostingRepository;
 
 import java.util.LinkedList;
@@ -25,20 +25,20 @@ public class JobPostingService
 		this.jobPostingRepository = jobPostingRepository;
 		this.companyService = companyService;
 	}
-	public JobPosting save(JobPosting jobPosting, Member member)
+	public JobPosting save(JobPosting jobPosting, Manager manager)
 	{
-		companyService.throwExceptionIfNotSameMember(jobPosting.getCompany().getId(),member);
+		companyService.throwExceptionIfNotSameManager(jobPosting.getCompany().getId(),manager);
 		return jobPostingRepository.save(jobPosting);
 	}
-	public JobPosting update(JobPosting jobPosting, Member member)
+	public JobPosting update(JobPosting jobPosting, Manager manager)
 	{
-		companyService.throwExceptionIfNotSameMember(jobPosting.getCompany().getId(),member);
+		companyService.throwExceptionIfNotSameManager(jobPosting.getCompany().getId(),manager);
 		return jobPostingRepository.save(jobPosting);
 	}
-	public void deleteById(Long id, Member member)
+	public void deleteById(Long id, Manager manager)
 	{
 		JobPosting jobPosting=findById(id);
-		companyService.throwExceptionIfNotSameMember(jobPosting.getCompany().getId(),member);
+		companyService.throwExceptionIfNotSameManager(jobPosting.getCompany().getId(),manager);
 		jobPostingRepository.deleteById(id);
 	}
 	public JobPosting findById(Long id)

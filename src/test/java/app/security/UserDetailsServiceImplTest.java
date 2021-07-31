@@ -11,34 +11,34 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import app.entity.Member;
-import app.service.MemberService;
+import app.entity.User;
+import app.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class UserDetailsServiceImplTest
 {
     @Mock
-    MemberService memberService;
+    UserRepository userRepository;
     UserDetailsService userDetailsService;
 
     @BeforeEach
     void init()
     {
-        userDetailsService=new UserDetailsServiceImpl(memberService);
+        userDetailsService=new UserDetailsServiceImpl(userRepository);
     }
     @Test
     void testLoadUserByUsername_returnsUserDetails()
     {
-        Member member=new Member();
-        Mockito.when(memberService.findByUsername(Mockito.anyString())).thenReturn(member);
-        Mockito.when(memberService.existsByUsername(Mockito.anyString())).thenReturn(true);
+        User user=new User();
+        Mockito.when(userRepository.findByUsername(Mockito.anyString())).thenReturn(user);
+        Mockito.when(userRepository.existsByUsername(Mockito.anyString())).thenReturn(true);
         UserDetails userDetails=userDetailsService.loadUserByUsername("username");
-        Assertions.assertEquals(member,userDetails);
+        Assertions.assertEquals(user,userDetails);
     }
     @Test
     void testLoadUserByUsername_throwsUsernameNotFoundException()
     {
-        Mockito.when(memberService.existsByUsername(Mockito.anyString())).thenReturn(false);
+        Mockito.when(userRepository.existsByUsername(Mockito.anyString())).thenReturn(false);
         Assertions.assertThrows(UsernameNotFoundException.class,()->userDetailsService.loadUserByUsername("username"));
     }
 }

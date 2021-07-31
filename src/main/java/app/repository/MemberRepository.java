@@ -5,7 +5,7 @@ import app.entity.Member;
 
 public interface MemberRepository extends JpaRepository<Member,Long>
 {
-    Member findByUsername(String username);
-    boolean existsByUsername(String username);
+    boolean existsByUserUsername(String username);
     boolean existsByEmail(String email);
+    Member findByUserUsername(String username);
 }

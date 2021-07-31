@@ -13,10 +13,10 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 
-import app.entity.Member;
+import app.entity.User;
 import app.exception.ExceptionMessage;
 import app.security.TokenService;
-import app.service.MemberService;
+import app.repository.UserRepository;
 
 @ExtendWith(MockitoExtension.class)
 public class AuthenticateTest
@@ -26,17 +26,17 @@ public class AuthenticateTest
     @Mock
     TokenService tokenService;
     @Mock
-    MemberService memberService;
-    Member member;
+    UserRepository userRepository;
+    User user;
     Authenticate authenticate;
 
     @BeforeEach
     void init()
     {
-        authenticate=new Authenticate(authenticationManager,tokenService,memberService);
-        member=new Member();
-        member.setUsername("username");
-        member.setPassword("password");
+        authenticate=new Authenticate(authenticationManager,tokenService,userRepository);
+        user=new User();
+        user.setUsername("username");
+        user.setPassword("password");
     }
     @Test
     void testAuthenticate_successful()
@@ -46,9 +46,9 @@ public class AuthenticateTest
         {
             return i.getArgument(0,Authentication.class);
         });
-        Mockito.when(memberService.findByUsername(member.getUsername())).thenReturn(member);
-        Mockito.when(tokenService.create(member)).thenReturn(token);
-        ResponseEntity<Object> responseEntity=authenticate.authenticate(member);
+        Mockito.when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
+        Mockito.when(tokenService.create(user)).thenReturn(token);
+        ResponseEntity<Object> responseEntity=authenticate.authenticate(user);
         Assertions.assertEquals(responseEntity.getStatusCode(),HttpStatus.OK);
         Assertions.assertEquals(((TokenResponse)responseEntity.getBody()).getToken(),token);
     }
@@ -57,7 +57,7 @@ public class AuthenticateTest
     {
         String exceptionMessage="Exception";
         Mockito.when(authenticationManager.authenticate(Mockito.any())).thenThrow(new BadCredentialsException(exceptionMessage));
-        ResponseEntity<Object> responseEntity=authenticate.authenticate(member);
+        ResponseEntity<Object> responseEntity=authenticate.authenticate(user);
         Assertions.assertEquals(responseEntity.getStatusCode(),HttpStatus.UNAUTHORIZED);
         Assertions.assertEquals(((ExceptionMessage)responseEntity.getBody()).getMessage(),exceptionMessage);
     }

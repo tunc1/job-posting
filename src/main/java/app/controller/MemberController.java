@@ -40,7 +40,7 @@ public class MemberController
 		{
 			Member member2=(Member)authentication.getPrincipal();
 			member.setId(member2.getId());
-			member.setPassword(member2.getPassword());
+			member.getUser().setPassword(member2.getUser().getPassword());
 			return new ResponseEntity<>(memberService.update(member),HttpStatus.OK);
 		}
 		catch (ConflictException e)

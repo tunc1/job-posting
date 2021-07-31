@@ -15,6 +15,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 
 import app.entity.Member;
+import app.entity.User;
 import app.exception.ConflictException;
 import app.exception.ExceptionMessage;
 import app.service.MemberService;
@@ -81,6 +82,7 @@ public class MemberControllerTest
     void testUpdate_returnsMember()
     {
         Member member=new Member();
+        member.setUser(new User());
         Authentication authentication=new UsernamePasswordAuthenticationToken(member,null);
         Mockito.when(memberService.update(Mockito.any())).thenAnswer(i->
         {
@@ -93,6 +95,7 @@ public class MemberControllerTest
     void testUpdate_returnsExceptionMessage()
     {
         Member member=new Member();
+        member.setUser(new User());
         Authentication authentication=new UsernamePasswordAuthenticationToken(member,null);
         String message="exception message";
         Mockito.when(memberService.update(Mockito.any())).thenThrow(new ConflictException(message));

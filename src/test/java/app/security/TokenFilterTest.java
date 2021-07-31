@@ -15,7 +15,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import app.entity.Manager;
 import app.entity.Member;
+import app.entity.User;
+import app.repository.ManagerRepository;
+import app.repository.UserRepository;
 import app.service.MemberService;
 
 @ExtendWith(MockitoExtension.class)
@@ -26,26 +30,16 @@ public class TokenFilterTest
     @Mock
     MemberService memberService;
     @Mock
+    UserRepository userRepository;
+    @Mock
+    ManagerRepository managerRepository;
+    @Mock
     HttpServletRequest request;
     TokenFilter tokenFilter;
     @BeforeEach
     void init()
     {
-        tokenFilter=new TokenFilter(tokenService,memberService);
-    }
-    @Test
-    void testDoFilterInternal() throws ServletException,IOException
-    {
-        Member member=new Member();
-        Mockito.when(request.getHeader(Mockito.eq("Authorization"))).thenReturn("Bearer Token");
-        Mockito.when(tokenService.validate(Mockito.anyString())).thenReturn(true);
-        Mockito.when(memberService.existsByUsername(Mockito.anyString())).thenReturn(true);
-        Mockito.when(memberService.findByUsername(Mockito.anyString())).thenReturn(member);
-        Mockito.when(tokenService.get(Mockito.anyString(),Mockito.eq("username"))).thenReturn("username");
-        tokenFilter.doFilterInternal(request,null,null);
-        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        Assertions.assertEquals(authentication.getPrincipal(),member);
-        Assertions.assertEquals(authentication.getAuthorities(),member.getAuthorities());
+        tokenFilter=new TokenFilter(tokenService,userRepository,memberService,managerRepository);
     }
     @Test
     void testDoFilterInternal_noAuthorizationHeader() throws ServletException,IOException
@@ -73,8 +67,41 @@ public class TokenFilterTest
         Mockito.when(request.getHeader(Mockito.eq("Authorization"))).thenReturn("Bearer Token");
         Mockito.when(tokenService.validate(Mockito.anyString())).thenReturn(true);
         Mockito.when(tokenService.get(Mockito.anyString(),Mockito.eq("username"))).thenReturn("username");
-        Mockito.when(memberService.existsByUsername(Mockito.anyString())).thenReturn(false);
+        Mockito.when(userRepository.existsByUsername(Mockito.anyString())).thenReturn(false);
         tokenFilter.doFilterInternal(request,null,null);
-        Mockito.verify(memberService,Mockito.times(0)).findByUsername(Mockito.anyString());
+        Mockito.verify(memberService,Mockito.times(0)).existsByUserUsername(Mockito.anyString());
+    }
+    @Test
+    void testDoFilterInternal_memberExists() throws ServletException,IOException
+    {
+        Member member=new Member();
+        User user=new User();
+        member.setUser(user);
+        Mockito.when(request.getHeader(Mockito.eq("Authorization"))).thenReturn("Bearer Token");
+        Mockito.when(tokenService.validate(Mockito.anyString())).thenReturn(true);
+        Mockito.when(userRepository.existsByUsername(Mockito.anyString())).thenReturn(true);
+        Mockito.when(tokenService.get(Mockito.anyString(),Mockito.eq("username"))).thenReturn("username");
+        Mockito.when(memberService.existsByUserUsername(Mockito.anyString())).thenReturn(true);
+        Mockito.when(memberService.findByUserUsername(Mockito.anyString())).thenReturn(member);
+        tokenFilter.doFilterInternal(request,null,null);
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        Assertions.assertEquals(authentication.getPrincipal(),member);
+        Assertions.assertEquals(authentication.getAuthorities(),member.getUser().getAuthorities());
+    }
+    @Test
+    void testDoFilterInternal_managerExists() throws ServletException,IOException
+    {
+        Manager manager=new Manager();
+        User user=new User();
+        manager.setUser(user);
+        Mockito.when(request.getHeader(Mockito.eq("Authorization"))).thenReturn("Bearer Token");
+        Mockito.when(tokenService.validate(Mockito.anyString())).thenReturn(true);
+        Mockito.when(userRepository.existsByUsername(Mockito.anyString())).thenReturn(true);
+        Mockito.when(tokenService.get(Mockito.anyString(),Mockito.eq("username"))).thenReturn("username");
+        Mockito.when(managerRepository.findByUserUsername(Mockito.anyString())).thenReturn(manager);
+        tokenFilter.doFilterInternal(request,null,null);
+        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
+        Assertions.assertEquals(authentication.getPrincipal(),manager);
+        Assertions.assertEquals(authentication.getAuthorities(),manager.getUser().getAuthorities());
     }
 }

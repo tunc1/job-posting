@@ -5,20 +5,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import app.service.MemberService;
+import app.repository.UserRepository;
 
 @Component
 public class UserDetailsServiceImpl implements UserDetailsService
 {
-    private MemberService memberService;
-    public UserDetailsServiceImpl(MemberService memberService)
+    private UserRepository userRepository;
+    public UserDetailsServiceImpl(UserRepository userRepository)
     {
-        this.memberService=memberService;
+        this.userRepository=userRepository;
     }
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
     {
-        if(memberService.existsByUsername(username))
-            return memberService.findByUsername(username);
+        if(userRepository.existsByUsername(username))
+            return userRepository.findByUsername(username);
         else
             throw new UsernameNotFoundException("No User Found by this Username");
     }

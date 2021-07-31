@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import app.entity.Member;
+import app.entity.User;
 import app.exception.ExceptionMessage;
+import app.repository.UserRepository;
 import app.security.TokenService;
-import app.service.MemberService;
 
 @RestController
 @RequestMapping("/authenticate")
@@ -22,21 +22,21 @@ public class Authenticate
 {
     private AuthenticationManager authenticationManager;
     private TokenService tokenService;
-    private MemberService memberService;
-    public Authenticate(AuthenticationManager authenticationManager,TokenService tokenService,MemberService memberService)
+    private UserRepository userRepository;
+    public Authenticate(AuthenticationManager authenticationManager,TokenService tokenService,UserRepository userRepository)
     {
         this.authenticationManager=authenticationManager;
         this.tokenService=tokenService;
-        this.memberService=memberService;
+        this.userRepository=userRepository;
     }
     @PostMapping
-    public ResponseEntity<Object> authenticate(@RequestBody Member member)
+    public ResponseEntity<Object> authenticate(@RequestBody User user)
     {
-        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=new UsernamePasswordAuthenticationToken(member.getUsername(),member.getPassword());
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=new UsernamePasswordAuthenticationToken(user.getUsername(),user.getPassword());
         try
         {
             authenticationManager.authenticate(usernamePasswordAuthenticationToken);
-            UserDetails userDetails=memberService.findByUsername(member.getUsername());
+            UserDetails userDetails=userRepository.findByUsername(user.getUsername());
             String token=tokenService.create(userDetails);
             return new ResponseEntity<>(new TokenResponse(token),HttpStatus.OK);
         }

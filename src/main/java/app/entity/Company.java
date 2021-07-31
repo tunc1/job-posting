@@ -6,8 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 @Entity
 public class Company
 {
@@ -16,13 +14,12 @@ public class Company
     private Long id;
     private String name;
     @ManyToOne
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    private Member manager;
-    public Member getManager()
+    private Manager manager;
+    public Manager getManager()
     {
         return manager;
     }
-    public void setManager(Member manager)
+    public void setManager(Manager manager)
     {
         this.manager = manager;
     }

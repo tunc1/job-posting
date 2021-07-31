@@ -14,7 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import app.entity.Company;
-import app.entity.Member;
+import app.entity.Manager;
 import app.exception.UnauthorizedException;
 import app.repository.CompanyRepository;
 
@@ -51,27 +51,27 @@ public class CompanyServiceTest
         Assertions.assertThrows(EntityNotFoundException.class,()->companyService.findById(1L));
     }
     @Test
-    void testThrowExceptionIfNotSameMember_sameMember_notThrows()
+    void testThrowExceptionIfNotSameManager_sameManager_notThrows()
     {
-        Member member=new Member();
-        member.setId(1L);
+        Manager manager=new Manager();
+        manager.setId(1L);
         Company company=new Company();
         CompanyService companyService2=Mockito.spy(companyService);
         Mockito.doReturn(company).when(companyService2).findById(Mockito.anyLong());
-        company.setManager(member);
-        Assertions.assertDoesNotThrow(()->companyService2.throwExceptionIfNotSameMember(1L,member));
+        company.setManager(manager);
+        Assertions.assertDoesNotThrow(()->companyService2.throwExceptionIfNotSameManager(1L,manager));
     }
     @Test
-    void testThrowExceptionIfNotSameMember_differentMember_throws()
+    void testThrowExceptionIfNotSameManager_differentManager_throws()
     {
-        Member member=new Member();
-        member.setId(1L);
-        Member member2=new Member();
-        member.setId(2L);
+        Manager manager=new Manager();
+        manager.setId(1L);
+        Manager manager2=new Manager();
+        manager.setId(2L);
         Company company=new Company();
         CompanyService companyService2=Mockito.spy(companyService);
         Mockito.doReturn(company).when(companyService2).findById(Mockito.anyLong());
-        company.setManager(member2);
-        Assertions.assertThrows(UnauthorizedException.class,()->companyService2.throwExceptionIfNotSameMember(1L,member));
+        company.setManager(manager2);
+        Assertions.assertThrows(UnauthorizedException.class,()->companyService2.throwExceptionIfNotSameManager(1L,manager));
     }
 }

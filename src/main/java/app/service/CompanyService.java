@@ -4,7 +4,7 @@ import java.util.List;
 import javax.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import app.entity.Company;
-import app.entity.Member;
+import app.entity.Manager;
 import app.exception.UnauthorizedException;
 import app.repository.CompanyRepository;
 
@@ -24,10 +24,10 @@ public class CompanyService
 	{
 		return companyRepository.findAll();
 	}
-	public void throwExceptionIfNotSameMember(Long id,Member member)
+	public void throwExceptionIfNotSameManager(Long id,Manager manager)
 	{
 		Company company=findById(id);
-		if(!company.getManager().equals(member))
+		if(!company.getManager().equals(manager))
 			throw new UnauthorizedException();
 	}
 }

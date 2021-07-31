@@ -20,17 +20,13 @@ public class MemberService
 		this.memberRepository=memberRepository;
 		this.passwordEncoder=passwordEncoder;
 	}
-	public boolean existsByUsername(String username)
+	public boolean existsByUserUsername(String username)
 	{
-		return memberRepository.existsByUsername(username);
-	}
-	public Member findByUsername(String username)
-	{
-		return memberRepository.findByUsername(username);
+		return memberRepository.existsByUserUsername(username);
 	}
 	public void throwExceptionIfUsernameConflicts(String username)
 	{
-		if(existsByUsername(username))
+		if(existsByUserUsername(username))
 			throw new ConflictException("Another user uses this username");
 	}
 	public void throwExceptionIfEmailConflicts(String email)
@@ -40,18 +36,19 @@ public class MemberService
 	}
 	public Member save(Member member)
 	{
-		throwExceptionIfUsernameConflicts(member.getUsername());
+		throwExceptionIfUsernameConflicts(member.getUser().getUsername());
 		throwExceptionIfEmailConflicts(member.getEmail());
-		member.setCredentialsNonExpired(true);
-		member.setAccountNonLocked(true);
-		member.setAccountNonExpired(true);
-		member.setEnabled(true);
-		member.setPassword(passwordEncoder.encode(member.getPassword()));
+		member.getUser().setRole("MEMBER");
+		member.getUser().setCredentialsNonExpired(true);
+		member.getUser().setAccountNonLocked(true);
+		member.getUser().setAccountNonExpired(true);
+		member.getUser().setEnabled(true);
+		member.getUser().setPassword(passwordEncoder.encode(member.getUser().getPassword()));
 		return memberRepository.save(member);
 	}
 	public Member update(Member member)
 	{
-		throwExceptionIfUsernameConflicts(member.getUsername());
+		throwExceptionIfUsernameConflicts(member.getUser().getUsername());
 		throwExceptionIfEmailConflicts(member.getEmail());
 		return memberRepository.save(member);
 	}
@@ -70,4 +67,8 @@ public class MemberService
 	{
 		return memberRepository.findAll();
 	}
+    public Member findByUserUsername(String username)
+    {
+        return memberRepository.findByUserUsername(username);
+    }
 }

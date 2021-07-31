@@ -1,33 +1,25 @@
 package app.entity;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.*;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-
 @Entity
-public class Member implements UserDetails
+public class Member
 {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     private String name,lastName,title,summary;
-    @Column(unique=true,nullable=false)
-    private String email,username;
+    @OneToOne(cascade=CascadeType.ALL)
     @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
-    String password;
+    private User user;
+    @Column(unique=true,nullable=false)
+    private String email;
     @ManyToOne
     private City city;
-    @JsonIgnore
-    private boolean accountNonExpired,accountNonLocked,credentialsNonExpired,enabled;
     @ManyToMany
     @JoinTable(name="member_skill",joinColumns=@JoinColumn(name="member_id"),inverseJoinColumns=@JoinColumn(name="skill_id"))
     private Set<Skill> skills;
@@ -37,6 +29,14 @@ public class Member implements UserDetails
     private Set<Experience> experiences;
     @OneToMany(mappedBy="member",cascade=CascadeType.ALL,orphanRemoval=true)
     private Set<Education> educations;
+    public User getUser()
+    {
+        return user;
+    }
+    public void setUser(User user)
+    {
+        this.user = user;
+    }
     public Set<Education> getEducations()
     {
         return educations;
@@ -100,54 +100,6 @@ public class Member implements UserDetails
     {
         return id==((Member)obj).id;
     }
-    public boolean isAccountNonExpired()
-    {
-        return accountNonExpired;
-    }
-    public void setAccountNonExpired(boolean accountNonExpired)
-    {
-        this.accountNonExpired=accountNonExpired;
-    }
-    public boolean isAccountNonLocked()
-    {
-        return accountNonLocked;
-    }
-    public void setAccountNonLocked(boolean accountNonLocked)
-    {
-        this.accountNonLocked=accountNonLocked;
-    }
-    public boolean isCredentialsNonExpired()
-    {
-        return credentialsNonExpired;
-    }
-    public void setCredentialsNonExpired(boolean credentialsNonExpired)
-    {
-        this.credentialsNonExpired=credentialsNonExpired;
-    }
-    public boolean isEnabled()
-    {
-        return enabled;
-    }
-    public void setEnabled(boolean enabled)
-    {
-        this.enabled=enabled;
-    }
-    public void setUsername(String username)
-    {
-        this.username=username;
-    }
-    public void setPassword(String password)
-    {
-        this.password=password;
-    }
-    public String getUsername()
-    {
-        return username;
-    }
-    public String getPassword()
-    {
-        return password;
-    }
     public String getEmail()
     {
         return email;
@@ -179,10 +131,5 @@ public class Member implements UserDetails
     public void setLastName(String lastName)
     {
         this.lastName=lastName;
-    }
-    @JsonIgnore
-    public Collection<? extends GrantedAuthority> getAuthorities()
-    {
-        return List.of(new SimpleGrantedAuthority("ROLE_Member"));
     }
 }
