@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import app.entity.Member;
+import app.entity.Role;
 import app.exception.ConflictException;
 import app.exception.UnauthorizedException;
 import app.repository.MemberRepository;
@@ -38,7 +39,7 @@ public class MemberService
 	{
 		throwExceptionIfUsernameConflicts(member.getUser().getUsername());
 		throwExceptionIfEmailConflicts(member.getEmail());
-		member.getUser().setRole("MEMBER");
+		member.getUser().setRole(Role.MEMBER);
 		member.getUser().setCredentialsNonExpired(true);
 		member.getUser().setAccountNonLocked(true);
 		member.getUser().setAccountNonExpired(true);

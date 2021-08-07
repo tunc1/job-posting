@@ -14,6 +14,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import app.entity.Manager;
 import app.entity.Member;
+import app.entity.Role;
 import app.repository.ManagerRepository;
 import app.repository.UserRepository;
 import app.service.MemberService;
@@ -46,13 +47,14 @@ public class TokenFilter extends OncePerRequestFilter
                     String username=tokenService.get(token,"username");
                     if(userRepository.existsByUsername(username))
                     {
-                        if(memberService.existsByUserUsername(username))
+                        String role=tokenService.get(token,"role");
+                        if(role.equals(Role.MEMBER))
                         {
                             Member member=memberService.findByUserUsername(username);
                             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=new UsernamePasswordAuthenticationToken(member,null,member.getUser().getAuthorities());
                             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                         }
-                        else
+                        else if(role.equals(Role.MANAGER))
                         {
                             Manager manager=managerRepository.findByUserUsername(username);
                             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=new UsernamePasswordAuthenticationToken(manager,null,manager.getUser().getAuthorities());

@@ -15,6 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import app.entity.Member;
+import app.entity.Role;
 import app.entity.User;
 import app.exception.ConflictException;
 import app.exception.UnauthorizedException;
@@ -97,6 +98,7 @@ public class MemberServiceTest
         Member savedMember=memberService2.save(member);
         Assertions.assertEquals(member,savedMember);
         Assertions.assertNotEquals(password,savedMember.getUser().getPassword());
+        Assertions.assertTrue(savedMember.getUser().getRole().equals(Role.MEMBER));
         Assertions.assertTrue(savedMember.getUser().isAccountNonExpired());
         Assertions.assertTrue(savedMember.getUser().isAccountNonLocked());
         Assertions.assertTrue(savedMember.getUser().isCredentialsNonExpired());

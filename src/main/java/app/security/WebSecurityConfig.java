@@ -10,6 +10,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import app.entity.Role;
+
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter
 {
@@ -25,12 +27,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
         http.csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/authenticate","/member").permitAll()
-                .antMatchers(HttpMethod.DELETE,"/jobPosting/**").hasRole("MANAGER")
-                .antMatchers(HttpMethod.POST,"/jobPosting/**").hasRole("MANAGER")
-                .antMatchers(HttpMethod.PUT,"/jobPosting/**").hasRole("MANAGER")
-                .antMatchers(HttpMethod.PUT,"/member/**").hasRole("MEMBER")
-                .antMatchers(HttpMethod.DELETE,"/member/**").hasRole("MEMBER")
-                .antMatchers("/appliedJob/**").hasRole("MEMBER")
+                .antMatchers(HttpMethod.DELETE,"/jobPosting/**").hasRole(Role.MANAGER)
+                .antMatchers(HttpMethod.POST,"/jobPosting/**").hasRole(Role.MANAGER)
+                .antMatchers(HttpMethod.PUT,"/jobPosting/**").hasRole(Role.MANAGER)
+                .antMatchers(HttpMethod.PUT,"/member/**").hasRole(Role.MEMBER)
+                .antMatchers(HttpMethod.DELETE,"/member/**").hasRole(Role.MEMBER)
+                .antMatchers("/appliedJob/**").hasRole(Role.MEMBER)
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(tokenFilter,UsernamePasswordAuthenticationFilter.class);

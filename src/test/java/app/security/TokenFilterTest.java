@@ -17,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import app.entity.Manager;
 import app.entity.Member;
+import app.entity.Role;
 import app.entity.User;
 import app.repository.ManagerRepository;
 import app.repository.UserRepository;
@@ -76,12 +77,13 @@ public class TokenFilterTest
     {
         Member member=new Member();
         User user=new User();
+        user.setRole(Role.MEMBER);
         member.setUser(user);
         Mockito.when(request.getHeader(Mockito.eq("Authorization"))).thenReturn("Bearer Token");
         Mockito.when(tokenService.validate(Mockito.anyString())).thenReturn(true);
         Mockito.when(userRepository.existsByUsername(Mockito.anyString())).thenReturn(true);
         Mockito.when(tokenService.get(Mockito.anyString(),Mockito.eq("username"))).thenReturn("username");
-        Mockito.when(memberService.existsByUserUsername(Mockito.anyString())).thenReturn(true);
+        Mockito.when(tokenService.get(Mockito.anyString(),Mockito.eq("role"))).thenReturn(Role.MEMBER);
         Mockito.when(memberService.findByUserUsername(Mockito.anyString())).thenReturn(member);
         tokenFilter.doFilterInternal(request,null,null);
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
@@ -93,11 +95,13 @@ public class TokenFilterTest
     {
         Manager manager=new Manager();
         User user=new User();
+        user.setRole(Role.MANAGER);
         manager.setUser(user);
         Mockito.when(request.getHeader(Mockito.eq("Authorization"))).thenReturn("Bearer Token");
         Mockito.when(tokenService.validate(Mockito.anyString())).thenReturn(true);
         Mockito.when(userRepository.existsByUsername(Mockito.anyString())).thenReturn(true);
         Mockito.when(tokenService.get(Mockito.anyString(),Mockito.eq("username"))).thenReturn("username");
+        Mockito.when(tokenService.get(Mockito.anyString(),Mockito.eq("role"))).thenReturn(Role.MANAGER);
         Mockito.when(managerRepository.findByUserUsername(Mockito.anyString())).thenReturn(manager);
         tokenFilter.doFilterInternal(request,null,null);
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
