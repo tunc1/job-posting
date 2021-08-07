@@ -21,7 +21,6 @@ import app.entity.Role;
 import app.entity.User;
 import app.repository.ManagerRepository;
 import app.repository.UserRepository;
-import app.service.AdminService;
 import app.service.MemberService;
 
 @ExtendWith(MockitoExtension.class)
