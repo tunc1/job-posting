@@ -12,11 +12,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import app.entity.Admin;
 import app.entity.Manager;
 import app.entity.Member;
 import app.entity.Role;
 import app.repository.ManagerRepository;
 import app.repository.UserRepository;
+import app.service.AdminService;
 import app.service.MemberService;
 
 
@@ -27,12 +29,15 @@ public class TokenFilter extends OncePerRequestFilter
     private UserRepository userRepository;
     private MemberService memberService;
     private ManagerRepository managerRepository;
-    public TokenFilter(TokenService tokenService,UserRepository userRepository,MemberService memberService,ManagerRepository managerRepository)
+    private AdminService adminService;
+    public TokenFilter(TokenService tokenService, UserRepository userRepository, MemberService memberService,
+            ManagerRepository managerRepository,AdminService adminService)
     {
         this.tokenService = tokenService;
         this.userRepository = userRepository;
         this.memberService = memberService;
         this.managerRepository = managerRepository;
+        this.adminService = adminService;
     }
     protected void doFilterInternal(HttpServletRequest request,HttpServletResponse response,FilterChain filterChain) throws ServletException,IOException
     {
@@ -58,6 +63,12 @@ public class TokenFilter extends OncePerRequestFilter
                         {
                             Manager manager=managerRepository.findByUserUsername(username);
                             UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=new UsernamePasswordAuthenticationToken(manager,null,manager.getUser().getAuthorities());
+                            SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+                        }
+                        else if(role.equals(Role.ADMIN))
+                        {
+                            Admin admin=adminService.findByUserUsername(username);
+                            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken=new UsernamePasswordAuthenticationToken(admin,null,admin.getUser().getAuthorities());
                             SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
                         }
                     }
