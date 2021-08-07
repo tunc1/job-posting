@@ -24,6 +24,18 @@ public class CompanyService
 	{
 		return companyRepository.findAll();
 	}
+	public Company save(Company company)
+	{
+		return companyRepository.save(company);
+	}
+	public Company update(Company company)
+	{
+		return companyRepository.save(company);
+	}
+	public void deleteById(Long id)
+	{
+		companyRepository.deleteById(id);
+	}
 	public void throwExceptionIfNotSameManager(Long id,Manager manager)
 	{
 		Company company=findById(id);

@@ -32,6 +32,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers(HttpMethod.PUT,"/jobPosting/**").hasRole(Role.MANAGER)
                 .antMatchers(HttpMethod.PUT,"/member/**").hasRole(Role.MEMBER)
                 .antMatchers(HttpMethod.DELETE,"/member/**").hasRole(Role.MEMBER)
+                .antMatchers(HttpMethod.DELETE,"/company/**").hasRole(Role.ADMIN)
+                .antMatchers(HttpMethod.PUT,"/company/**").hasRole(Role.ADMIN)
+                .antMatchers(HttpMethod.POST,"/company/**").hasRole(Role.ADMIN)
                 .antMatchers("/appliedJob/**").hasRole(Role.MEMBER)
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

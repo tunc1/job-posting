@@ -74,4 +74,32 @@ public class CompanyServiceTest
         company.setManager(manager2);
         Assertions.assertThrows(UnauthorizedException.class,()->companyService2.throwExceptionIfNotSameManager(1L,manager));
     }
+    @Test
+    void testDeleteById()
+    {
+        companyService.deleteById(1L);
+        Mockito.verify(companyRepository,Mockito.times(1)).deleteById(Mockito.anyLong());
+    }
+    @Test
+    void testSave()
+    {
+        Company company=new Company();
+        Mockito.when(companyRepository.save(Mockito.any())).thenAnswer(i->
+        {
+            return i.getArgument(0,Company.class);
+        });
+        Company actual=companyService.save(company);
+        Assertions.assertEquals(actual,company);
+    }
+    @Test
+    void testUpdate()
+    {
+        Company company=new Company();
+        Mockito.when(companyRepository.save(Mockito.any())).thenAnswer(i->
+        {
+            return i.getArgument(0,Company.class);
+        });
+        Company actual=companyService.update(company);
+        Assertions.assertEquals(actual,company);
+    }
 }
