@@ -20,6 +20,7 @@ import app.entity.User;
 import app.exception.ConflictException;
 import app.exception.UnauthorizedException;
 import app.repository.MemberRepository;
+import app.util.UserUtil;
 
 @ExtendWith(MockitoExtension.class)
 public class MemberServiceTest

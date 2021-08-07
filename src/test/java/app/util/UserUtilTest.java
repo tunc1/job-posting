@@ -1,4 +1,4 @@
-package app.service;
+package app.util;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

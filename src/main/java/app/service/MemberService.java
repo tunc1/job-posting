@@ -9,6 +9,8 @@ import app.entity.Role;
 import app.exception.ConflictException;
 import app.exception.UnauthorizedException;
 import app.repository.MemberRepository;
+import app.util.UserUtil;
+
 import javax.persistence.EntityNotFoundException;
 
 @Service
