@@ -17,6 +17,12 @@ variable "database_name" {
 variable "database_username" {
     type = string
 }
+variable "admin_username" {
+    type = string
+}
+variable "admin_password" {
+    type = string
+}
 provider "aws" {
     region="us-east-2"
     access_key=var.access_key
@@ -65,5 +71,15 @@ resource "aws_elastic_beanstalk_environment" "environment" {
         namespace = "aws:elasticbeanstalk:application:environment"
         name = "JWT-KEY"
         value = var.jwt_key
+    }
+    setting {
+        namespace = "aws:elasticbeanstalk:application:environment"
+        name = "ADMIN-USERNAME"
+        value = var.admin_username
+    }
+    setting {
+        namespace = "aws:elasticbeanstalk:application:environment"
+        name = "ADMIN-PASSWORD"
+        value = var.admin_password
     }
 }
