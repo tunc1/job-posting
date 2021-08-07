@@ -15,7 +15,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import app.entity.Admin;
 import app.entity.Manager;
 import app.entity.Member;
 import app.entity.Role;
@@ -37,14 +36,12 @@ public class TokenFilterTest
     @Mock
     ManagerRepository managerRepository;
     @Mock
-    AdminService adminService;
-    @Mock
     HttpServletRequest request;
     TokenFilter tokenFilter;
     @BeforeEach
     void init()
     {
-        tokenFilter=new TokenFilter(tokenService,userRepository,memberService,managerRepository,adminService);
+        tokenFilter=new TokenFilter(tokenService,userRepository,memberService,managerRepository);
     }
     @Test
     void testDoFilterInternal_noAuthorizationHeader() throws ServletException,IOException
@@ -111,23 +108,5 @@ public class TokenFilterTest
         Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
         Assertions.assertEquals(authentication.getPrincipal(),manager);
         Assertions.assertEquals(authentication.getAuthorities(),manager.getUser().getAuthorities());
-    }
-    @Test
-    void testDoFilterInternal_adminExists() throws ServletException,IOException
-    {
-        Admin admin=new Admin();
-        User user=new User();
-        user.setRole(Role.MANAGER);
-        admin.setUser(user);
-        Mockito.when(request.getHeader(Mockito.eq("Authorization"))).thenReturn("Bearer Token");
-        Mockito.when(tokenService.validate(Mockito.anyString())).thenReturn(true);
-        Mockito.when(userRepository.existsByUsername(Mockito.anyString())).thenReturn(true);
-        Mockito.when(tokenService.get(Mockito.anyString(),Mockito.eq("username"))).thenReturn("username");
-        Mockito.when(tokenService.get(Mockito.anyString(),Mockito.eq("role"))).thenReturn(Role.ADMIN);
-        Mockito.when(adminService.findByUserUsername(Mockito.anyString())).thenReturn(admin);
-        tokenFilter.doFilterInternal(request,null,null);
-        Authentication authentication=SecurityContextHolder.getContext().getAuthentication();
-        Assertions.assertEquals(authentication.getPrincipal(),admin);
-        Assertions.assertEquals(authentication.getAuthorities(),admin.getUser().getAuthorities());
     }
 }
