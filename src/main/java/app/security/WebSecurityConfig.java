@@ -36,6 +36,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter
                 .antMatchers(HttpMethod.PUT,"/company/**").hasRole(Role.ADMIN)
                 .antMatchers(HttpMethod.POST,"/company/**").hasRole(Role.ADMIN)
                 .antMatchers("/appliedJob/**").hasRole(Role.MEMBER)
+                .antMatchers("/manager/**").hasRole(Role.ADMIN)
                 .anyRequest().authenticated()
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(tokenFilter,UsernamePasswordAuthenticationFilter.class);

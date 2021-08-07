@@ -1,0 +1,54 @@
+package app.service;
+
+import java.util.List;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+import app.entity.Manager;
+import app.entity.Role;
+import app.repository.ManagerRepository;
+import app.util.UserUtil;
+
+import javax.persistence.EntityNotFoundException;
+
+@Service
+public class ManagerService
+{
+	private ManagerRepository managerRepository;
+	private PasswordEncoder passwordEncoder;
+	private UserUtil userUtil;
+	public ManagerService(ManagerRepository managerRepository, PasswordEncoder passwordEncoder, UserUtil userUtil)
+	{
+		this.managerRepository = managerRepository;
+		this.passwordEncoder = passwordEncoder;
+		this.userUtil = userUtil;
+	}
+	public Manager save(Manager manager)
+	{
+		userUtil.throwExceptionIfUsernameConflicts(manager.getUser().getUsername());
+		manager.getUser().setPassword(passwordEncoder.encode(manager.getUser().getPassword()));
+		manager.getUser().setRole(Role.MANAGER);
+		manager.getUser().setCredentialsNonExpired(true);
+		manager.getUser().setAccountNonLocked(true);
+		manager.getUser().setAccountNonExpired(true);
+		manager.getUser().setEnabled(true);
+		return managerRepository.save(manager);
+	}
+	public Manager update(Manager manager)
+	{
+		userUtil.throwExceptionIfUsernameConflicts(manager.getUser().getUsername());
+		return managerRepository.save(manager);
+	}
+	public void deleteById(Long id)
+	{
+		managerRepository.deleteById(id);
+	}
+	public Manager findById(Long id)
+	{
+		return managerRepository.findById(id).orElseThrow(EntityNotFoundException::new);
+	}
+	public List<Manager> findAll()
+	{
+		return managerRepository.findAll();
+	}
+}
