@@ -16,19 +16,12 @@ public class MemberService
 {
 	private MemberRepository memberRepository;
 	private PasswordEncoder passwordEncoder;
-	public MemberService(MemberRepository memberRepository,PasswordEncoder passwordEncoder)
+	private UserUtil userUtil;
+	public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, UserUtil userUtil)
 	{
-		this.memberRepository=memberRepository;
-		this.passwordEncoder=passwordEncoder;
-	}
-	public boolean existsByUserUsername(String username)
-	{
-		return memberRepository.existsByUserUsername(username);
-	}
-	public void throwExceptionIfUsernameConflicts(String username)
-	{
-		if(existsByUserUsername(username))
-			throw new ConflictException("Another user uses this username");
+		this.memberRepository = memberRepository;
+		this.passwordEncoder = passwordEncoder;
+		this.userUtil = userUtil;
 	}
 	public void throwExceptionIfEmailConflicts(String email)
 	{
@@ -37,7 +30,7 @@ public class MemberService
 	}
 	public Member save(Member member)
 	{
-		throwExceptionIfUsernameConflicts(member.getUser().getUsername());
+		userUtil.throwExceptionIfUsernameConflicts(member.getUser().getUsername());
 		throwExceptionIfEmailConflicts(member.getEmail());
 		member.getUser().setRole(Role.MEMBER);
 		member.getUser().setCredentialsNonExpired(true);
@@ -49,7 +42,7 @@ public class MemberService
 	}
 	public Member update(Member member)
 	{
-		throwExceptionIfUsernameConflicts(member.getUser().getUsername());
+		userUtil.throwExceptionIfUsernameConflicts(member.getUser().getUsername());
 		throwExceptionIfEmailConflicts(member.getEmail());
 		return memberRepository.save(member);
 	}

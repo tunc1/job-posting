@@ -28,12 +28,14 @@ public class MemberServiceTest
     MemberRepository memberRepository;
     @Mock
     PasswordEncoder passwordEncoder;
+    @Mock
+    UserUtil userUtil;
     MemberService memberService;
 
     @BeforeEach
     void init()
     {
-        memberService=new MemberService(memberRepository,passwordEncoder);
+        memberService=new MemberService(memberRepository,passwordEncoder,userUtil);
     }
     @Test
     void testDeleteById()
@@ -78,7 +80,7 @@ public class MemberServiceTest
     {
         MemberService memberService2=Mockito.spy(memberService);
         Mockito.doNothing().when(memberService2).throwExceptionIfEmailConflicts(Mockito.anyString());
-        Mockito.doNothing().when(memberService2).throwExceptionIfUsernameConflicts(Mockito.anyString());
+        Mockito.doNothing().when(userUtil).throwExceptionIfUsernameConflicts(Mockito.anyString());
         Mockito.when(passwordEncoder.encode(Mockito.anyString())).thenAnswer(i->
         {
             String password=i.getArgument(0,String.class);
@@ -109,7 +111,7 @@ public class MemberServiceTest
     {
         MemberService memberService2=Mockito.spy(memberService);
         Mockito.doNothing().when(memberService2).throwExceptionIfEmailConflicts(Mockito.anyString());
-        Mockito.doNothing().when(memberService2).throwExceptionIfUsernameConflicts(Mockito.anyString());
+        Mockito.doNothing().when(userUtil).throwExceptionIfUsernameConflicts(Mockito.anyString());
         Member member=new Member();
         User user=new User();
         member.setUser(user);
@@ -134,26 +136,5 @@ public class MemberServiceTest
     {
         Mockito.when(memberRepository.existsByEmail(Mockito.anyString())).thenReturn(true);
         Assertions.assertThrows(ConflictException.class,()->memberService.throwExceptionIfEmailConflicts("email"));
-    }
-    @Test
-    void testThrowExceptionIfUsernameConflicts_usernameNotConflicts_notThrows()
-    {
-        MemberService memberService2=Mockito.spy(memberService);
-        Mockito.doReturn(false).when(memberService2).existsByUserUsername(Mockito.anyString());
-        Assertions.assertDoesNotThrow(()->memberService2.throwExceptionIfUsernameConflicts("username"));
-    }
-    @Test
-    void testThrowExceptionIfUsernameConflicts_usernameConflicts_throws()
-    {
-        MemberService memberService2=Mockito.spy(memberService);
-        Mockito.doReturn(true).when(memberService2).existsByUserUsername(Mockito.anyString());
-        Assertions.assertThrows(ConflictException.class,()->memberService2.throwExceptionIfUsernameConflicts("username"));
-    }
-    @Test
-    void testExistsByUserUsername()
-    {
-        boolean exists=true;
-        Mockito.when(memberRepository.existsByUserUsername(Mockito.anyString())).thenReturn(exists);
-        Assertions.assertEquals(exists,memberService.existsByUserUsername("username"));
     }
 }
