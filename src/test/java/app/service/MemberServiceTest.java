@@ -12,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import app.entity.Member;
 import app.entity.Role;
@@ -28,15 +27,13 @@ public class MemberServiceTest
     @Mock
     MemberRepository memberRepository;
     @Mock
-    PasswordEncoder passwordEncoder;
-    @Mock
     UserUtil userUtil;
     MemberService memberService;
 
     @BeforeEach
     void init()
     {
-        memberService=new MemberService(memberRepository,passwordEncoder,userUtil);
+        memberService=new MemberService(memberRepository,userUtil);
     }
     @Test
     void testDeleteById()
@@ -82,7 +79,7 @@ public class MemberServiceTest
         MemberService memberService2=Mockito.spy(memberService);
         Mockito.doNothing().when(memberService2).throwExceptionIfEmailConflicts(Mockito.anyString());
         Mockito.doNothing().when(userUtil).throwExceptionIfUsernameConflicts(Mockito.anyString());
-        Mockito.when(passwordEncoder.encode(Mockito.anyString())).thenAnswer(i->
+        Mockito.when(userUtil.encodePassword(Mockito.anyString())).thenAnswer(i->
         {
             String password=i.getArgument(0,String.class);
             return password+"1";

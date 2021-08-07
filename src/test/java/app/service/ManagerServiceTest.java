@@ -12,7 +12,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import app.entity.Manager;
 import app.entity.Role;
@@ -26,15 +25,13 @@ public class ManagerServiceTest
     @Mock
     ManagerRepository managerRepository;
     @Mock
-    PasswordEncoder passwordEncoder;
-    @Mock
     UserUtil userUtil;
     ManagerService managerService;
 
     @BeforeEach
     void init()
     {
-        managerService=new ManagerService(managerRepository, passwordEncoder, userUtil);
+        managerService=new ManagerService(managerRepository, userUtil);
     }
     @Test
     void testDeleteById()
@@ -69,7 +66,7 @@ public class ManagerServiceTest
     void testSave()
     {
         Mockito.doNothing().when(userUtil).throwExceptionIfUsernameConflicts("username");
-        Mockito.when(passwordEncoder.encode(Mockito.anyString())).thenReturn("encoded_password");
+        Mockito.when(userUtil.encodePassword(Mockito.anyString())).thenReturn("encoded_password");
         Mockito.when(managerRepository.save(Mockito.any())).thenAnswer(i->
         {
             return i.getArgument(0,Manager.class);

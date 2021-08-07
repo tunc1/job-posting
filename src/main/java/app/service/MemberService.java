@@ -2,7 +2,6 @@ package app.service;
 
 import java.util.List;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import app.entity.Member;
 import app.entity.Role;
@@ -17,12 +16,10 @@ import javax.persistence.EntityNotFoundException;
 public class MemberService
 {
 	private MemberRepository memberRepository;
-	private PasswordEncoder passwordEncoder;
 	private UserUtil userUtil;
-	public MemberService(MemberRepository memberRepository, PasswordEncoder passwordEncoder, UserUtil userUtil)
+	public MemberService(MemberRepository memberRepository, UserUtil userUtil)
 	{
 		this.memberRepository = memberRepository;
-		this.passwordEncoder = passwordEncoder;
 		this.userUtil = userUtil;
 	}
 	public void throwExceptionIfEmailConflicts(String email)
@@ -39,7 +36,7 @@ public class MemberService
 		member.getUser().setAccountNonLocked(true);
 		member.getUser().setAccountNonExpired(true);
 		member.getUser().setEnabled(true);
-		member.getUser().setPassword(passwordEncoder.encode(member.getUser().getPassword()));
+		member.getUser().setPassword(userUtil.encodePassword(member.getUser().getPassword()));
 		return memberRepository.save(member);
 	}
 	public Member update(Member member)

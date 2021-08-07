@@ -3,12 +3,12 @@ package app.service;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import app.entity.Admin;
 import app.entity.Role;
 import app.entity.User;
 import app.repository.AdminRepository;
+import app.util.UserUtil;
 
 @Service
 public class AdminService
@@ -18,11 +18,11 @@ public class AdminService
 	@Value("${admin-password}")
 	private String adminPassword;
 	private AdminRepository adminRepository;
-	private PasswordEncoder passwordEncoder;
-	public AdminService(AdminRepository adminRepository, PasswordEncoder passwordEncoder)
+	private UserUtil userUtil;
+	public AdminService(AdminRepository adminRepository, UserUtil userUtil)
 	{
 		this.adminRepository = adminRepository;
-		this.passwordEncoder = passwordEncoder;
+		this.userUtil = userUtil;
 	}
 	@PostConstruct
 	public void createAdmin()
@@ -31,7 +31,7 @@ public class AdminService
 		{
 			User user=new User();
 			user.setUsername(adminUsername);
-			user.setPassword(passwordEncoder.encode(adminPassword));
+			user.setPassword(userUtil.encodePassword(adminPassword));
 			user.setRole(Role.ADMIN);
 			user.setCredentialsNonExpired(true);
 			user.setAccountNonLocked(true);

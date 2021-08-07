@@ -7,6 +7,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import app.exception.ConflictException;
 import app.repository.UserRepository;
@@ -16,11 +17,13 @@ public class UserUtilTest
 {
     @Mock
     UserRepository userRepository;
+    @Mock
+    PasswordEncoder passwordEncoder;
     UserUtil userUtil;
     @BeforeEach
     void init()
     {
-        userUtil=new UserUtil(userRepository);
+        userUtil=new UserUtil(userRepository,passwordEncoder);
     }
     @Test
     void testThrowExceptionIfUsernameConflicts_throwsConflictException()
@@ -33,5 +36,11 @@ public class UserUtilTest
     {
         Mockito.when(userRepository.existsByUsername(Mockito.anyString())).thenReturn(false);
         Assertions.assertDoesNotThrow(()->userUtil.throwExceptionIfUsernameConflicts("username"));
+    }
+    @Test
+    void testEncodePassword()
+    {
+        userUtil.encodePassword("password");
+        Mockito.verify(passwordEncoder,Mockito.times(1)).encode(Mockito.anyString());
     }
 }

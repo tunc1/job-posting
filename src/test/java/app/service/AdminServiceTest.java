@@ -11,11 +11,11 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import app.entity.Admin;
 import app.entity.Role;
 import app.repository.AdminRepository;
+import app.util.UserUtil;
 
 @ExtendWith(MockitoExtension.class)
 public class AdminServiceTest
@@ -23,7 +23,7 @@ public class AdminServiceTest
     @Mock
     AdminRepository adminRepository;
     @Mock
-    PasswordEncoder passwordEncoder;
+    UserUtil userUtil;
     AdminService adminService;
     @Captor
     ArgumentCaptor<Admin> adminArgumentCaptor;
@@ -31,7 +31,7 @@ public class AdminServiceTest
     @BeforeEach
     void init()
     {
-        adminService=new AdminService(adminRepository,passwordEncoder);
+        adminService=new AdminService(adminRepository,userUtil);
     }
     @Test
     void testCreateAdmin_create() throws IllegalArgumentException,IllegalAccessException
@@ -43,7 +43,7 @@ public class AdminServiceTest
         adminPasswordField.setAccessible(true);
         adminUsernameField.set(adminService,username);
         adminPasswordField.set(adminService,password);
-        Mockito.when(passwordEncoder.encode(Mockito.anyString())).thenReturn("encoded_password");
+        Mockito.when(userUtil.encodePassword(Mockito.anyString())).thenReturn("encoded_password");
         Mockito.when(adminRepository.count()).thenReturn(0L);
         adminService.createAdmin();
         Mockito.verify(adminRepository).save(adminArgumentCaptor.capture());

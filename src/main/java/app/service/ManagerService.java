@@ -2,7 +2,6 @@ package app.service;
 
 import java.util.List;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import app.entity.Manager;
 import app.entity.Role;
@@ -15,18 +14,16 @@ import javax.persistence.EntityNotFoundException;
 public class ManagerService
 {
 	private ManagerRepository managerRepository;
-	private PasswordEncoder passwordEncoder;
 	private UserUtil userUtil;
-	public ManagerService(ManagerRepository managerRepository, PasswordEncoder passwordEncoder, UserUtil userUtil)
+	public ManagerService(ManagerRepository managerRepository, UserUtil userUtil)
 	{
 		this.managerRepository = managerRepository;
-		this.passwordEncoder = passwordEncoder;
 		this.userUtil = userUtil;
 	}
 	public Manager save(Manager manager)
 	{
 		userUtil.throwExceptionIfUsernameConflicts(manager.getUser().getUsername());
-		manager.getUser().setPassword(passwordEncoder.encode(manager.getUser().getPassword()));
+		manager.getUser().setPassword(userUtil.encodePassword(manager.getUser().getPassword()));
 		manager.getUser().setRole(Role.MANAGER);
 		manager.getUser().setCredentialsNonExpired(true);
 		manager.getUser().setAccountNonLocked(true);
