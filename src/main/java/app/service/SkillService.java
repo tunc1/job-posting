@@ -2,6 +2,8 @@ package app.service;
 
 import java.util.List;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.stereotype.Service;
 
 import app.entity.Skill;
@@ -29,7 +31,7 @@ public class SkillService
     }
 	public Skill findById(Long id)
 	{
-		return skillRepository.findById(id).get();
+		return skillRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
 	public List<Skill> findAll()
 	{
