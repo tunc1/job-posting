@@ -55,10 +55,7 @@ public class AppliedJobControllerTest
     void testSave()
     {
         AppliedJob appliedJob=new AppliedJob();
-        Mockito.when(appliedJobService.save(Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,AppliedJob.class);
-        });
+        Mockito.when(appliedJobService.save(Mockito.any())).thenAnswer(i->i.getArgument(0,AppliedJob.class));
         Assertions.assertEquals(appliedJob,appliedJobController.save(appliedJob,authentication));
         Assertions.assertEquals(appliedJob.getMember(),member);
     }

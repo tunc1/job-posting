@@ -48,10 +48,7 @@ public class CompanyControllerTest
     void testSave()
     {
         Company company=new Company();
-        Mockito.when(companyService.save(Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,Company.class);
-        });
+        Mockito.when(companyService.save(Mockito.any())).thenAnswer(i->i.getArgument(0,Company.class));
         Company actual=companyController.save(company);
         Assertions.assertEquals(actual,company);
     }
@@ -60,10 +57,7 @@ public class CompanyControllerTest
     {
         Company company=new Company();
         long id=1L;
-        Mockito.when(companyService.update(Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,Company.class);
-        });
+        Mockito.when(companyService.update(Mockito.any())).thenAnswer(i->i.getArgument(0,Company.class));
         Company actual=companyController.update(company,id);
         Assertions.assertEquals(actual,company);
         Assertions.assertEquals(actual.getId(),id);

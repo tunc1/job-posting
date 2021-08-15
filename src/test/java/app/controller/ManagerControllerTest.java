@@ -48,10 +48,7 @@ public class ManagerControllerTest
     void testSave()
     {
         Manager manager=new Manager();
-        Mockito.when(managerService.save(Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,Manager.class);
-        });
+        Mockito.when(managerService.save(Mockito.any())).thenAnswer(i->i.getArgument(0,Manager.class));
         Manager actual=managerController.save(manager);
         Assertions.assertEquals(actual,manager);
     }
@@ -60,10 +57,7 @@ public class ManagerControllerTest
     {
         Manager manager=new Manager();
         long id=1L;
-        Mockito.when(managerService.update(Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,Manager.class);
-        });
+        Mockito.when(managerService.update(Mockito.any())).thenAnswer(i->i.getArgument(0,Manager.class));
         Manager actual=managerController.update(manager,id);
         Assertions.assertEquals(actual,manager);
         Assertions.assertEquals(actual.getId(),id);

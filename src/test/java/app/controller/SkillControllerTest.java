@@ -50,10 +50,7 @@ public class SkillControllerTest
     void testSave()
     {
         Skill skill=new Skill();
-        Mockito.when(skillService.save(Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,Skill.class);
-        });
+        Mockito.when(skillService.save(Mockito.any())).thenAnswer(i->i.getArgument(0,Skill.class));
         Assertions.assertEquals(skill,skillController.save(skill));
     }
     @Test
@@ -61,10 +58,7 @@ public class SkillControllerTest
     {
         long id=1L;
         Skill skill=new Skill();
-        Mockito.when(skillService.update(Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,Skill.class);
-        });
+        Mockito.when(skillService.update(Mockito.any())).thenAnswer(i->i.getArgument(0,Skill.class));
         Skill updated=skillController.update(skill,id);
         Assertions.assertEquals(updated.getId(),id);
         Assertions.assertEquals(skill,updated);

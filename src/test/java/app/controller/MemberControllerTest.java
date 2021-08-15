@@ -60,10 +60,7 @@ public class MemberControllerTest
     void testSave_returnsMember()
     {
         Member member=new Member();
-        Mockito.when(memberService.save(Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,Member.class);
-        });
+        Mockito.when(memberService.save(Mockito.any())).thenAnswer(i->i.getArgument(0,Member.class));
         ResponseEntity<Object> responseEntity=memberController.save(member);
         Assertions.assertEquals(responseEntity.getBody(),member);
         Assertions.assertEquals(responseEntity.getStatusCode(),HttpStatus.CREATED);

@@ -55,10 +55,7 @@ public class JobPostingControllerTest
         manager.setUser(new User());
         Authentication authentication=new UsernamePasswordAuthenticationToken(manager,null);
         JobPosting jobPosting=new JobPosting();
-        Mockito.when(jobPostingService.save(Mockito.any(),Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,JobPosting.class);
-        });
+        Mockito.when(jobPostingService.save(Mockito.any(),Mockito.any())).thenAnswer(i->i.getArgument(0,JobPosting.class));
         Assertions.assertEquals(jobPosting,jobPostingController.save(jobPosting,authentication));
     }
     @Test
@@ -69,10 +66,7 @@ public class JobPostingControllerTest
         Authentication authentication=new UsernamePasswordAuthenticationToken(manager,null);
         long id=1L;
         JobPosting jobPosting=new JobPosting();
-        Mockito.when(jobPostingService.update(Mockito.any(),Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,JobPosting.class);
-        });
+        Mockito.when(jobPostingService.update(Mockito.any(),Mockito.any())).thenAnswer(i->i.getArgument(0,JobPosting.class));
         JobPosting actual=jobPostingController.update(jobPosting,id,authentication);
         Assertions.assertEquals(jobPosting,actual);
         Assertions.assertEquals(id,actual.getId());

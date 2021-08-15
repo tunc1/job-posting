@@ -91,10 +91,7 @@ public class MemberServiceTest
         user.setPassword(password);
         user.setUsername("username");
         member.setEmail("email");
-        Mockito.when(memberRepository.save(Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,Member.class);
-        });
+        Mockito.when(memberRepository.save(Mockito.any())).thenAnswer(i->i.getArgument(0,Member.class));
         Member savedMember=memberService2.save(member);
         Assertions.assertEquals(member,savedMember);
         Assertions.assertNotEquals(password,savedMember.getUser().getPassword());

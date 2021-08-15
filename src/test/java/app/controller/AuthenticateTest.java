@@ -42,10 +42,7 @@ public class AuthenticateTest
     void testAuthenticate_successful()
     {
         String token="jwt.token";
-        Mockito.when(authenticationManager.authenticate(Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,Authentication.class);
-        });
+        Mockito.when(authenticationManager.authenticate(Mockito.any())).thenAnswer(i->i.getArgument(0,Authentication.class));
         Mockito.when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
         Mockito.when(tokenService.create(user)).thenReturn(token);
         ResponseEntity<Object> responseEntity=authenticate.authenticate(user);
