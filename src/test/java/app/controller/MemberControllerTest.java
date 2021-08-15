@@ -82,14 +82,13 @@ public class MemberControllerTest
     void testUpdate_returnsMember()
     {
         Member member=new Member();
+        member.setId(1L);
         member.setUser(new User());
         Authentication authentication=new UsernamePasswordAuthenticationToken(member,null);
-        Mockito.when(memberService.update(Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,Member.class);
-        });
+        Mockito.when(memberService.update(Mockito.any())).thenAnswer(i->i.getArgument(0,Member.class));
         ResponseEntity<Object> actual=memberController.update(member,authentication);
         Assertions.assertEquals(member,actual.getBody());
+        Assertions.assertEquals(member.getId(),((Member)actual.getBody()).getId());
     }
     @Test
     void testUpdate_returnsExceptionMessage()
