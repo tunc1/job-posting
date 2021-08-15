@@ -3,11 +3,7 @@ package app.entity;
 import java.util.Collection;
 import java.util.List;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,6 +16,7 @@ public class User implements UserDetails
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
+    @Column(unique=true)
     private String username;
     private String password;
     private boolean accountNonExpired,accountNonLocked,credentialsNonExpired,enabled;
