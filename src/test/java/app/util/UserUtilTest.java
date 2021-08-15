@@ -41,6 +41,12 @@ public class UserUtilTest
     void testEncodePassword()
     {
         userUtil.encodePassword("password");
-        Mockito.verify(passwordEncoder,Mockito.times(1)).encode(Mockito.anyString());
+        Mockito.verify(passwordEncoder).encode(Mockito.anyString());
+    }
+    @Test
+    void passwordCheck()
+    {
+        Mockito.when(passwordEncoder.matches(Mockito.anyString(),Mockito.anyString())).thenReturn(true);
+        Assertions.assertTrue(userUtil.passwordCheck("encoded","notEncoded"));
     }
 }

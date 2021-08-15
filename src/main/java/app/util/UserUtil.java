@@ -25,4 +25,8 @@ public class UserUtil
     {
         return passwordEncoder.encode(password);
     }
+    public boolean passwordCheck(String encoded,String notEncoded)
+    {
+        return passwordEncoder.matches(notEncoded,encoded);
+    }
 }
