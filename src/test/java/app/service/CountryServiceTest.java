@@ -65,9 +65,9 @@ class CountryServiceTest
     @Test
     void findAll()
     {
-        List<Country> countrys=List.of(new Country());
-        Mockito.when(countryRepository.findAll()).thenReturn(countrys);
+        List<Country> countries=List.of(new Country());
+        Mockito.when(countryRepository.findAll()).thenReturn(countries);
         List<Country> actual=countryService.findAll();
-        Assertions.assertEquals(actual,countrys);
+        Assertions.assertEquals(actual,countries);
     }
 }
