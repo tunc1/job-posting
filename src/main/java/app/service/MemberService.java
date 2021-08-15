@@ -41,7 +41,6 @@ public class MemberService
 	}
 	public Member update(Member member)
 	{
-		userUtil.throwExceptionIfUsernameConflicts(member.getUser().getUsername());
 		throwExceptionIfEmailConflicts(member.getEmail());
 		return memberRepository.save(member);
 	}

@@ -15,6 +15,7 @@ public class Member
     private String name,lastName,title,summary;
     @OneToOne(cascade=CascadeType.ALL)
     @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(updatable=false)
     private User user;
     @Column(unique=true,nullable=false)
     private String email;

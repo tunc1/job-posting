@@ -109,7 +109,6 @@ public class MemberServiceTest
     {
         MemberService memberService2=Mockito.spy(memberService);
         Mockito.doNothing().when(memberService2).throwExceptionIfEmailConflicts(Mockito.anyString());
-        Mockito.doNothing().when(userUtil).throwExceptionIfUsernameConflicts(Mockito.anyString());
         Member member=new Member();
         User user=new User();
         member.setUser(user);
