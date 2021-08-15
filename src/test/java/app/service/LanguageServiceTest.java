@@ -46,7 +46,7 @@ class LanguageServiceTest
     void deleteById()
     {
         languageService.deleteById(1L);
-        Mockito.verify(languageRepository,Mockito.times(1)).deleteById(Mockito.anyLong());
+        Mockito.verify(languageRepository).deleteById(Mockito.anyLong());
     }
     @Test
     void findById_returnsLanguage()

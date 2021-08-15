@@ -42,7 +42,7 @@ public class CompanyControllerTest
     void testDeleteById()
     {
         companyController.deleteById(1L);
-        Mockito.verify(companyService,Mockito.times(1)).deleteById(Mockito.anyLong());
+        Mockito.verify(companyService).deleteById(Mockito.anyLong());
     }
     @Test
     void testSave()

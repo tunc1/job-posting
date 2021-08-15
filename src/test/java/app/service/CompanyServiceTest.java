@@ -78,7 +78,7 @@ public class CompanyServiceTest
     void testDeleteById()
     {
         companyService.deleteById(1L);
-        Mockito.verify(companyRepository,Mockito.times(1)).deleteById(Mockito.anyLong());
+        Mockito.verify(companyRepository).deleteById(Mockito.anyLong());
     }
     @Test
     void testSave()

@@ -118,7 +118,7 @@ public class MemberServiceTest
         Mockito.when(memberRepository.save(Mockito.any())).thenAnswer(i->i.getArgument(0,Member.class));
         Member updatedMember=memberService2.update(member);
         Assertions.assertEquals(member,updatedMember);
-        Mockito.verify(memberService2,Mockito.times(1)).throwExceptionIfEmailConflicts(Mockito.anyString());
+        Mockito.verify(memberService2).throwExceptionIfEmailConflicts(Mockito.anyString());
     }
     @Test
     void testUpdate_notUpdatingEmail()

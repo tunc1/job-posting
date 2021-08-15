@@ -46,7 +46,7 @@ class CountryServiceTest
     void deleteById()
     {
         countryService.deleteById(1L);
-        Mockito.verify(countryRepository,Mockito.times(1)).deleteById(Mockito.anyLong());
+        Mockito.verify(countryRepository).deleteById(Mockito.anyLong());
     }
     @Test
     void findById_returnsCountry()

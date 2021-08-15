@@ -28,7 +28,7 @@ public class ManagerControllerTest
     void testDeleteById()
     {
         managerController.deleteById(1L);
-        Mockito.verify(managerService,Mockito.times(1)).deleteById(Mockito.anyLong());
+        Mockito.verify(managerService).deleteById(Mockito.anyLong());
     }
     @Test
     void testFindAll()

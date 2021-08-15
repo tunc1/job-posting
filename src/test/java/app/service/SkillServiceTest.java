@@ -31,7 +31,7 @@ public class SkillServiceTest
     void testDeleteById()
     {
         skillService.deleteById(1L);
-        Mockito.verify(skillRepository,Mockito.times(1)).deleteById(Mockito.anyLong());
+        Mockito.verify(skillRepository).deleteById(Mockito.anyLong());
     }
     @Test
     void testFindAll()
