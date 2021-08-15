@@ -7,7 +7,7 @@ import javax.persistence.*;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-public class Member
+public class Member implements HasUser
 {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

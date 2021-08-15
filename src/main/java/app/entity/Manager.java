@@ -10,7 +10,7 @@ import javax.persistence.OneToOne;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
-public class Manager
+public class Manager implements HasUser
 {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
