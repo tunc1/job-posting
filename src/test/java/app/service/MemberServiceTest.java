@@ -105,22 +105,42 @@ public class MemberServiceTest
         Assertions.assertTrue(savedMember.getUser().isEnabled());
     }
     @Test
-    void testUpdate()
+    void testUpdate_updatingEmail()
     {
+        Member member2=new Member();
+        member2.setEmail("email");
         MemberService memberService2=Mockito.spy(memberService);
         Mockito.doNothing().when(memberService2).throwExceptionIfEmailConflicts(Mockito.anyString());
+        Mockito.doReturn(member2).when(memberService2).findById(Mockito.anyLong());
         Member member=new Member();
         User user=new User();
         member.setUser(user);
         user.setUsername("username");
-        member.setEmail("email");
+        member.setEmail("email2");
         member.setId(1L);
-        Mockito.when(memberRepository.save(Mockito.any())).thenAnswer(i->
-        {
-            return i.getArgument(0,Member.class);
-        });
+        Mockito.when(memberRepository.save(Mockito.any())).thenAnswer(i->i.getArgument(0,Member.class));
         Member updatedMember=memberService2.update(member);
         Assertions.assertEquals(member,updatedMember);
+        Mockito.verify(memberService2,Mockito.times(1)).throwExceptionIfEmailConflicts(Mockito.anyString());
+    }
+    @Test
+    void testUpdate_notUpdatingEmail()
+    {
+        String email="email";
+        Member member2=new Member();
+        member2.setEmail(email);
+        MemberService memberService2=Mockito.spy(memberService);
+        Mockito.doReturn(member2).when(memberService2).findById(Mockito.anyLong());
+        Member member=new Member();
+        User user=new User();
+        member.setUser(user);
+        user.setUsername("username");
+        member.setEmail(email);
+        member.setId(1L);
+        Mockito.when(memberRepository.save(Mockito.any())).thenAnswer(i->i.getArgument(0,Member.class));
+        Member updatedMember=memberService2.update(member);
+        Assertions.assertEquals(member,updatedMember);
+        Mockito.verify(memberService2,Mockito.times(0)).throwExceptionIfEmailConflicts(Mockito.anyString());
     }
     @Test
     void testThrowExceptionIfEmailConflicts_emailNotConflicts_notThrows()

@@ -41,7 +41,8 @@ public class MemberService
 	}
 	public Member update(Member member)
 	{
-		throwExceptionIfEmailConflicts(member.getEmail());
+		if(!findById(member.getId()).getEmail().equals(member.getEmail()))
+			throwExceptionIfEmailConflicts(member.getEmail());
 		return memberRepository.save(member);
 	}
 	public void deleteById(Long id,Member member)
