@@ -44,7 +44,7 @@ public class MemberServiceTest
         Mockito.verify(memberRepository).deleteById(Mockito.anyLong());
     }
     @Test
-    void testDeleteById_throwsUnauthorizedExcpetion()
+    void testDeleteById_throwsUnauthorizedException()
     {
         Member member=new Member();
         member.setId(2L);
