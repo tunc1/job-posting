@@ -25,8 +25,6 @@ public class Member implements HasUser
     @JoinTable(name="member_skill",joinColumns=@JoinColumn(name="member_id"),inverseJoinColumns=@JoinColumn(name="skill_id"))
     private Set<Skill> skills;
     @OneToMany(mappedBy="member",cascade=CascadeType.ALL,orphanRemoval=true)
-    private Set<MemberLanguage> languages;
-    @OneToMany(mappedBy="member",cascade=CascadeType.ALL,orphanRemoval=true)
     private Set<Experience> experiences;
     @OneToMany(mappedBy="member",cascade=CascadeType.ALL,orphanRemoval=true)
     private Set<Education> educations;
@@ -55,15 +53,6 @@ public class Member implements HasUser
     {
         experiences.forEach(experience->experience.setMember(this));
         this.experiences = experiences;
-    }
-    public Set<MemberLanguage> getLanguages()
-    {
-        return languages;
-    }
-    public void setLanguages(Set<MemberLanguage> languages)
-    {
-        languages.forEach(language->language.setMember(this));
-        this.languages = languages;
     }
     public Set<Skill> getSkills()
     {

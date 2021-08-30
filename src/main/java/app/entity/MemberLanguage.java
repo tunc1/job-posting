@@ -11,8 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonProperty.Access;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(uniqueConstraints={@UniqueConstraint(columnNames={"member_id","language_id"})})
@@ -22,7 +21,7 @@ public class MemberLanguage
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JsonProperty(access=Access.WRITE_ONLY)
+    @JsonIgnore
     @JoinColumn(nullable=false)
     private Member member;
     @ManyToOne
