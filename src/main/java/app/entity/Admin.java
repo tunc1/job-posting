@@ -7,8 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 @Entity
 public class Admin implements HasUser
 {
@@ -16,7 +14,6 @@ public class Admin implements HasUser
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long id;
     @OneToOne(cascade=CascadeType.ALL)
-    @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
     private User user;
     public Long getId()
     {

@@ -17,7 +17,6 @@ public class Manager implements HasUser
     private Long id;
     private String name,lastName,email;
     @OneToOne(cascade=CascadeType.ALL)
-    @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
     private User user;
     public boolean equals(Object obj)
     {
