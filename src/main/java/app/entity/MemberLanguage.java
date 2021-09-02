@@ -22,7 +22,7 @@ public class MemberLanguage
     private Long id;
     @ManyToOne
     @JsonIgnore
-    @JoinColumn(nullable=false)
+    @JoinColumn(updatable=false)
     private Member member;
     @ManyToOne
     private Language language;
