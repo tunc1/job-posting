@@ -19,6 +19,7 @@ public class Experience
     private Company company;
     @ManyToOne
     @JsonProperty(access=JsonProperty.Access.WRITE_ONLY)
+    @JoinColumn(updatable=false)
     private Member member;
     private Date startedAt,leftAt;
     private String title,summary;
