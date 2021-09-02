@@ -21,7 +21,7 @@ public class Member implements HasUser
     private String email;
     @ManyToOne
     private City city;
-    @ManyToMany
+    @ManyToMany(fetch=FetchType.EAGER)
     @JoinTable(name="member_skill",joinColumns=@JoinColumn(name="member_id"),inverseJoinColumns=@JoinColumn(name="skill_id"))
     private Set<Skill> skills;
     public User getUser()
