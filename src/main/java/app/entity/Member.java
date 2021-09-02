@@ -26,8 +26,6 @@ public class Member implements HasUser
     private Set<Skill> skills;
     @OneToMany(mappedBy="member",cascade=CascadeType.ALL,orphanRemoval=true)
     private Set<Experience> experiences;
-    @OneToMany(mappedBy="member",cascade=CascadeType.ALL,orphanRemoval=true)
-    private Set<Education> educations;
     public User getUser()
     {
         return user;
@@ -35,15 +33,6 @@ public class Member implements HasUser
     public void setUser(User user)
     {
         this.user = user;
-    }
-    public Set<Education> getEducations()
-    {
-        return educations;
-    }
-    public void setEducations(Set<Education> educations)
-    {
-        educations.forEach(education->education.setMember(this));
-        this.educations = educations;
     }
     public Set<Experience> getExperiences()
     {
