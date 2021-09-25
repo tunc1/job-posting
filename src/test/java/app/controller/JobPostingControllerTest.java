@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 
@@ -76,7 +77,7 @@ public class JobPostingControllerTest
     {
         Page<JobPosting> page=new PageImpl<>(List.of(new JobPosting()));
         Mockito.when(jobPostingService.findAll(Mockito.any(),Mockito.any(),Mockito.any(),Mockito.any(),Mockito.any())).thenReturn(page);
-        Page<JobPosting> actual=jobPostingController.findAll(Optional.of(1L),Optional.of(1L),Optional.of(1L),Optional.of("title"),0,"id");
+        Page<JobPosting> actual=jobPostingController.findAll(Optional.of(1L),Optional.of(1L),Optional.of(1L),Optional.of("title"),PageRequest.of(0,20));
         Assertions.assertEquals(page,actual);
     }
 }

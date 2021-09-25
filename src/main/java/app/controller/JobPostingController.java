@@ -3,14 +3,12 @@ package app.controller;
 import app.entity.JobPosting;
 import app.entity.Manager;
 import app.service.JobPostingService;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
-
-import org.springframework.data.domain.Sort;
 
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 
@@ -48,10 +46,9 @@ public class JobPostingController
 		,@RequestParam(name="company") Optional<Long> company
 		,@RequestParam(name="skill") Optional<Long> skill
 		,@RequestParam(name="title") Optional<String> title
-		,@RequestParam(name="page",defaultValue="0") int page
-		,@RequestParam(name="order",defaultValue="id") String order)
+		,Pageable pageable)
 	{
-		return jobPostingService.findAll(city,company,skill,title,PageRequest.of(page,pageSize,Sort.by(order)));
+		return jobPostingService.findAll(city,company,skill,title,pageable);
 	}
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)
