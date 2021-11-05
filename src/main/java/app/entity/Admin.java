@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
 @Entity
-public class Admin implements HasUser
+public class Admin implements IUser
 {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)

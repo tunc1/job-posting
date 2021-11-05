@@ -2,7 +2,7 @@ package app.service;
 
 import java.util.List;
 
-import app.entity.HasUser;
+import app.entity.IUser;
 import app.entity.Member;
 import app.consts.Role;
 import app.exception.UnauthorizedException;
@@ -36,13 +36,13 @@ public class MemberLanguageService
 		else
 			throw new UnauthorizedException();
 	}
-	public List<MemberLanguage> findAllByMemberId(long id,HasUser hasUser)
+	public List<MemberLanguage> findAllByMemberId(long id,IUser user)
 	{
-		if(hasUser.getUser().getRole().equals(Role.ADMIN)||hasUser.getUser().getRole().equals(Role.MANAGER))
+		if(user.getUser().getRole().equals(Role.ADMIN)||user.getUser().getRole().equals(Role.MANAGER))
 			return memberLanguageRepository.findAllByMemberId(id);
 		else
 		{
-			Member member=(Member)hasUser;
+			Member member=(Member)user;
 			if(member.getId().equals(id))
 				return memberLanguageRepository.findAllByMemberId(id);
 		}

@@ -1,7 +1,7 @@
 package app.controller;
 
 import app.entity.Experience;
-import app.entity.HasUser;
+import app.entity.IUser;
 import app.entity.Member;
 import app.service.ExperienceService;
 import org.springframework.http.HttpStatus;
@@ -37,8 +37,8 @@ public class ExperienceController
 	@GetMapping
 	public List<Experience> findAllByMemberId(@PathVariable Long memberId,Authentication authentication)
 	{
-		HasUser hasUser=(HasUser)authentication.getPrincipal();
-		return experienceService.findAllByMemberId(memberId,hasUser);
+		IUser user=(IUser)authentication.getPrincipal();
+		return experienceService.findAllByMemberId(memberId,user);
 	}
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)

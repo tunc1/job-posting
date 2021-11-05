@@ -1,6 +1,6 @@
 package app.controller;
 
-import app.entity.HasUser;
+import app.entity.IUser;
 import app.entity.Member;
 import app.entity.MemberLanguage;
 import app.service.MemberLanguageService;
@@ -38,8 +38,8 @@ public class MemberLanguageController
 	@GetMapping
 	public List<MemberLanguage> findAllByMemberId(Authentication authentication,@PathVariable long memberId)
 	{
-		HasUser hasUser=(HasUser)authentication.getPrincipal();
-		return memberLanguageService.findAllByMemberId(memberId,hasUser);
+		IUser user=(IUser)authentication.getPrincipal();
+		return memberLanguageService.findAllByMemberId(memberId,user);
 	}
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)

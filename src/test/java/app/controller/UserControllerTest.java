@@ -1,6 +1,6 @@
 package app.controller;
 
-import app.entity.HasUser;
+import app.entity.IUser;
 import app.entity.User;
 import app.service.UserService;
 import org.junit.jupiter.api.Assertions;
@@ -26,9 +26,9 @@ class UserControllerTest
     void setUp()
     {
         userController=new UserController(userService);
-        user=new User();
-        HasUser hasUser=()->user;
-        authentication=new UsernamePasswordAuthenticationToken(hasUser,null);
+        this.user=new User();
+        IUser user=()->this.user;
+        authentication=new UsernamePasswordAuthenticationToken(user,null);
     }
     @Test
     void changePassword()

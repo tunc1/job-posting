@@ -1,6 +1,6 @@
 package app.controller;
 
-import app.entity.HasUser;
+import app.entity.IUser;
 import app.entity.User;
 import app.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -20,14 +20,14 @@ public class UserController
     @ResponseStatus(code=HttpStatus.NO_CONTENT)
     public void changePassword(Authentication authentication,@RequestBody PasswordHolder passwordHolder)
     {
-        User user=((HasUser)authentication.getPrincipal()).getUser();
+        User user=((IUser)authentication.getPrincipal()).getUser();
         userService.changePassword(user,passwordHolder.getCurrentPassword(),passwordHolder.getNewPassword());
     }
     @PostMapping("/change-username")
     @ResponseStatus(code=HttpStatus.NO_CONTENT)
     public void changeUsername(Authentication authentication,@RequestBody UsernameHolder usernameHolder)
     {
-        User user=((HasUser)authentication.getPrincipal()).getUser();
+        User user=((IUser)authentication.getPrincipal()).getUser();
         user.setUsername(usernameHolder.getUsername());
         userService.changeUsername(user);
     }

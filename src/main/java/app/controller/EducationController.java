@@ -1,7 +1,7 @@
 package app.controller;
 
 import app.entity.Education;
-import app.entity.HasUser;
+import app.entity.IUser;
 import app.entity.Member;
 import app.service.EducationService;
 import org.springframework.security.core.Authentication;
@@ -38,8 +38,8 @@ public class EducationController
 	@GetMapping
 	public List<Education> findAllByMemberId(@PathVariable Long memberId,Authentication authentication)
 	{
-		HasUser hasUser=(HasUser)authentication.getPrincipal();
-		return educationService.findAllByMemberId(memberId,hasUser);
+		IUser user=(IUser)authentication.getPrincipal();
+		return educationService.findAllByMemberId(memberId,user);
 	}
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)

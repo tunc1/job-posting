@@ -1,6 +1,6 @@
 package app.entity;
 
-public interface HasUser
+public interface IUser
 {
     User getUser();
 }

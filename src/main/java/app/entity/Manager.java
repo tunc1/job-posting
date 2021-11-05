@@ -7,10 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 @Entity
-public class Manager implements HasUser
+public class Manager implements IUser
 {
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
