@@ -1,5 +1,7 @@
 package app.entity;
 
+import app.enums.Degree;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.Set;
