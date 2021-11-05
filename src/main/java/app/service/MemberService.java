@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import app.entity.Member;
-import app.entity.Role;
+import app.consts.Role;
 import app.exception.ConflictException;
 import app.exception.UnauthorizedException;
 import app.repository.MemberRepository;

@@ -14,7 +14,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import app.entity.Manager;
-import app.entity.Role;
+import app.consts.Role;
 import app.entity.User;
 import app.repository.ManagerRepository;
 import app.util.UserUtil;

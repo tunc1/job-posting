@@ -18,7 +18,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import app.entity.Admin;
 import app.entity.Manager;
 import app.entity.Member;
-import app.entity.Role;
+import app.consts.Role;
 import app.entity.User;
 import app.repository.ManagerRepository;
 import app.repository.UserRepository;

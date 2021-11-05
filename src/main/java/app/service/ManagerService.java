@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 import app.entity.Manager;
-import app.entity.Role;
+import app.consts.Role;
 import app.repository.ManagerRepository;
 import app.util.UserUtil;
 

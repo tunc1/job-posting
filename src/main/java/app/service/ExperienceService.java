@@ -3,7 +3,7 @@ package app.service;
 import app.entity.Experience;
 import app.entity.HasUser;
 import app.entity.Member;
-import app.entity.Role;
+import app.consts.Role;
 import app.exception.UnauthorizedException;
 import app.repository.ExperienceRepository;
 import org.springframework.stereotype.Service;

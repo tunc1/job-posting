@@ -5,7 +5,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import app.entity.Admin;
-import app.entity.Role;
+import app.consts.Role;
 import app.entity.User;
 import app.repository.AdminRepository;
 import app.util.UserUtil;

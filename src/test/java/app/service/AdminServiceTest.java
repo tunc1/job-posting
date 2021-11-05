@@ -13,7 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import app.entity.Admin;
-import app.entity.Role;
+import app.consts.Role;
 import app.repository.AdminRepository;
 import app.util.UserUtil;
 

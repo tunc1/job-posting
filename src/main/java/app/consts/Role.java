@@ -1,4 +1,4 @@
-package app.entity;
+package app.consts;
 
 public class Role
 {

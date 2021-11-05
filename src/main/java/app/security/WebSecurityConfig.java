@@ -10,7 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import app.entity.Role;
+import app.consts.Role;
 
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter
