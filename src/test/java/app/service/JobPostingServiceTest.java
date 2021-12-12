@@ -10,6 +10,7 @@ import javax.persistence.criteria.Join;
 import javax.persistence.criteria.Path;
 import javax.persistence.criteria.Root;
 
+import app.criteria.JobPostingCriteria;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -89,17 +90,14 @@ public class JobPostingServiceTest
     @Test
     void testFindAll()
     {
-        Optional<Long> city=Optional.of(1L);
-        Optional<Long> company=Optional.of(1L);
-        Optional<Long> skill=Optional.of(1L);
-        Optional<String> title=Optional.of("title");
+        JobPostingCriteria criteria=new JobPostingCriteria();
         Pageable pageable=PageRequest.of(0,5,Sort.by("id"));
         Page<JobPosting> page=new PageImpl<>(List.of(new JobPosting()));
         JobPostingService jobPostingService2=Mockito.spy(jobPostingService);
         Specification<JobPosting> specification=(root,query,criteriaBuilder)->null;
-        Mockito.doReturn(specification).when(jobPostingService2).createSpecification(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.any());
+        Mockito.doReturn(specification).when(jobPostingService2).createSpecification(Mockito.any());
         Mockito.when(jobPostingRepository.findAll(Mockito.any(Specification.class),Mockito.any(Pageable.class))).thenReturn(page);
-        Page<JobPosting> actual=jobPostingService2.findAll(city,company,skill,title,pageable);
+        Page<JobPosting> actual=jobPostingService2.findAll(criteria,pageable);
         Assertions.assertEquals(actual,page);
     }
     @Test
@@ -118,33 +116,31 @@ public class JobPostingServiceTest
     @Test
     void testCreateSpecification_allPresent()
     {
-        Long city=1L;
-        Long skill=2L;
-        Long company=3L;
-        String title="title";
+        JobPostingCriteria criteria=new JobPostingCriteria();
+        criteria.setCompany(1);
+        criteria.setCity(2);
+        criteria.setTitle("title");
         Root<JobPosting> root=Mockito.mock(Root.class);
         Path<JobPosting> path=Mockito.mock(Path.class);
         Path<JobPosting> path2=Mockito.mock(Path.class);
-        Join<Object,Object> join=Mockito.mock(Join.class);
         Mockito.doReturn(path).when(root).get(Mockito.anyString());
-        Mockito.doReturn(join).when(root).join(Mockito.anyString());
         Mockito.doReturn(path2).when(path).get(Mockito.anyString());
         CriteriaQuery<Object> query=Mockito.mock(CriteriaQuery.class);
         CriteriaBuilder criteriaBuilder=Mockito.mock(CriteriaBuilder.class);
-        Specification<JobPosting> specification=jobPostingService.createSpecification(Optional.of(city),Optional.of(company),Optional.of(skill),Optional.of(title));
+        Specification<JobPosting> specification=jobPostingService.createSpecification(criteria);
         specification.toPredicate(root, query, criteriaBuilder);
-        Mockito.verify(criteriaBuilder).equal(Mockito.any(),Mockito.eq(city));
-        Mockito.verify(criteriaBuilder).equal(Mockito.any(),Mockito.eq(company));
-        Mockito.verify(criteriaBuilder).equal(Mockito.any(),Mockito.eq(skill));
-        Mockito.verify(criteriaBuilder).like(Mockito.any(),Mockito.eq("%"+title+"%"));
+        Mockito.verify(criteriaBuilder).equal(Mockito.any(),Mockito.eq(criteria.getCity()));
+        Mockito.verify(criteriaBuilder).equal(Mockito.any(),Mockito.eq(criteria.getCompany()));
+        Mockito.verify(criteriaBuilder).like(Mockito.any(),Mockito.eq("%"+criteria.getTitle()+"%"));
     }
     @Test
     void testCreateSpecification_nothingPresent()
     {
+        JobPostingCriteria criteria=new JobPostingCriteria();
         Root<JobPosting> root=Mockito.mock(Root.class);
         CriteriaQuery<Object> query=Mockito.mock(CriteriaQuery.class);
         CriteriaBuilder criteriaBuilder=Mockito.mock(CriteriaBuilder.class);
-        Specification<JobPosting> specification=jobPostingService.createSpecification(Optional.empty(),Optional.empty(),Optional.empty(),Optional.empty());
+        Specification<JobPosting> specification=jobPostingService.createSpecification(criteria);
         specification.toPredicate(root, query, criteriaBuilder);
         Mockito.verify(criteriaBuilder,Mockito.times(0)).equal(Mockito.any(),Mockito.anyLong());
         Mockito.verify(criteriaBuilder,Mockito.times(0)).like(Mockito.any(),Mockito.anyString());

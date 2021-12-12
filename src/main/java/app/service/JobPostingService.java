@@ -1,5 +1,6 @@
 package app.service;
 
+import app.criteria.JobPostingCriteria;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -45,25 +46,23 @@ public class JobPostingService
 	{
 		return jobPostingRepository.findById(id).orElseThrow(EntityNotFoundException::new);
 	}
-	public Specification<JobPosting> createSpecification(Optional<Long> city,Optional<Long> company,Optional<Long> skill,Optional<String> title)
+	public Specification<JobPosting> createSpecification(JobPostingCriteria criteria)
 	{
 		return (root,query,criteriaBuilder)->
 		{
 			List<Predicate> list=new LinkedList<>();
-			if(city.isPresent())
-				list.add(criteriaBuilder.equal(root.get("city").get("id"),city.get()));
-			if(company.isPresent())
-				list.add(criteriaBuilder.equal(root.get("company").get("id"),company.get()));
-			if(skill.isPresent())
-				list.add(criteriaBuilder.equal(root.join("skills").get("id"),skill.get()));
-			if(title.isPresent())
-				list.add(criteriaBuilder.like(root.get("title"),"%"+title.get()+"%"));
+			if(criteria.getCity()!=0)
+				list.add(criteriaBuilder.equal(root.get("city").get("id"),criteria.getCity()));
+			if(criteria.getCompany()!=0)
+				list.add(criteriaBuilder.equal(root.get("company").get("id"),criteria.getCompany()));
+			if(criteria.getTitle()!=null)
+				list.add(criteriaBuilder.like(root.get("title"),"%"+criteria.getTitle()+"%"));
 			return criteriaBuilder.and(list.toArray(Predicate[]::new));
 		};
 	}
-	public Page<JobPosting> findAll(Optional<Long> city,Optional<Long> company,Optional<Long> skill,Optional<String> title,Pageable pageable)
+	public Page<JobPosting> findAll(JobPostingCriteria criteria,Pageable pageable)
 	{
-		Specification<JobPosting> specification=createSpecification(city, company, skill, title);
+		Specification<JobPosting> specification=createSpecification(criteria);
 		return jobPostingRepository.findAll(specification,pageable);
 	}
 }

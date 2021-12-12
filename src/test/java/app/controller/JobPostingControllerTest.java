@@ -3,6 +3,7 @@ package app.controller;
 import java.util.List;
 import java.util.Optional;
 
+import app.criteria.JobPostingCriteria;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -76,8 +77,9 @@ public class JobPostingControllerTest
     void testFindAll()
     {
         Page<JobPosting> page=new PageImpl<>(List.of(new JobPosting()));
-        Mockito.when(jobPostingService.findAll(Mockito.any(),Mockito.any(),Mockito.any(),Mockito.any(),Mockito.any())).thenReturn(page);
-        Page<JobPosting> actual=jobPostingController.findAll(Optional.of(1L),Optional.of(1L),Optional.of(1L),Optional.of("title"),PageRequest.of(0,20));
+        JobPostingCriteria criteria=new JobPostingCriteria();
+        Mockito.when(jobPostingService.findAll(Mockito.any(),Mockito.any())).thenReturn(page);
+        Page<JobPosting> actual=jobPostingController.findAll(criteria,PageRequest.of(0,20));
         Assertions.assertEquals(page,actual);
     }
 }
