@@ -11,7 +11,7 @@ import app.entity.User;
 @Component
 public class TokenService
 {
-    @Value("${jwt-key}")
+    @Value("${jwt.key}")
     private String key;
     public String create(User user)
     {

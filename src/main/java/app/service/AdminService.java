@@ -13,9 +13,9 @@ import app.util.UserUtil;
 @Service
 public class AdminService
 {
-	@Value("${admin-username}")
+	@Value("${admin.username}")
 	private String adminUsername;
-	@Value("${admin-password}")
+	@Value("${admin.password}")
 	private String adminPassword;
 	private AdminRepository adminRepository;
 	private UserUtil userUtil;
