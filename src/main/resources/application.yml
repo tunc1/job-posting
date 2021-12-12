@@ -10,7 +10,7 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQL10Dialect
 admin:
-  username: teacher
+  username: admin
   password: password
 jwt:
   key: key
