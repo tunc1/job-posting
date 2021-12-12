@@ -2,6 +2,8 @@ package app.controller;
 
 import app.entity.IUser;
 import app.entity.User;
+import app.request.ChangePasswordRequest;
+import app.request.ChangeUsernameRequest;
 import app.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
@@ -18,17 +20,17 @@ public class UserController
     }
     @PostMapping("/change-password")
     @ResponseStatus(code=HttpStatus.NO_CONTENT)
-    public void changePassword(Authentication authentication,@RequestBody PasswordHolder passwordHolder)
+    public void changePassword(Authentication authentication,@RequestBody ChangePasswordRequest changePasswordRequest)
     {
         User user=((IUser)authentication.getPrincipal()).getUser();
-        userService.changePassword(user,passwordHolder.getCurrentPassword(),passwordHolder.getNewPassword());
+        userService.changePassword(user,changePasswordRequest.getCurrentPassword(),changePasswordRequest.getNewPassword());
     }
     @PostMapping("/change-username")
     @ResponseStatus(code=HttpStatus.NO_CONTENT)
-    public void changeUsername(Authentication authentication,@RequestBody UsernameHolder usernameHolder)
+    public void changeUsername(Authentication authentication,@RequestBody ChangeUsernameRequest changeUsernameRequest)
     {
         User user=((IUser)authentication.getPrincipal()).getUser();
-        user.setUsername(usernameHolder.getUsername());
+        user.setUsername(changeUsernameRequest.getUsername());
         userService.changeUsername(user);
     }
 }

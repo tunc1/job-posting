@@ -2,6 +2,8 @@ package app.controller;
 
 import app.entity.IUser;
 import app.entity.User;
+import app.request.ChangePasswordRequest;
+import app.request.ChangeUsernameRequest;
 import app.service.UserService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,21 +35,21 @@ class UserControllerTest
     @Test
     void changePassword()
     {
-        PasswordHolder passwordHolder=new PasswordHolder();
-        passwordHolder.setNewPassword("newPassword");
-        passwordHolder.setCurrentPassword("currentPassword");
-        userController.changePassword(authentication,passwordHolder);
+        ChangePasswordRequest changePasswordRequest=new ChangePasswordRequest();
+        changePasswordRequest.setNewPassword("newPassword");
+        changePasswordRequest.setCurrentPassword("currentPassword");
+        userController.changePassword(authentication,changePasswordRequest);
         Mockito.verify(userService).changePassword(Mockito.eq(user)
-                ,Mockito.eq(passwordHolder.getCurrentPassword())
-                ,Mockito.eq(passwordHolder.getNewPassword()));
+                ,Mockito.eq(changePasswordRequest.getCurrentPassword())
+                ,Mockito.eq(changePasswordRequest.getNewPassword()));
     }
     @Test
     void changeUsername()
     {
-        UsernameHolder usernameHolder=new UsernameHolder();
-        usernameHolder.setUsername("username");
-        userController.changeUsername(authentication,usernameHolder);
+        ChangeUsernameRequest changeUsernameRequest=new ChangeUsernameRequest();
+        changeUsernameRequest.setUsername("username");
+        userController.changeUsername(authentication,changeUsernameRequest);
         Mockito.verify(userService).changeUsername(Mockito.eq(user));
-        Assertions.assertTrue(usernameHolder.getUsername().equals(user.getUsername()));
+        Assertions.assertTrue(changeUsernameRequest.getUsername().equals(user.getUsername()));
     }
 }

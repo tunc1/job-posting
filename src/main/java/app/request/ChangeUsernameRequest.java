@@ -1,6 +1,6 @@
-package app.controller;
+package app.request;
 
-public class UsernameHolder
+public class ChangeUsernameRequest
 {
     private String username;
     public String getUsername()

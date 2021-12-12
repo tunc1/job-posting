@@ -1,5 +1,6 @@
 package app.controller;
 
+import app.criteria.JobPostingCriteria;
 import app.entity.JobPosting;
 import app.entity.Manager;
 import app.service.JobPostingService;
@@ -42,13 +43,9 @@ public class JobPostingController
 		return jobPostingService.findById(id);
 	}
 	@GetMapping
-	public Page<JobPosting> findAll(@RequestParam(name="city") Optional<Long> city
-		,@RequestParam(name="company") Optional<Long> company
-		,@RequestParam(name="skill") Optional<Long> skill
-		,@RequestParam(name="title") Optional<String> title
-		,Pageable pageable)
+	public Page<JobPosting> findAll(JobPostingCriteria criteria,Pageable pageable)
 	{
-		return jobPostingService.findAll(city,company,skill,title,pageable);
+		return jobPostingService.findAll(criteria,pageable);
 	}
 	@DeleteMapping("/{id}")
 	@ResponseStatus(code=HttpStatus.NO_CONTENT)

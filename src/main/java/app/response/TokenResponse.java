@@ -1,4 +1,4 @@
-package app.controller;
+package app.response;
 
 public class TokenResponse
 {

@@ -1,6 +1,6 @@
-package app.controller;
+package app.request;
 
-public class PasswordHolder
+public class ChangePasswordRequest
 {
     private String currentPassword,newPassword;
     public String getCurrentPassword()
