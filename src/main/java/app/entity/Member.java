@@ -2,7 +2,7 @@ package app.entity;
 
 import java.util.Set;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Entity
 public class Member implements IUser

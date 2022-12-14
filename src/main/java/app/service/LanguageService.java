@@ -4,7 +4,7 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import app.entity.Language;
 import app.repository.LanguageRepository;
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class LanguageService

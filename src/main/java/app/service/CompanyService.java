@@ -1,7 +1,7 @@
 package app.service;
 
 import java.util.List;
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import app.entity.Company;
 import app.entity.Manager;

@@ -10,7 +10,7 @@ import app.exception.UnauthorizedException;
 import app.repository.MemberRepository;
 import app.util.UserUtil;
 
-import javax.persistence.EntityNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class MemberService

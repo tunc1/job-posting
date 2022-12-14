@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/job_postings
+    url: jdbc:postgresql://localhost:5432/job_posting
     username: postgres
     password: password
   jpa:
@@ -8,7 +8,7 @@ spring:
       ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.PostgreSQL10Dialect
+        dialect: org.hibernate.dialect.PostgreSQLDialect
 admin:
   username: admin
   password: password
