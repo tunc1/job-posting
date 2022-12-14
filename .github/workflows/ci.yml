@@ -13,13 +13,13 @@ jobs:
         uses: actions/checkout@v2
       - name: Download JDK
         run: |
-          wget -O $RUNNER_TEMP/jdk.tar.gz https://download.java.net/java/GA/jdk16/7863447f0ab643c585b9bdebf67c69db/36/GPL/openjdk-16_linux-x64_bin.tar.gz
+          wget -O $RUNNER_TEMP/jdk.tar.gz https://download.oracle.com/java/17/archive/jdk-17.0.5_linux-x64_bin.tar.gz
       - name: Setup Java
         uses: actions/setup-java@v2
         with:
           distribution: 'jdkfile'
           jdkFile: ${{ runner.temp }}/jdk.tar.gz
-          java-version: '16'
+          java-version: '17'
           architecture: x64
       - name: Cache Maven packages
         uses: actions/cache@v2
