@@ -69,17 +69,17 @@ resource "aws_elastic_beanstalk_environment" "environment" {
     }
     setting {
         namespace = "aws:elasticbeanstalk:application:environment"
-        name = "JWT-KEY"
+        name = "JWT_KEY"
         value = var.jwt_key
     }
     setting {
         namespace = "aws:elasticbeanstalk:application:environment"
-        name = "ADMIN-USERNAME"
+        name = "ADMIN_USERNAME"
         value = var.admin_username
     }
     setting {
         namespace = "aws:elasticbeanstalk:application:environment"
-        name = "ADMIN-PASSWORD"
+        name = "ADMIN_PASSWORD"
         value = var.admin_password
     }
 }
